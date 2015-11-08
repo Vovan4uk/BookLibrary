@@ -1,3 +1,5 @@
 /.idea/
 /target/
-/logs/
+/BookLibrary.iml
+/BookLibrary-cdi/target/
+/BookLibrary-cdi/BookLibrary-cdi.iml
