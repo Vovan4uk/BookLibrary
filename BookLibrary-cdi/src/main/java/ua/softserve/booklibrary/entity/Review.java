@@ -20,7 +20,7 @@ public class Review {
     private Date comment_create;
 
     @ManyToOne
-//    @JoinColumn(name = "book_id")
+    @JoinColumn(name = "BOOK_ID")
     private Book book;
 
     public Long getId() {

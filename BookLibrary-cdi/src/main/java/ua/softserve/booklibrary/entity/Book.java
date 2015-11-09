@@ -23,7 +23,7 @@ public class Book {
     @Temporal(TemporalType.DATE)
     private Date book_create;
 
-    @OneToMany(mappedBy = "book")
+    @OneToMany(mappedBy = "book", cascade = CascadeType.ALL)
     private Set<Review> reviews = new HashSet<Review>();
 
     public Long getId() {

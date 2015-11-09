@@ -19,9 +19,9 @@
 
     <dependencies>
         <dependency>
-            <groupId>org.hibernate.javax.persistence</groupId>
-            <artifactId>hibernate-jpa-2.1-api</artifactId>
-            <version>1.0.0.Final</version>
+            <groupId>org.eclipse.persistence</groupId>
+            <artifactId>org.eclipse.persistence.jpa</artifactId>
+            <version>2.5.0</version>
         </dependency>
         <dependency>
             <groupId>com.oracle</groupId>
@@ -43,25 +43,6 @@
 
     <build>
         <finalName>Book-Library-cdi</finalName>
-
-        <plugins>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-ejb-plugin</artifactId>
-                <configuration>
-                    <ejbVersion>3.2</ejbVersion>
-                    <generateClient>true</generateClient>
-                    <archive>
-                        <manifest>
-                            <addClasspath>true</addClasspath>
-                        </manifest>
-                    </archive>
-                    <clientIncludes>
-                        <clientInclude>ua/sofserve/booklibrary/service/*</clientInclude>
-                    </clientIncludes>
-                </configuration>
-            </plugin>
-        </plugins>
     </build>
 
 
