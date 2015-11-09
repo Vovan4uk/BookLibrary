@@ -4,21 +4,25 @@ import javax.persistence.*;
 import java.util.Date;
 
 @Entity
-@Access(AccessType.FIELD)
+@Table(name = "review")
 public class Review {
     @Id
     @SequenceGenerator(name = "REVIEW_ID_GENERATOR", sequenceName = "review_s", allocationSize = 1)
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "REVIEW_ID_GENERATOR")
-    Long id;
+    @Column(name = "id")
+    private Long id;
 
-    String commenter_name;
+    private String commenter_name;
 
-    String comment_body;
+    private String comment_body;
 
-    Integer comment_rating;
+    private Integer comment_rating;
 
     @Temporal(TemporalType.DATE)
-    Date comment_create;
+    private Date comment_create;
+
+    @JoinColumn(name = "id")
+    private Book book;
 
     public Long getId() {
         return id;
@@ -58,5 +62,13 @@ public class Review {
 
     public void setComment_create(Date comment_create) {
         this.comment_create = comment_create;
+    }
+
+    public Book getBook() {
+        return book;
+    }
+
+    public void setBook(Book book) {
+        this.book = book;
     }
 }

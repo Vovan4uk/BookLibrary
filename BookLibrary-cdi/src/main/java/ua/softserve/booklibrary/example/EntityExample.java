@@ -11,7 +11,6 @@ import java.util.Date;
 public class EntityExample {
     public static void main(String[] args){
 
-/*
         System.out.println("sdfsdf");
 
         EntityManagerFactory emf = Persistence.createEntityManagerFactory("BookLibrary");
@@ -37,7 +36,8 @@ public class EntityExample {
         System.out.println(review.getId()+"++++++++++++++");
 
         tx.commit();
-*/
+/*
         ServiceExample serviceExample = new ServiceExample();
         serviceExample.setReview();
+*/
     }}
