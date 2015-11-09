@@ -22,11 +22,13 @@
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
         <processorPath useClasspath="true" />
+        <module name="Book-Library-DatabaseUpdate" />
         <module name="BookLibrary-cdi" />
         <module name="test" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
+      <module name="Book-Library-DatabaseUpdate" target="1.5" />
       <module name="BookLibrary-cdi" target="1.5" />
       <module name="test" target="1.5" />
     </bytecodeTargetLevel>
