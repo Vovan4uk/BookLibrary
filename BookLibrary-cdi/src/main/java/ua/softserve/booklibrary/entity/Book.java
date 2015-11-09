@@ -24,7 +24,14 @@ public class Book {
     private Date book_create;
 
     @OneToMany(mappedBy = "book", cascade = CascadeType.ALL)
-    private Set<Review> reviews = new HashSet<Review>();
+    private List<Review> reviews = new ArrayList<Review>();
+
+    @ManyToMany
+    @JoinTable(
+            name="BOOK_AUTHOR",
+            joinColumns=@JoinColumn(name="BOOK_ID"),
+            inverseJoinColumns=@JoinColumn(name="AUTHOR_ID"))
+    private List<Author> authors = new ArrayList<Author>();
 
     public Long getId() {
         return id;
@@ -74,11 +81,19 @@ public class Book {
         this.book_create = book_create;
     }
 
-    public Set<Review> getReviews() {
+    public List<Review> getReviews() {
         return reviews;
     }
 
-    public void setReviews(Set<Review> reviews) {
+    public void setReviews(List<Review> reviews) {
         this.reviews = reviews;
+    }
+
+    public List<Author> getAuthors() {
+        return authors;
+    }
+
+    public void setAuthors(List<Author> authors) {
+        this.authors = authors;
     }
 }

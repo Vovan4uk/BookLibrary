@@ -1,5 +1,6 @@
 package ua.softserve.booklibrary.example;
 
+import ua.softserve.booklibrary.entity.Author;
 import ua.softserve.booklibrary.entity.Book;
 import ua.softserve.booklibrary.entity.Review;
 
@@ -7,9 +8,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.EntityTransaction;
 import javax.persistence.Persistence;
-import java.util.Date;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.*;
 
 public class EntityExample {
     public static void main(String[] args){
@@ -20,35 +19,47 @@ public class EntityExample {
         tx.begin();
 
 
-
         Review review = new Review();
         review.setComment_body("review body");
         review.setCommenter_name("commenter name");
         review.setComment_create(new Date());
         review.setComment_rating(5);
 
-        Set<Review> reviewSet = new HashSet<Review>();
+        List<Review> reviewSet = new ArrayList<Review>();
         reviewSet.add(review);
 
 
         Book book = new Book();
         book.setBook_create(new Date());
-        book.setIsbn("ISBN2015-ORM5");
+        book.setIsbn("ISBN2015-ORM9");
         book.setName("book name");
         book.setPublished_date(new Date());
         book.setPublisher("publisher name");
 
-        book.setReviews(reviewSet);
-        review.setBook(book);
+        List<Book> bookSet = new ArrayList<Book>();
+        bookSet.add(book);
 
-        System.out.println("Book_ID --------------" + book.getId());
-        System.out.println("Review_ID ------------" + review.getId());
+
+        Author author = new Author();
+        author.setId(1L);
+/*
+        author.setAuthor_create(new Date());
+        author.setFirst_name("first name");
+        author.setSecond_name("second name");
+*/
+
+        List<Author> authorSet = new ArrayList<Author>();
+        authorSet.add(author);
+
+
+
+        review.setBook(book);
+        book.setReviews(reviewSet);
+        book.setAuthors(authorSet);
+//        author.setBooks(bookSet);
 
         em.persist(book);
-
-        System.out.println("Book_ID --------------" + book.getId());
-        System.out.println("Review_ID ------------"+review.getId());
-        System.out.println("Review  Book_ID ------------"+review.getBook().getId());
+//        em.persist(author);
 
         tx.commit();
 /*
