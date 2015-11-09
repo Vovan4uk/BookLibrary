@@ -4,12 +4,10 @@ import javax.persistence.*;
 import java.util.Date;
 
 @Entity
-@Table(name = "review")
 public class Review {
     @Id
     @SequenceGenerator(name = "REVIEW_ID_GENERATOR", sequenceName = "review_s", allocationSize = 1)
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "REVIEW_ID_GENERATOR")
-    @Column(name = "id")
     private Long id;
 
     private String commenter_name;
@@ -21,7 +19,7 @@ public class Review {
     @Temporal(TemporalType.DATE)
     private Date comment_create;
 
-    @JoinColumn(name = "id")
+    @ManyToOne
     private Book book;
 
     public Long getId() {

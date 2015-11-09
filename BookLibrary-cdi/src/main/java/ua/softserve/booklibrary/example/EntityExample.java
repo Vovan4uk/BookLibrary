@@ -1,5 +1,6 @@
 package ua.softserve.booklibrary.example;
 
+import ua.softserve.booklibrary.entity.Book;
 import ua.softserve.booklibrary.entity.Review;
 
 import javax.persistence.EntityManager;
@@ -23,6 +24,7 @@ public class EntityExample {
         review.setCommenter_name("sdfsdfop");
         review.setComment_create(new Date());
         review.setComment_rating(5);
+        review.setBook(new Book());
 
         Review review2 = new Review();
         review2.setComment_body("uiouioyui");

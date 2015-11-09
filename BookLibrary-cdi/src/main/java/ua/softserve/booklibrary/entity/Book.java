@@ -4,12 +4,11 @@ import javax.persistence.*;
 import java.util.*;
 
 @Entity
-@Access(AccessType.FIELD)
+@Table
 public class Book {
     @Id
     @SequenceGenerator(name = "BOOK_ID_GENERATOR", sequenceName = "book_s", allocationSize = 1)
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "BOOK_ID_GENERATOR")
-    @Column(name = "id")
     private Long id;
 
     private String name;
@@ -75,11 +74,11 @@ public class Book {
         this.book_create = book_create;
     }
 
-    public List<Review> getReviews() {
+    public Set<Review> getReviews() {
         return reviews;
     }
 
-    public void setReviews(List<Review> reviews) {
+    public void setReviews(Set<Review> reviews) {
         this.reviews = reviews;
     }
 }
