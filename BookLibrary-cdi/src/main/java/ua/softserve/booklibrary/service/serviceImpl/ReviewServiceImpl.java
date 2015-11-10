@@ -1,4 +1,4 @@
-package ua.softserve.booklibrary.serviceImpl;
+package ua.softserve.booklibrary.service.serviceImpl;
 
 import ua.softserve.booklibrary.entity.Review;
 import ua.softserve.booklibrary.service.ReviewService;
