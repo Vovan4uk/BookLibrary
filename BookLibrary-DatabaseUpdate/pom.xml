@@ -9,9 +9,8 @@
     </parent>
 
     <modelVersion>4.0.0</modelVersion>
-    <artifactId>BookLibrary-cdi</artifactId>
+    <artifactId>BookLibrary-DatabaseUpdate</artifactId>
     <version>1.0-SNAPSHOT</version>
-    <packaging>war</packaging>
 
     <repositories>
         <!-- Repository for ORACLE ojdbc6. -->
@@ -23,38 +22,30 @@
 
     <dependencies>
         <dependency>
-            <groupId>org.eclipse.persistence</groupId>
-            <artifactId>org.eclipse.persistence.jpa</artifactId>
-            <version>2.5.0</version>
+            <groupId>com.googlecode.flyway</groupId>
+            <artifactId>flyway-core</artifactId>
+            <version>2.3.1</version>
         </dependency>
         <dependency>
             <groupId>com.oracle</groupId>
             <artifactId>ojdbc6</artifactId>
             <version>11.2.0.3</version>
         </dependency>
-        <dependency>
-            <groupId>junit</groupId>
-            <artifactId>junit</artifactId>
-            <version>4.11</version>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>javax.ejb</groupId>
-            <artifactId>javax.ejb-api</artifactId>
-            <version>3.2</version>
-        </dependency>
     </dependencies>
 
     <build>
-        <finalName>BookLibrary</finalName>
         <plugins>
             <plugin>
-                <groupId>org.wildfly.plugins</groupId>
-                <artifactId>wildfly-maven-plugin</artifactId>
-                <version>1.0.1.Final</version>
+                <groupId>com.googlecode.flyway</groupId>
+                <artifactId>flyway-maven-plugin</artifactId>
+                <version>2.3.1</version>
+                <configuration>
+                    <driver>oracle.jdbc.driver.OracleDriver</driver>
+                    <url>jdbc:oracle:thin:@localhost:1521:BookTest</url>
+                    <user>system</user>
+                    <password>admin</password>
+                </configuration>
             </plugin>
         </plugins>
     </build>
-
-
 </project>
