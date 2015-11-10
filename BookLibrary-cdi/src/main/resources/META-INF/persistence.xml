@@ -4,7 +4,8 @@
              xsi:schemaLocation="http://java.sun.com/xml/ns/persistence
 http://java.sun.com/xml/ns/persistence/persistence_2_0.xsd"
              version="2.0">
-    <persistence-unit name="BookLibrary" transaction-type="RESOURCE_LOCAL">
+    <persistence-unit name="OracleDS" transaction-type="JTA">
+        <jta-data-source>java:jboss/datasources/OracleDS</jta-data-source>
         <class>ua.softserve.booklibrary.entity.Review</class>
         <class>ua.softserve.booklibrary.entity.Book</class>
         <class>ua.softserve.booklibrary.entity.Author</class>

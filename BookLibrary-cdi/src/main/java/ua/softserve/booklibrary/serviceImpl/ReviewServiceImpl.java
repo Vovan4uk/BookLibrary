@@ -13,13 +13,14 @@ import java.util.List;
 public class ReviewServiceImpl implements ReviewService {
 
     public static final Class REVIEW_CLASS = Review.class;
-    @PersistenceContext(unitName = "BookLibrary")
+    @PersistenceContext(unitName = "OracleDS")
     private EntityManager em;
 
     public Review findReviewById(Long id) {
         return (Review) em.find(REVIEW_CLASS, id);
     }
 
+    @SuppressWarnings("unchecked")
     public List<Review> getAllReviews() {
         return em.createQuery("select r from Review r").getResultList();
     }

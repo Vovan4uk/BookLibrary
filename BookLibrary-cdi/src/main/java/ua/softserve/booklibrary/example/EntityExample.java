@@ -13,7 +13,7 @@ import java.util.*;
 public class EntityExample {
     public static void main(String[] args){
 
-        EntityManagerFactory emf = Persistence.createEntityManagerFactory("BookLibrary");
+        EntityManagerFactory emf = Persistence.createEntityManagerFactory("OracleDS");
         EntityManager em = emf.createEntityManager();
         EntityTransaction tx = em.getTransaction();
         tx.begin();

@@ -46,7 +46,7 @@
     </dependencies>
 
     <build>
-        <finalName>BookLibrary</finalName>
+        <finalName>BookLibrary-cdi</finalName>
         <plugins>
             <plugin>
                 <groupId>org.wildfly.plugins</groupId>
