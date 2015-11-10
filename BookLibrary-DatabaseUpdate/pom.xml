@@ -45,6 +45,7 @@
                     <user>system</user>
                     <password>admin</password>
                 </configuration>
+<!--
                 <executions>
                     <execution>
                         <id>init-source</id>
@@ -61,6 +62,7 @@
                         </goals>
                     </execution>
                 </executions>
+-->
             </plugin>
         </plugins>
     </build>
