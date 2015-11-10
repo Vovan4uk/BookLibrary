@@ -7,6 +7,6 @@ import java.util.List;
 public interface ReviewService {
     Review findReviewById(Long id);
     List getAllReviews();
-    void removePatient(Review review);
-    void savePatient(Review review);
+    void removeReview(Review review);
+    void saveReview(Review review);
 }

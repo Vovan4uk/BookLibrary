@@ -5,7 +5,6 @@ import ua.softserve.booklibrary.service.ReviewService;
 
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
-import javax.persistence.EntityTransaction;
 import javax.persistence.PersistenceContext;
 import java.util.List;
 
@@ -25,17 +24,11 @@ public class ReviewServiceImpl implements ReviewService {
         return em.createQuery("select r from Review r").getResultList();
     }
 
-    public void removePatient(Review review) {
-        EntityTransaction transaction = em.getTransaction();
-        transaction.begin();
+    public void removeReview(Review review) {
         em.remove(review);
-        transaction.commit();
     }
 
-    public void savePatient(Review review) {
-        EntityTransaction transaction = em.getTransaction();
-        transaction.begin();
+    public void saveReview(Review review) {
         em.persist(review);
-        transaction.commit();
     }
 }
