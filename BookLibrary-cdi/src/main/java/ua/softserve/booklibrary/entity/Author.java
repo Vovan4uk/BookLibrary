@@ -1,11 +1,12 @@
 package ua.softserve.booklibrary.entity;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.util.*;
 
 @Entity
 @Table
-public class Author {
+public class Author implements Serializable {
     @Id
     @SequenceGenerator(name = "AUTHOR_ID_GENERATOR", sequenceName = "author_s", allocationSize = 1)
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "AUTHOR_ID_GENERATOR")

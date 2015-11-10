@@ -1,10 +1,11 @@
 package ua.softserve.booklibrary.entity;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.util.Date;
 
 @Entity
-public class Review {
+public class Review implements Serializable {
     @Id
     @SequenceGenerator(name = "REVIEW_ID_GENERATOR", sequenceName = "review_s", allocationSize = 1)
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "REVIEW_ID_GENERATOR")
@@ -69,5 +70,16 @@ public class Review {
 
     public void setBook(Book book) {
         this.book = book;
+    }
+
+    @Override
+    public String toString() {
+        return "Review{" +
+                "id=" + id +
+                ", commenter_name='" + commenter_name + '\'' +
+                ", comment_body='" + comment_body + '\'' +
+                ", comment_rating=" + comment_rating +
+                ", comment_create=" + comment_create +
+                '}';
     }
 }
