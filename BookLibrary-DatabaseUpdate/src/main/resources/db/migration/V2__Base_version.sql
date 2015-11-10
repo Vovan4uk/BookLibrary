@@ -1,4 +1,5 @@
 --------------------------------------------------------
+/*
 DROP SEQUENCE "SYSTEM"."BOOK_S";
 DROP SEQUENCE "SYSTEM"."AUTHOR_S";
 DROP SEQUENCE "SYSTEM"."REVIEW_S";
@@ -7,6 +8,7 @@ DROP TABLE "SYSTEM"."BOOK";
 DROP TABLE "SYSTEM"."AUTHOR";
 DROP TABLE "SYSTEM"."BOOK_AUTHOR";
 DROP TABLE "SYSTEM"."REVIEW";
+*/
 --------------------------------------------------------
 --------------------------------------------------------
 --  DDL for Sequence BOOK_S

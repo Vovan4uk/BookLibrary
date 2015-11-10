@@ -45,6 +45,22 @@
                     <user>system</user>
                     <password>admin</password>
                 </configuration>
+                <executions>
+                    <execution>
+                        <id>init-source</id>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>init</goal>
+                        </goals>
+                    </execution>
+                    <execution>
+                        <id>migrate-source</id>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>migrate</goal>
+                        </goals>
+                    </execution>
+                </executions>
             </plugin>
         </plugins>
     </build>
