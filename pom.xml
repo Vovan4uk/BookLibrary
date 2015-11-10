@@ -10,8 +10,8 @@
     <packaging>pom</packaging>
 
     <modules>
-        <module>BookLibrary-cdi</module>
         <module>BookLibrary-DatabaseUpdate</module>
+        <module>BookLibrary-cdi</module>
     </modules>
 
 

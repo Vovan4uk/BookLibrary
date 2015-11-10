@@ -24,14 +24,8 @@
         <processorPath useClasspath="true" />
         <module name="Book-Library-DatabaseUpdate" />
         <module name="BookLibrary-cdi" />
-        <module name="test" />
-      </profile>
-      <profile default="false" name="Annotation profile for BookLibrary-DatabaseUpdate" enabled="true">
-        <sourceOutputDir name="..\Book-Library-DatabaseUpdate\target\generated-sources\annotations" />
-        <sourceTestOutputDir name="..\Book-Library-DatabaseUpdate\target\generated-test-sources\test-annotations" />
-        <outputRelativeToContentRoot value="true" />
-        <processorPath useClasspath="true" />
         <module name="BookLibrary-DatabaseUpdate" />
+        <module name="test" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
