@@ -35,7 +35,7 @@
                 <artifactId>liquibase-maven-plugin</artifactId>
                 <version>3.4.1</version>
                 <configuration>
-                    <changeLogFile>src/main/resources/liquibase/log.xml</changeLogFile>
+                    <changeLogFile>src/main/resources/liquibase/db.changelog-master.xml</changeLogFile>
                     <driver>oracle.jdbc.driver.OracleDriver</driver>
                     <url>jdbc:oracle:thin:@localhost:1521:BookTest</url>
                     <username>system</username>

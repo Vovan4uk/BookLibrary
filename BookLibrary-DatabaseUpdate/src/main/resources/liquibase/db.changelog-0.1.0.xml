@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <databaseChangeLog
-        xmlns="http://www.liquibase.org/xml/ns/dbchangelog/1.1"
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog/1.1
-        http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-1.1.xsd">
-    <changeSet author="vperep" id="1">
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.1.xsd">
 
-        <createTable tableName="BOOK">
+    <changeSet id="0.1.0" author="vperep">
+
+        <createTable tableName="BOOK" >
             <column name="ID" type="BIGINT">
                 <constraints nullable="false"/>
             </column>
@@ -27,7 +27,7 @@
             </column>
         </createTable>
         <addPrimaryKey tableName="BOOK" constraintName="BOOK_PK" columnNames="ID"/>
-        <cr
+
         <createIndex tableName="BOOK" indexName="BOOK_UK1" unique="true">
             <column name="ISBN"/>
         </createIndex>
@@ -85,12 +85,79 @@
 
         <addForeignKeyConstraint baseTableName="BOOK_AUTHOR" constraintName="BOOK_AUTHOR_FK2" baseColumnNames="AUTHOR_ID" referencedTableName="AUTHOR" referencedColumnNames="ID" onDelete="RESTRICT" onUpdate="CASCADE"/>
 
-        <rollback>
-            <
-        </rollback>
-        <rollback>
-        </rollback>
+        <createSequence sequenceName="BOOK_S" minValue="1" maxValue="9999999999999999" incrementBy="1" startValue="1" />
+
+        <createSequence sequenceName="AUTHOR_S" minValue="1" maxValue="9999999999999999" incrementBy="1" startValue="1" />
+
+        <createSequence sequenceName="REVIEW_S" minValue="1" maxValue="9999999999999999" incrementBy="1" startValue="1" />
 
     </changeSet>
-
+    <changeSet id="0.2.0" author="vperep">
+        <insert tableName="BOOK">
+            <column name="ID" value="1" />
+            <column name="NAME" value="book name" />
+            <column name="PUBLISHED_DATE" value="to_date('09.11.2015','DD.MM.RRRR')" />
+            <column name="ISBN" value="ISBN-3-2456-5677" />
+            <column name="PUBLISHER" value="publisher" />
+            <column name="BOOK_CREATE" value="to_date('09.11.2015','DD.MM.RRRR')" />
+        </insert>
+        <insert tableName="BOOK">
+            <column name="ID" value="2" />
+            <column name="NAME" value="book name 2" />
+            <column name="PUBLISHED_DATE" value="to_date('09.11.2015','DD.MM.RRRR')" />
+            <column name="ISBN" value="ISBN-3-2456-5673" />
+            <column name="PUBLISHER" value="publisher" />
+            <column name="BOOK_CREATE" value="to_date('09.11.2015','DD.MM.RRRR')" />
+        </insert>
+        <insert tableName="BOOK">
+            <column name="ID" value="3" />
+            <column name="NAME" value="book name 3" />
+            <column name="PUBLISHED_DATE" value="to_date('09.11.2015','DD.MM.RRRR')" />
+            <column name="ISBN" value="ISBN-3-2456-5676" />
+            <column name="PUBLISHER" value="publisher" />
+            <column name="BOOK_CREATE" value="to_date('09.11.2015','DD.MM.RRRR')" />
+        </insert>
+        <insert tableName="AUTHOR">
+            <column name="ID" value="1" />
+            <column name="FIRST_NAME" value="author first name" />
+            <column name="SECOND_NAME" value="author second name" />
+            <column name="AUTHOR_CREATE" value="to_date('09.11.2015','DD.MM.RRRR')" />
+        </insert>
+        <insert tableName="BOOK_AUTHOR">
+            <column name="BOOK_ID" value="1" />
+            <column name="AUTHOR_ID" value="1" />
+        </insert>
+        <insert tableName="BOOK_AUTHOR">
+            <column name="BOOK_ID" value="2" />
+            <column name="AUTHOR_ID" value="1" />
+        </insert>
+        <insert tableName="BOOK_AUTHOR">
+            <column name="BOOK_ID" value="3" />
+            <column name="AUTHOR_ID" value="1" />
+        </insert>
+        <insert tableName="REVIEW">
+            <column name="ID" value="1" />
+            <column name="COMMENTER_NAME" value="commenter name 1" />
+            <column name="COMMENT_BODY" value="comment body 1" />
+            <column name="COMMENT_RATING" value="3" />
+            <column name="COMMENT_CREATE" value="to_date('09.11.2015','DD.MM.RRRR')" />
+            <column name="BOOK_ID" value="1" />
+        </insert>
+        <insert tableName="REVIEW">
+            <column name="ID" value="2" />
+            <column name="COMMENTER_NAME" value="commenter name 2" />
+            <column name="COMMENT_BODY" value="comment body 2" />
+            <column name="COMMENT_RATING" value="2" />
+            <column name="COMMENT_CREATE" value="to_date('09.11.2015','DD.MM.RRRR')" />
+            <column name="BOOK_ID" value="1" />
+        </insert>
+        <insert tableName="REVIEW">
+            <column name="ID" value="3" />
+            <column name="COMMENTER_NAME" value="commenter name 3" />
+            <column name="COMMENT_BODY" value="comment body 3" />
+            <column name="COMMENT_RATING" value="5" />
+            <column name="COMMENT_CREATE" value="to_date('09.11.2015','DD.MM.RRRR')" />
+            <column name="BOOK_ID" value="2" />
+        </insert>
+    </changeSet>
 </databaseChangeLog>
