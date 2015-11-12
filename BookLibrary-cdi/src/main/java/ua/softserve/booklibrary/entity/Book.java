@@ -31,6 +31,9 @@ public class Book implements Serializable {
     @OneToMany(mappedBy = "book", cascade = CascadeType.ALL)
     private List<Review> reviews = new ArrayList<>();
 
+    @Column(name = "book_average_rating")
+    private Double bookAverageRating;
+
     @ManyToMany
     @JoinTable(
             name="BOOK_AUTHOR",
@@ -105,6 +108,14 @@ public class Book implements Serializable {
         this.authors = authors;
     }
 
+    public Double getBookAverageRating() {
+        return bookAverageRating;
+    }
+
+    public void setBookAverageRating(Double bookAverageRating) {
+        this.bookAverageRating = bookAverageRating;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -137,6 +148,7 @@ public class Book implements Serializable {
                 ", isbn='" + isbn + '\'' +
                 ", publisher='" + publisher + '\'' +
                 ", bookCreate=" + bookCreate +
+                ", bookAverageRating=" + bookAverageRating +
                 '}';
     }
 }

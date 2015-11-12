@@ -24,6 +24,9 @@ public class Author implements Serializable {
     @Column(name = "author_create")
     private Date authorCreate;
 
+    @Column(name = "author_average_rating")
+    private Double authorAverageRating;
+
     @ManyToMany(mappedBy="authors")
     private List<Book> books = new ArrayList<>();
 
@@ -70,6 +73,14 @@ public class Author implements Serializable {
         this.books = books;
     }
 
+    public Double getAuthorAverageRating() {
+        return authorAverageRating;
+    }
+
+    public void setAuthorAverageRating(Double authorAverageRating) {
+        this.authorAverageRating = authorAverageRating;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -96,6 +107,7 @@ public class Author implements Serializable {
                 ", firstName='" + firstName + '\'' +
                 ", secondName='" + secondName + '\'' +
                 ", authorCreate=" + authorCreate +
+                ", authorAverageRating=" + authorAverageRating +
                 '}';
     }
 }

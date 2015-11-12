@@ -85,11 +85,13 @@
 
         <addForeignKeyConstraint baseTableName="BOOK_AUTHOR" constraintName="BOOK_AUTHOR_FK2" baseColumnNames="AUTHOR_ID" referencedTableName="AUTHOR" referencedColumnNames="ID" onDelete="RESTRICT" onUpdate="CASCADE"/>
 
-        <createSequence sequenceName="BOOK_S" minValue="1" maxValue="9999999999999999" incrementBy="1" startValue="1" />
+        <createSequence sequenceName="BOOK_S" minValue="1" maxValue="9999999999999999" incrementBy="1" startValue="5"/>
 
-        <createSequence sequenceName="AUTHOR_S" minValue="1" maxValue="9999999999999999" incrementBy="1" startValue="1" />
+        <createSequence sequenceName="AUTHOR_S" minValue="1" maxValue="9999999999999999" incrementBy="1"
+                        startValue="5"/>
 
-        <createSequence sequenceName="REVIEW_S" minValue="1" maxValue="9999999999999999" incrementBy="1" startValue="1" />
+        <createSequence sequenceName="REVIEW_S" minValue="1" maxValue="9999999999999999" incrementBy="1"
+                        startValue="5"/>
 
     </changeSet>
     <changeSet id="0.2.0" author="vperep">
