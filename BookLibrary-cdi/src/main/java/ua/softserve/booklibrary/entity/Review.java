@@ -1,22 +1,42 @@
 package ua.softserve.booklibrary.entity;
 
 import javax.persistence.*;
+import javax.validation.constraints.Max;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import java.io.Serializable;
 import java.util.Date;
 
 @Entity
 public class Review implements Serializable {
+
+    private static final int MIN_COMMENTER_NAME_SIZE = 2;
+    private static final int MAX_COMMENTER_NAME_SIZE = 20;
+    private static final int MIN_COMMENT_BODY_SIZE = 2;
+    private static final int MAX_COMMENT_BODY_SIZE = 2000;
+    private static final int MIN_RATING_SIZE = 1;
+    private static final int MAX_RATING_SIZE = 5;
+
     @Id
     @SequenceGenerator(name = "REVIEW_ID_GENERATOR", sequenceName = "review_s", allocationSize = 1)
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "REVIEW_ID_GENERATOR")
     private Long id;
 
+    @NotNull
+    @Size(min = MIN_COMMENTER_NAME_SIZE, max = MAX_COMMENTER_NAME_SIZE)
     @Column(name = "commenter_name")
     private String commenterName;
 
+    @NotNull
+    @Lob
+    @Size(min = MIN_COMMENT_BODY_SIZE, max = MAX_COMMENT_BODY_SIZE)
     @Column(name = "comment_body")
     private String commentBody;
 
+    @NotNull
+    @Min(MIN_RATING_SIZE)
+    @Max(MAX_RATING_SIZE)
     @Column(name = "comment_rating")
     private Integer commentRating;
 

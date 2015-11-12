@@ -26,7 +26,7 @@ public class AddServlet extends HttpServlet {
 
         Review review = new Review();
         review.setCommentBody("new test review body");
-        review.setCommenterName("new test commenter name");
+        review.setCommenterName("commenter name");
         review.setCommentCreate(new Date());
         review.setCommentRating(3);
 
