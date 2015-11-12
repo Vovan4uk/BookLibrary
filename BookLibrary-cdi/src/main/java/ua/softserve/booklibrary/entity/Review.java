@@ -11,14 +11,18 @@ public class Review implements Serializable {
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "REVIEW_ID_GENERATOR")
     private Long id;
 
-    private String commenter_name;
+    @Column(name = "commenter_name")
+    private String commenterName;
 
-    private String comment_body;
+    @Column(name = "comment_body")
+    private String commentBody;
 
-    private Integer comment_rating;
+    @Column(name = "comment_rating")
+    private Integer commentRating;
 
     @Temporal(TemporalType.DATE)
-    private Date comment_create;
+    @Column(name = "comment_create")
+    private Date commentCreate;
 
     @ManyToOne
     @JoinColumn(name = "BOOK_ID")
@@ -32,36 +36,36 @@ public class Review implements Serializable {
         this.id = id;
     }
 
-    public String getCommenter_name() {
-        return commenter_name;
+    public String getCommenterName() {
+        return commenterName;
     }
 
-    public void setCommenter_name(String commenter_name) {
-        this.commenter_name = commenter_name;
+    public void setCommenterName(String commenter_name) {
+        this.commenterName = commenter_name;
     }
 
-    public String getComment_body() {
-        return comment_body;
+    public String getCommentBody() {
+        return commentBody;
     }
 
-    public void setComment_body(String comment_body) {
-        this.comment_body = comment_body;
+    public void setCommentBody(String comment_body) {
+        this.commentBody = comment_body;
     }
 
-    public Integer getComment_rating() {
-        return comment_rating;
+    public Integer getCommentRating() {
+        return commentRating;
     }
 
-    public void setComment_rating(Integer comment_rating) {
-        this.comment_rating = comment_rating;
+    public void setCommentRating(Integer comment_rating) {
+        this.commentRating = comment_rating;
     }
 
-    public Date getComment_create() {
-        return comment_create;
+    public Date getCommentCreate() {
+        return commentCreate;
     }
 
-    public void setComment_create(Date comment_create) {
-        this.comment_create = comment_create;
+    public void setCommentCreate(Date comment_create) {
+        this.commentCreate = comment_create;
     }
 
     public Book getBook() {
@@ -82,19 +86,19 @@ public class Review implements Serializable {
 
         Review review = (Review) o;
 
-        if (!commenter_name.equals(review.commenter_name)) return false;
-        if (!comment_body.equals(review.comment_body)) return false;
-        if (!comment_rating.equals(review.comment_rating)) return false;
-        return comment_create.equals(review.comment_create);
+        if (!commenterName.equals(review.commenterName)) return false;
+        if (!commentBody.equals(review.commentBody)) return false;
+        if (!commentRating.equals(review.commentRating)) return false;
+        return commentCreate.equals(review.commentCreate);
 
     }
 
     @Override
     public int hashCode() {
-        int result = commenter_name.hashCode();
-        result = 31 * result + comment_body.hashCode();
-        result = 31 * result + comment_rating.hashCode();
-        result = 31 * result + comment_create.hashCode();
+        int result = commenterName.hashCode();
+        result = 31 * result + commentBody.hashCode();
+        result = 31 * result + commentRating.hashCode();
+        result = 31 * result + commentCreate.hashCode();
         return result;
     }
 
@@ -102,10 +106,10 @@ public class Review implements Serializable {
     public String toString() {
         return "Review{" +
                 "id=" + id +
-                ", commenter_name='" + commenter_name + '\'' +
-                ", comment_body='" + comment_body + '\'' +
-                ", comment_rating=" + comment_rating +
-                ", comment_create=" + comment_create +
+                ", commenterName='" + commenterName + '\'' +
+                ", commentBody='" + commentBody + '\'' +
+                ", commentRating=" + commentRating +
+                ", commentCreate=" + commentCreate +
                 '}';
     }
 }

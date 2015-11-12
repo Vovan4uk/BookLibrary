@@ -2,7 +2,9 @@ package ua.softserve.booklibrary.entity;
 
 import javax.persistence.*;
 import java.io.Serializable;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
 
 @Entity
 @Table
@@ -15,14 +17,16 @@ public class Book implements Serializable {
     private String name;
 
     @Temporal(TemporalType.DATE)
-    private Date published_date;
+    @Column(name = "published_date")
+    private Date publishedDate;
 
     private String isbn;
 
     private String publisher;
 
     @Temporal(TemporalType.DATE)
-    private Date book_create;
+    @Column(name = "book_create")
+    private Date bookCreate;
 
     @OneToMany(mappedBy = "book", cascade = CascadeType.ALL)
     private List<Review> reviews = new ArrayList<>();
@@ -53,12 +57,12 @@ public class Book implements Serializable {
         this.name = name;
     }
 
-    public Date getPublished_date() {
-        return published_date;
+    public Date getPublishedDate() {
+        return publishedDate;
     }
 
-    public void setPublished_date(Date published_date) {
-        this.published_date = published_date;
+    public void setPublishedDate(Date published_date) {
+        this.publishedDate = published_date;
     }
 
     public String getIsbn() {
@@ -77,12 +81,12 @@ public class Book implements Serializable {
         this.publisher = publisher;
     }
 
-    public Date getBook_create() {
-        return book_create;
+    public Date getBookCreate() {
+        return bookCreate;
     }
 
-    public void setBook_create(Date book_create) {
-        this.book_create = book_create;
+    public void setBookCreate(Date book_create) {
+        this.bookCreate = book_create;
     }
 
     public List<Review> getReviews() {
@@ -109,7 +113,7 @@ public class Book implements Serializable {
         Book book = (Book) o;
 
         if (!name.equals(book.name)) return false;
-        if (!published_date.equals(book.published_date)) return false;
+        if (!publishedDate.equals(book.publishedDate)) return false;
         if (!isbn.equals(book.isbn)) return false;
         return publisher.equals(book.publisher);
 
@@ -118,7 +122,7 @@ public class Book implements Serializable {
     @Override
     public int hashCode() {
         int result = name.hashCode();
-        result = 31 * result + published_date.hashCode();
+        result = 31 * result + publishedDate.hashCode();
         result = 31 * result + isbn.hashCode();
         result = 31 * result + publisher.hashCode();
         return result;
@@ -129,10 +133,10 @@ public class Book implements Serializable {
         return "Book{" +
                 "id=" + id +
                 ", name='" + name + '\'' +
-                ", published_date=" + published_date +
+                ", publishedDate=" + publishedDate +
                 ", isbn='" + isbn + '\'' +
                 ", publisher='" + publisher + '\'' +
-                ", book_create=" + book_create +
+                ", bookCreate=" + bookCreate +
                 '}';
     }
 }

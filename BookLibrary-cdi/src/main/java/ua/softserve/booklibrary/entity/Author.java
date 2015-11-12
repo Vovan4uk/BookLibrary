@@ -2,7 +2,9 @@ package ua.softserve.booklibrary.entity;
 
 import javax.persistence.*;
 import java.io.Serializable;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
 
 @Entity
 @Table
@@ -12,12 +14,15 @@ public class Author implements Serializable {
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "AUTHOR_ID_GENERATOR")
     private Long id;
 
-    private String first_name;
+    @Column(name = "first_name")
+    private String firstName;
 
-    private String second_name;
+    @Column(name = "second_name")
+    private String secondName;
 
     @Temporal(TemporalType.DATE)
-    private Date author_create;
+    @Column(name = "author_create")
+    private Date authorCreate;
 
     @ManyToMany(mappedBy="authors")
     private List<Book> books = new ArrayList<>();
@@ -33,28 +38,28 @@ public class Author implements Serializable {
         this.id = id;
     }
 
-    public String getFirst_name() {
-        return first_name;
+    public String getFirstName() {
+        return firstName;
     }
 
-    public void setFirst_name(String first_name) {
-        this.first_name = first_name;
+    public void setFirstName(String first_name) {
+        this.firstName = first_name;
     }
 
-    public String getSecond_name() {
-        return second_name;
+    public String getSecondName() {
+        return secondName;
     }
 
-    public void setSecond_name(String second_name) {
-        this.second_name = second_name;
+    public void setSecondName(String second_name) {
+        this.secondName = second_name;
     }
 
-    public Date getAuthor_create() {
-        return author_create;
+    public Date getAuthorCreate() {
+        return authorCreate;
     }
 
-    public void setAuthor_create(Date author_create) {
-        this.author_create = author_create;
+    public void setAuthorCreate(Date author_create) {
+        this.authorCreate = author_create;
     }
 
     public List<Book> getBooks() {
@@ -72,15 +77,15 @@ public class Author implements Serializable {
 
         Author author = (Author) o;
 
-        if (!first_name.equals(author.first_name)) return false;
-        return second_name.equals(author.second_name);
+        if (!firstName.equals(author.firstName)) return false;
+        return secondName.equals(author.secondName);
 
     }
 
     @Override
     public int hashCode() {
-        int result = first_name.hashCode();
-        result = 31 * result + second_name.hashCode();
+        int result = firstName.hashCode();
+        result = 31 * result + secondName.hashCode();
         return result;
     }
 
@@ -88,9 +93,9 @@ public class Author implements Serializable {
     public String toString() {
         return "Author{" +
                 "id=" + id +
-                ", first_name='" + first_name + '\'' +
-                ", second_name='" + second_name + '\'' +
-                ", author_create=" + author_create +
+                ", firstName='" + firstName + '\'' +
+                ", secondName='" + secondName + '\'' +
+                ", authorCreate=" + authorCreate +
                 '}';
     }
 }

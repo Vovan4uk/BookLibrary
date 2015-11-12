@@ -13,7 +13,6 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.Date;
-import java.util.List;
 
 @WebServlet ("/add")
 public class AddServlet extends HttpServlet {
@@ -26,10 +25,10 @@ public class AddServlet extends HttpServlet {
             throws ServletException, IOException {
 
         Review review = new Review();
-        review.setComment_body("new test review body");
-        review.setCommenter_name("new test commenter name");
-        review.setComment_create(new Date());
-        review.setComment_rating(3);
+        review.setCommentBody("new test review body");
+        review.setCommenterName("new test commenter name");
+        review.setCommentCreate(new Date());
+        review.setCommentRating(3);
 
         Book book = new Book();
         book.setId(1L);
