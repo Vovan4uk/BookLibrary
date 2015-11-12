@@ -34,6 +34,9 @@ public class Book implements Serializable {
             inverseJoinColumns=@JoinColumn(name="AUTHOR_ID"))
     private List<Author> authors = new ArrayList<>();
 
+    public Book() {
+    }
+
     public Long getId() {
         return id;
     }
@@ -96,6 +99,29 @@ public class Book implements Serializable {
 
     public void setAuthors(List<Author> authors) {
         this.authors = authors;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Book book = (Book) o;
+
+        if (!name.equals(book.name)) return false;
+        if (!published_date.equals(book.published_date)) return false;
+        if (!isbn.equals(book.isbn)) return false;
+        return publisher.equals(book.publisher);
+
+    }
+
+    @Override
+    public int hashCode() {
+        int result = name.hashCode();
+        result = 31 * result + published_date.hashCode();
+        result = 31 * result + isbn.hashCode();
+        result = 31 * result + publisher.hashCode();
+        return result;
     }
 
     @Override

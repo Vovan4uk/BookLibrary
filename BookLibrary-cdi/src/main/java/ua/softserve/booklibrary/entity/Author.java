@@ -22,6 +22,9 @@ public class Author implements Serializable {
     @ManyToMany(mappedBy="authors")
     private List<Book> books = new ArrayList<>();
 
+    public Author() {
+    }
+
     public Long getId() {
         return id;
     }
@@ -60,6 +63,25 @@ public class Author implements Serializable {
 
     public void setBooks(List<Book> books) {
         this.books = books;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Author author = (Author) o;
+
+        if (!first_name.equals(author.first_name)) return false;
+        return second_name.equals(author.second_name);
+
+    }
+
+    @Override
+    public int hashCode() {
+        int result = first_name.hashCode();
+        result = 31 * result + second_name.hashCode();
+        return result;
     }
 
     @Override

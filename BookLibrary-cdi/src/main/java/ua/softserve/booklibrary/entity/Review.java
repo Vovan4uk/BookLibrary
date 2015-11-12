@@ -72,6 +72,32 @@ public class Review implements Serializable {
         this.book = book;
     }
 
+    public Review() {
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Review review = (Review) o;
+
+        if (!commenter_name.equals(review.commenter_name)) return false;
+        if (!comment_body.equals(review.comment_body)) return false;
+        if (!comment_rating.equals(review.comment_rating)) return false;
+        return comment_create.equals(review.comment_create);
+
+    }
+
+    @Override
+    public int hashCode() {
+        int result = commenter_name.hashCode();
+        result = 31 * result + comment_body.hashCode();
+        result = 31 * result + comment_rating.hashCode();
+        result = 31 * result + comment_create.hashCode();
+        return result;
+    }
+
     @Override
     public String toString() {
         return "Review{" +
