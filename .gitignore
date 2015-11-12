@@ -1,5 +1,4 @@
-/.idea/
-/target/
-/BookLibrary.iml
-/BookLibrary-cdi/target/
-/BookLibrary-cdi/BookLibrary-cdi.iml
+.idea/
+target/
+BookLibrary-cdi/target/
+*.iml
