@@ -5,6 +5,8 @@ import ua.softserve.booklibrary.logging.Loggable;
 import ua.softserve.booklibrary.service.ReviewService;
 
 import javax.ejb.Stateless;
+import javax.enterprise.event.Event;
+import javax.inject.Inject;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import java.util.List;
@@ -13,7 +15,8 @@ import java.util.logging.Logger;
 @Stateless
 @Loggable
 public class ReviewServiceImpl implements ReviewService {
-
+    @Inject
+    private Event<Review> reviewAddedEvent;
     public static final Class REVIEW_CLASS = Review.class;
     @PersistenceContext(unitName = "OracleDS")
     private EntityManager em;
@@ -35,5 +38,6 @@ public class ReviewServiceImpl implements ReviewService {
         Logger logger = Logger.getLogger("TestInterceptor");
         logger.info("++++++++++++++++++++++++++++++++++++Succsess+++++++++++++++++++++++++++++++++++");
         em.persist(review);
+        reviewAddedEvent.fire(review);
     }
 }
