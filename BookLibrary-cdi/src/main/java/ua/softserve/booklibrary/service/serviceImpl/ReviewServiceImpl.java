@@ -1,14 +1,17 @@
 package ua.softserve.booklibrary.service.serviceImpl;
 
 import ua.softserve.booklibrary.entity.Review;
+import ua.softserve.booklibrary.logging.Loggable;
 import ua.softserve.booklibrary.service.ReviewService;
 
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import java.util.List;
+import java.util.logging.Logger;
 
 @Stateless
+@Loggable
 public class ReviewServiceImpl implements ReviewService {
 
     public static final Class REVIEW_CLASS = Review.class;
@@ -29,6 +32,8 @@ public class ReviewServiceImpl implements ReviewService {
     }
 
     public void saveReview(Review review) {
+        Logger logger = Logger.getLogger("TestInterceptor");
+        logger.info("++++++++++++++++++++++++++++++++++++Succsess+++++++++++++++++++++++++++++++++++");
         em.persist(review);
     }
 }
