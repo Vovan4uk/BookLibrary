@@ -61,4 +61,14 @@ public class Author implements Serializable {
     public void setBooks(List<Book> books) {
         this.books = books;
     }
+
+    @Override
+    public String toString() {
+        return "Author{" +
+                "id=" + id +
+                ", first_name='" + first_name + '\'' +
+                ", second_name='" + second_name + '\'' +
+                ", author_create=" + author_create +
+                '}';
+    }
 }

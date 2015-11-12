@@ -1,5 +1,6 @@
 package ua.softserve.booklibrary.servlet;
 
+import ua.softserve.booklibrary.entity.Book;
 import ua.softserve.booklibrary.entity.Review;
 import ua.softserve.booklibrary.service.ReviewService;
 
@@ -11,10 +12,11 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.Date;
 import java.util.List;
 
-@WebServlet ("/")
-public class MainServlet extends HttpServlet {
+@WebServlet ("/add")
+public class AddServlet extends HttpServlet {
 
     @EJB
     ReviewService reviewService;
@@ -23,14 +25,21 @@ public class MainServlet extends HttpServlet {
     protected void doGet(HttpServletRequest req, HttpServletResponse resp)
             throws ServletException, IOException {
 
-        List<Review> reviewList = reviewService.getAllReviews();
+        Review review = new Review();
+        review.setComment_body("new test review body");
+        review.setCommenter_name("new test commenter name");
+        review.setComment_create(new Date());
+        review.setComment_rating(3);
+
+        Book book = new Book();
+        book.setId(1L);
+        review.setBook(book);
+
+        reviewService.saveReview(review);
+
         PrintWriter out = resp.getWriter();
-        out.println("All objects");
-        for (Review review : reviewList) {
-            out.println(review);
-            out.println("     Mapped book " + review.getBook());
-            out.println();
-        }
+        out.print("New Object added "+review);
+
     }
 
 }

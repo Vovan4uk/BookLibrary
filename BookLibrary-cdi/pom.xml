@@ -48,6 +48,11 @@
             <artifactId>javax.servlet-api</artifactId>
             <version>3.1.0</version>
         </dependency>
+        <dependency>
+            <groupId>javax</groupId>
+            <artifactId>javaee-web-api</artifactId>
+            <version>6.0</version>
+        </dependency>
     </dependencies>
 
     <build>
@@ -75,10 +80,12 @@
                     <target>1.7</target>
                 </configuration>
             </plugin>
-
             <plugin>
                 <artifactId>maven-war-plugin</artifactId>
                 <version>2.5</version>
+                <configuration>
+                    <failOnMissingWebXml>false</failOnMissingWebXml>
+                </configuration>
             </plugin>
         </plugins>
     </build>
