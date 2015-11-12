@@ -2,3 +2,7 @@
 target/
 BookLibrary-cdi/target/
 *.iml
+/.idea/
+/target/
+/BookLibrary-cdi/target/
+/*.iml
