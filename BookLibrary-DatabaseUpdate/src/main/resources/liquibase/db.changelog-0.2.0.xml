@@ -4,16 +4,73 @@
         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
         xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.1.xsd">
 
-    <changeSet id="0.2.1" author="vperep">
-        <addColumn tableName="BOOK">
-            <column name="BOOK_AVERAGE_RATING" type="DOUBLE" defaultValue="0">
-                <constraints nullable="false"/>
-            </column>
-        </addColumn>
-        <addColumn tableName="AUTHOR">
-            <column name="AUTHOR_AVERAGE_RATING" type="DOUBLE" defaultValue="0">
-                <constraints nullable="false"/>
-            </column>
-        </addColumn>
+    <changeSet id="0.2.0" author="vperep">
+        <insert tableName="BOOK">
+            <column name="ID" valueComputed="BOOK_S.NEXTVAL"/>
+            <column name="NAME" value="book name"/>
+            <column name="PUBLISHED_DATE" value="to_date('09.11.2015','DD.MM.RRRR')"/>
+            <column name="ISBN" value="ISBN-3-2456-5677"/>
+            <column name="PUBLISHER" value="publisher"/>
+            <column name="CREATE_DATE" value="to_date('09.11.2015','DD.MM.RRRR')"/>
+        </insert>
+        <insert tableName="BOOK">
+            <column name="ID" valueComputed="BOOK_S.NEXTVAL"/>
+            <column name="NAME" value="book name 2"/>
+            <column name="PUBLISHED_DATE" value="to_date('09.11.2015','DD.MM.RRRR')"/>
+            <column name="ISBN" value="ISBN-3-2456-5673"/>
+            <column name="PUBLISHER" value="publisher"/>
+            <column name="CREATE_DATE" value="to_date('09.11.2015','DD.MM.RRRR')"/>
+        </insert>
+        <insert tableName="BOOK">
+            <column name="ID" valueComputed="BOOK_S.NEXTVAL"/>
+            <column name="NAME" value="book name 3"/>
+            <column name="PUBLISHED_DATE" value="to_date('09.11.2015','DD.MM.RRRR')"/>
+            <column name="ISBN" value="ISBN-3-2456-5676"/>
+            <column name="PUBLISHER" value="publisher"/>
+            <column name="CREATE_DATE" value="to_date('09.11.2015','DD.MM.RRRR')"/>
+        </insert>
+        <insert tableName="AUTHOR">
+            <column name="ID" valueComputed="AUTHOR_S.NEXTVAL"/>
+            <column name="FIRST_NAME" value="author first name"/>
+            <column name="SECOND_NAME" value="author second name"/>
+            <column name="CREATE_DATE" value="to_date('09.11.2015','DD.MM.RRRR')"/>
+        </insert>
+        <insert tableName="BOOK_AUTHOR">
+            <column name="BOOK_ID" value="1"/>
+            <column name="AUTHOR_ID" value="1"/>
+        </insert>
+        <insert tableName="BOOK_AUTHOR">
+            <column name="BOOK_ID" value="2"/>
+            <column name="AUTHOR_ID" value="1"/>
+        </insert>
+        <insert tableName="BOOK_AUTHOR">
+            <column name="BOOK_ID" value="3"/>
+            <column name="AUTHOR_ID" value="1"/>
+        </insert>
+        <insert tableName="REVIEW">
+            <column name="ID" valueComputed="REVIEW_S.NEXTVAL"/>
+            <column name="COMMENTER_NAME" value="commenter name 1"/>
+            <column name="COMMENT" value="comment body 1"/>
+            <column name="RATING" value="3"/>
+            <column name="CREATE_DATE" value="to_date('09.11.2015','DD.MM.RRRR')"/>
+            <column name="BOOK_ID" value="1"/>
+        </insert>
+        <insert tableName="REVIEW">
+            <column name="ID" valueComputed="REVIEW_S.NEXTVAL"/>
+            <column name="COMMENTER_NAME" value="commenter name 2"/>
+            <column name="COMMENT" value="comment body 2"/>
+            <column name="RATING" value="2"/>
+            <column name="CREATE_DATE" value="to_date('09.11.2015','DD.MM.RRRR')"/>
+            <column name="BOOK_ID" value="1"/>
+        </insert>
+        <insert tableName="REVIEW">
+            <column name="ID" valueComputed="REVIEW_S.NEXTVAL"/>
+            <column name="COMMENTER_NAME" value="commenter name 3"/>
+            <column name="COMMENT" value="comment body 3"/>
+            <column name="RATING" value="8"/>
+            <column name="CREATE_DATE" value="to_date('09.11.2015','DD.MM.RRRR')"/>
+            <column name="BOOK_ID" value="2"/>
+        </insert>
     </changeSet>
+
 </databaseChangeLog>
