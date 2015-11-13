@@ -1,5 +1,7 @@
 package ua.softserve.booklibrary.entity;
 
+import org.hibernate.annotations.Formula;
+
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Date;
@@ -22,13 +24,11 @@ public class Author implements Serializable {
     private String secondName;
 
     @Temporal(TemporalType.DATE)
-    @Column(name = "CREATE_DATE", nullable = false)
+    @Column(name = "CREATE_DATE", nullable = false, updatable = false)
     private Date createDate;
 
-/*
-    @Formula("(SELECT AVG (RATING) FROM  REVIEW WHERE BOOK_ID = ID)")
+    @Formula("(SELECT AVG(r.RATING) FROM AUTHOR a, BOOK_AUTHOR ba, BOOK b, REVIEW r WHERE a.ID = ID AND a.ID=ba.AUTHOR_ID AND ba.BOOK_ID=b.ID AND b.ID=r.BOOK_ID)")
     private Double averageRating;
-*/
 
     @ManyToMany(mappedBy="authors")
     private Set<Book> books = new HashSet<>();
@@ -76,7 +76,6 @@ public class Author implements Serializable {
         this.books = books;
     }
 
-/*
     public Double getAverageRating() {
         return averageRating;
     }
@@ -84,7 +83,6 @@ public class Author implements Serializable {
     public void setAverageRating(Double averageRating) {
         this.averageRating = averageRating;
     }
-*/
 
 
     @Override
@@ -94,9 +92,7 @@ public class Author implements Serializable {
                 ", firstName='" + firstName + '\'' +
                 ", secondName='" + secondName + '\'' +
                 ", createDate=" + createDate +
-/*
                 ", averageRating=" + averageRating +
-*/
                 '}';
     }
 }

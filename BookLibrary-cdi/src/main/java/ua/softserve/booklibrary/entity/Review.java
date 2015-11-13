@@ -43,7 +43,7 @@ public class Review implements Serializable {
     private Integer rating;
 
     @Temporal(TemporalType.DATE)
-    @Column(name = "CREATE_DATE", nullable = false)
+    @Column(name = "CREATE_DATE", nullable = false, updatable = false)
     private Date createDate;
 
     @ManyToOne

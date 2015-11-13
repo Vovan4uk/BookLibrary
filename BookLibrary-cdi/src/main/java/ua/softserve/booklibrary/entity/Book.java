@@ -1,5 +1,7 @@
 package ua.softserve.booklibrary.entity;
 
+import org.hibernate.annotations.Formula;
+
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Date;
@@ -29,16 +31,14 @@ public class Book implements Serializable {
     private String publisher;
 
     @Temporal(TemporalType.DATE)
-    @Column(name = "CREATE_DATE", nullable = false)
+    @Column(name = "CREATE_DATE", nullable = false, updatable = false)
     private Date createDate;
 
     @OneToMany(mappedBy = "book", cascade = CascadeType.ALL)
     private Set<Review> reviews = new HashSet<>();
 
-/*
-    @Formula("SELECT AVG(RATING) FROM  REVIEW")
+    @Formula("(SELECT AVG(r.RATING) FROM REVIEW r WHERE r.BOOK_ID = ID)")
     private Double averageRating;
-*/
 
     @ManyToMany
     @JoinTable(
@@ -114,7 +114,6 @@ public class Book implements Serializable {
         this.authors = authors;
     }
 
-/*
     public Double getAverageRating() {
         return averageRating;
     }
@@ -122,7 +121,6 @@ public class Book implements Serializable {
     public void setAverageRating(Double averageRating) {
         this.averageRating = averageRating;
     }
-*/
 
 
     @Override
@@ -134,9 +132,7 @@ public class Book implements Serializable {
                 ", isbn='" + isbn + '\'' +
                 ", publisher='" + publisher + '\'' +
                 ", createDate=" + createDate +
-/*
                 ", averageRating=" + averageRating +
-*/
                 '}';
     }
 }
