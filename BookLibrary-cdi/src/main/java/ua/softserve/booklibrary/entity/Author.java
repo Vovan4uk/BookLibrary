@@ -24,7 +24,7 @@ public class Author implements Serializable {
     private String secondName;
 
     @Temporal(TemporalType.DATE)
-    @Column(name = "CREATE_DATE", nullable = false, updatable = false)
+    @Column(name = "CREATE_DATE", nullable = false, insertable = false)
     private Date createDate;
 
     @Formula("(SELECT AVG(r.RATING) FROM AUTHOR a, BOOK_AUTHOR ba, BOOK b, REVIEW r WHERE a.ID = ID AND a.ID=ba.AUTHOR_ID AND ba.BOOK_ID=b.ID AND b.ID=r.BOOK_ID)")
@@ -83,7 +83,6 @@ public class Author implements Serializable {
     public void setAverageRating(Double averageRating) {
         this.averageRating = averageRating;
     }
-
 
     @Override
     public String toString() {

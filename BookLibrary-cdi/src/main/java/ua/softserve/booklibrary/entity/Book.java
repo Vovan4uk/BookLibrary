@@ -31,7 +31,7 @@ public class Book implements Serializable {
     private String publisher;
 
     @Temporal(TemporalType.DATE)
-    @Column(name = "CREATE_DATE", nullable = false, updatable = false)
+    @Column(name = "CREATE_DATE", nullable = false, insertable = false)
     private Date createDate;
 
     @OneToMany(mappedBy = "book", cascade = CascadeType.ALL)
@@ -121,7 +121,6 @@ public class Book implements Serializable {
     public void setAverageRating(Double averageRating) {
         this.averageRating = averageRating;
     }
-
 
     @Override
     public String toString() {

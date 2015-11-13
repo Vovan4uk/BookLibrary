@@ -43,12 +43,15 @@ public class Review implements Serializable {
     private Integer rating;
 
     @Temporal(TemporalType.DATE)
-    @Column(name = "CREATE_DATE", nullable = false, updatable = false)
+    @Column(name = "CREATE_DATE", nullable = false, insertable = false)
     private Date createDate;
 
     @ManyToOne
     @JoinColumn(name = "BOOK_ID")
     private Book book;
+
+    public Review() {
+    }
 
     public Long getId() {
         return id;
@@ -97,10 +100,6 @@ public class Review implements Serializable {
     public void setBook(Book book) {
         this.book = book;
     }
-
-    public Review() {
-    }
-
 
     @Override
     public String toString() {
