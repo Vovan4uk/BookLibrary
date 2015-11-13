@@ -38,8 +38,8 @@ public class AddServlet extends HttpServlet {
         Review review = new Review();
         review.setCommentBody("new test review body");
         review.setCommenterName("commenter name test validation");
-        review.setCommentCreate(new Date());
-        review.setCommentRating(3);
+        review.setCreateDate(new Date());
+        review.setRating(3);
 
         Book book = new Book();
         book.setId(1L);

@@ -2,33 +2,36 @@ package ua.softserve.booklibrary.entity;
 
 import javax.persistence.*;
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
-@Table
+@Table(name = "AUTHOR")
 public class Author implements Serializable {
     @Id
-    @SequenceGenerator(name = "AUTHOR_ID_GENERATOR", sequenceName = "author_s", allocationSize = 1)
+    @SequenceGenerator(name = "AUTHOR_ID_GENERATOR", sequenceName = "AUTHOR_S")
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "AUTHOR_ID_GENERATOR")
+    @Column(name = "ID", nullable = false)
     private Long id;
 
-    @Column(name = "first_name")
+    @Column(name = "FIRST_NAME", nullable = false)
     private String firstName;
 
-    @Column(name = "second_name")
+    @Column(name = "SECOND_NAME")
     private String secondName;
 
     @Temporal(TemporalType.DATE)
-    @Column(name = "author_create")
-    private Date authorCreate;
+    @Column(name = "CREATE_DATE", nullable = false)
+    private Date createDate;
 
-    @Column(name = "author_average_rating")
-    private Double authorAverageRating;
+/*
+    @Formula("(SELECT AVG (RATING) FROM  REVIEW WHERE BOOK_ID = ID)")
+    private Double averageRating;
+*/
 
     @ManyToMany(mappedBy="authors")
-    private List<Book> books = new ArrayList<>();
+    private Set<Book> books = new HashSet<>();
 
     public Author() {
     }
@@ -45,60 +48,44 @@ public class Author implements Serializable {
         return firstName;
     }
 
-    public void setFirstName(String first_name) {
-        this.firstName = first_name;
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
     }
 
     public String getSecondName() {
         return secondName;
     }
 
-    public void setSecondName(String second_name) {
-        this.secondName = second_name;
+    public void setSecondName(String secondName) {
+        this.secondName = secondName;
     }
 
-    public Date getAuthorCreate() {
-        return authorCreate;
+    public Date getCreateDate() {
+        return createDate;
     }
 
-    public void setAuthorCreate(Date author_create) {
-        this.authorCreate = author_create;
+    public void setCreateDate(Date createDate) {
+        this.createDate = createDate;
     }
 
-    public List<Book> getBooks() {
+    public Set<Book> getBooks() {
         return books;
     }
 
-    public void setBooks(List<Book> books) {
+    public void setBooks(Set<Book> books) {
         this.books = books;
     }
 
-    public Double getAuthorAverageRating() {
-        return authorAverageRating;
+/*
+    public Double getAverageRating() {
+        return averageRating;
     }
 
-    public void setAuthorAverageRating(Double authorAverageRating) {
-        this.authorAverageRating = authorAverageRating;
+    public void setAverageRating(Double averageRating) {
+        this.averageRating = averageRating;
     }
+*/
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-
-        Author author = (Author) o;
-
-        if (!firstName.equals(author.firstName)) return false;
-        return secondName.equals(author.secondName);
-
-    }
-
-    @Override
-    public int hashCode() {
-        int result = firstName.hashCode();
-        result = 31 * result + secondName.hashCode();
-        return result;
-    }
 
     @Override
     public String toString() {
@@ -106,8 +93,10 @@ public class Author implements Serializable {
                 "id=" + id +
                 ", firstName='" + firstName + '\'' +
                 ", secondName='" + secondName + '\'' +
-                ", authorCreate=" + authorCreate +
-                ", authorAverageRating=" + authorAverageRating +
+                ", createDate=" + createDate +
+/*
+                ", averageRating=" + averageRating +
+*/
                 '}';
     }
 }

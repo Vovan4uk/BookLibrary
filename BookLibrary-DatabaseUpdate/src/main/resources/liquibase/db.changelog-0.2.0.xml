@@ -50,7 +50,7 @@
         <insert tableName="REVIEW">
             <column name="ID" valueComputed="REVIEW_S.NEXTVAL"/>
             <column name="COMMENTER_NAME" value="commenter name 1"/>
-            <column name="COMMENT" value="comment body 1"/>
+            <column name="COMMENT_BODY" value="comment body 1"/>
             <column name="RATING" value="3"/>
             <column name="CREATE_DATE" value="to_date('09.11.2015','DD.MM.RRRR')"/>
             <column name="BOOK_ID" value="1"/>
@@ -58,7 +58,7 @@
         <insert tableName="REVIEW">
             <column name="ID" valueComputed="REVIEW_S.NEXTVAL"/>
             <column name="COMMENTER_NAME" value="commenter name 2"/>
-            <column name="COMMENT" value="comment body 2"/>
+            <column name="COMMENT_BODY" value="comment body 2"/>
             <column name="RATING" value="2"/>
             <column name="CREATE_DATE" value="to_date('09.11.2015','DD.MM.RRRR')"/>
             <column name="BOOK_ID" value="1"/>
@@ -66,8 +66,8 @@
         <insert tableName="REVIEW">
             <column name="ID" valueComputed="REVIEW_S.NEXTVAL"/>
             <column name="COMMENTER_NAME" value="commenter name 3"/>
-            <column name="COMMENT" value="comment body 3"/>
-            <column name="RATING" value="8"/>
+            <column name="COMMENT_BODY" value="comment body 3"/>
+            <column name="RATING" value="1"/>
             <column name="CREATE_DATE" value="to_date('09.11.2015','DD.MM.RRRR')"/>
             <column name="BOOK_ID" value="2"/>
         </insert>

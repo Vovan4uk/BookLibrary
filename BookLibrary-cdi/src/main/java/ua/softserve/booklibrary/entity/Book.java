@@ -2,44 +2,50 @@ package ua.softserve.booklibrary.entity;
 
 import javax.persistence.*;
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
-@Table
+@Table(name = "BOOK")
 public class Book implements Serializable {
     @Id
-    @SequenceGenerator(name = "BOOK_ID_GENERATOR", sequenceName = "book_s", allocationSize = 1)
+    @SequenceGenerator(name = "BOOK_ID_GENERATOR", sequenceName = "BOOK_S")
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "BOOK_ID_GENERATOR")
+    @Column(name = "ID", nullable = false)
     private Long id;
 
+    @Column(name = "NAME", nullable = false)
     private String name;
 
     @Temporal(TemporalType.DATE)
-    @Column(name = "published_date")
+    @Column(name = "PUBLISHED_DATE")
     private Date publishedDate;
 
+    @Column(name = "ISBN", unique = true)
     private String isbn;
 
+    @Column(name = "PUBLISHER")
     private String publisher;
 
     @Temporal(TemporalType.DATE)
-    @Column(name = "book_create")
-    private Date bookCreate;
+    @Column(name = "CREATE_DATE", nullable = false)
+    private Date createDate;
 
     @OneToMany(mappedBy = "book", cascade = CascadeType.ALL)
-    private List<Review> reviews = new ArrayList<>();
+    private Set<Review> reviews = new HashSet<>();
 
-    @Column(name = "book_average_rating")
-    private Double bookAverageRating;
+/*
+    @Formula("SELECT AVG(RATING) FROM  REVIEW")
+    private Double averageRating;
+*/
 
     @ManyToMany
     @JoinTable(
             name="BOOK_AUTHOR",
             joinColumns=@JoinColumn(name="BOOK_ID"),
             inverseJoinColumns=@JoinColumn(name="AUTHOR_ID"))
-    private List<Author> authors = new ArrayList<>();
+    private Set<Author> authors = new HashSet<>();
 
     public Book() {
     }
@@ -64,8 +70,8 @@ public class Book implements Serializable {
         return publishedDate;
     }
 
-    public void setPublishedDate(Date published_date) {
-        this.publishedDate = published_date;
+    public void setPublishedDate(Date publishedDate) {
+        this.publishedDate = publishedDate;
     }
 
     public String getIsbn() {
@@ -84,60 +90,40 @@ public class Book implements Serializable {
         this.publisher = publisher;
     }
 
-    public Date getBookCreate() {
-        return bookCreate;
+    public Date getCreateDate() {
+        return createDate;
     }
 
-    public void setBookCreate(Date book_create) {
-        this.bookCreate = book_create;
+    public void setCreateDate(Date createDate) {
+        this.createDate = createDate;
     }
 
-    public List<Review> getReviews() {
+    public Set<Review> getReviews() {
         return reviews;
     }
 
-    public void setReviews(List<Review> reviews) {
+    public void setReviews(Set<Review> reviews) {
         this.reviews = reviews;
     }
 
-    public List<Author> getAuthors() {
+    public Set<Author> getAuthors() {
         return authors;
     }
 
-    public void setAuthors(List<Author> authors) {
+    public void setAuthors(Set<Author> authors) {
         this.authors = authors;
     }
 
-    public Double getBookAverageRating() {
-        return bookAverageRating;
+/*
+    public Double getAverageRating() {
+        return averageRating;
     }
 
-    public void setBookAverageRating(Double bookAverageRating) {
-        this.bookAverageRating = bookAverageRating;
+    public void setAverageRating(Double averageRating) {
+        this.averageRating = averageRating;
     }
+*/
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-
-        Book book = (Book) o;
-
-        if (!name.equals(book.name)) return false;
-        if (!publishedDate.equals(book.publishedDate)) return false;
-        if (!isbn.equals(book.isbn)) return false;
-        return publisher.equals(book.publisher);
-
-    }
-
-    @Override
-    public int hashCode() {
-        int result = name.hashCode();
-        result = 31 * result + publishedDate.hashCode();
-        result = 31 * result + isbn.hashCode();
-        result = 31 * result + publisher.hashCode();
-        return result;
-    }
 
     @Override
     public String toString() {
@@ -147,8 +133,10 @@ public class Book implements Serializable {
                 ", publishedDate=" + publishedDate +
                 ", isbn='" + isbn + '\'' +
                 ", publisher='" + publisher + '\'' +
-                ", bookCreate=" + bookCreate +
-                ", bookAverageRating=" + bookAverageRating +
+                ", createDate=" + createDate +
+/*
+                ", averageRating=" + averageRating +
+*/
                 '}';
     }
 }

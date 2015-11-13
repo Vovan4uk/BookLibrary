@@ -9,40 +9,42 @@ import java.io.Serializable;
 import java.util.Date;
 
 @Entity
+@Table(name = "REVIEW")
 public class Review implements Serializable {
 
     private static final int MIN_COMMENTER_NAME_SIZE = 2;
-    private static final int MAX_COMMENTER_NAME_SIZE = 20;
+    private static final int MAX_COMMENTER_NAME_SIZE = 100;
     private static final int MIN_COMMENT_BODY_SIZE = 2;
     private static final int MAX_COMMENT_BODY_SIZE = 2000;
     private static final int MIN_RATING_SIZE = 1;
     private static final int MAX_RATING_SIZE = 5;
 
     @Id
-    @SequenceGenerator(name = "REVIEW_ID_GENERATOR", sequenceName = "review_s", allocationSize = 1)
+    @SequenceGenerator(name = "REVIEW_ID_GENERATOR", sequenceName = "REVIEW_S")
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "REVIEW_ID_GENERATOR")
+    @Column(name = "ID", nullable = false)
     private Long id;
 
     @NotNull
     @Size(min = MIN_COMMENTER_NAME_SIZE, max = MAX_COMMENTER_NAME_SIZE)
-    @Column(name = "commenter_name")
+    @Column(name = "COMMENTER_NAME", nullable = false)
     private String commenterName;
 
     @NotNull
     @Lob
     @Size(min = MIN_COMMENT_BODY_SIZE, max = MAX_COMMENT_BODY_SIZE)
-    @Column(name = "comment_body")
+    @Column(name = "COMMENT_BODY", nullable = false)
     private String commentBody;
 
     @NotNull
     @Min(MIN_RATING_SIZE)
     @Max(MAX_RATING_SIZE)
-    @Column(name = "comment_rating")
-    private Integer commentRating;
+    @Column(name = "RATING", nullable = false)
+    private Integer rating;
 
     @Temporal(TemporalType.DATE)
-    @Column(name = "comment_create")
-    private Date commentCreate;
+    @Column(name = "CREATE_DATE", nullable = false)
+    private Date createDate;
 
     @ManyToOne
     @JoinColumn(name = "BOOK_ID")
@@ -60,32 +62,32 @@ public class Review implements Serializable {
         return commenterName;
     }
 
-    public void setCommenterName(String commenter_name) {
-        this.commenterName = commenter_name;
+    public void setCommenterName(String commenterName) {
+        this.commenterName = commenterName;
     }
 
     public String getCommentBody() {
         return commentBody;
     }
 
-    public void setCommentBody(String comment_body) {
-        this.commentBody = comment_body;
+    public void setCommentBody(String commentBody) {
+        this.commentBody = commentBody;
     }
 
-    public Integer getCommentRating() {
-        return commentRating;
+    public Integer getRating() {
+        return rating;
     }
 
-    public void setCommentRating(Integer comment_rating) {
-        this.commentRating = comment_rating;
+    public void setRating(Integer rating) {
+        this.rating = rating;
     }
 
-    public Date getCommentCreate() {
-        return commentCreate;
+    public Date getCreateDate() {
+        return createDate;
     }
 
-    public void setCommentCreate(Date comment_create) {
-        this.commentCreate = comment_create;
+    public void setCreateDate(Date createDate) {
+        this.createDate = createDate;
     }
 
     public Book getBook() {
@@ -99,28 +101,6 @@ public class Review implements Serializable {
     public Review() {
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-
-        Review review = (Review) o;
-
-        if (!commenterName.equals(review.commenterName)) return false;
-        if (!commentBody.equals(review.commentBody)) return false;
-        if (!commentRating.equals(review.commentRating)) return false;
-        return commentCreate.equals(review.commentCreate);
-
-    }
-
-    @Override
-    public int hashCode() {
-        int result = commenterName.hashCode();
-        result = 31 * result + commentBody.hashCode();
-        result = 31 * result + commentRating.hashCode();
-        result = 31 * result + commentCreate.hashCode();
-        return result;
-    }
 
     @Override
     public String toString() {
@@ -128,8 +108,8 @@ public class Review implements Serializable {
                 "id=" + id +
                 ", commenterName='" + commenterName + '\'' +
                 ", commentBody='" + commentBody + '\'' +
-                ", commentRating=" + commentRating +
-                ", commentCreate=" + commentCreate +
+                ", rating=" + rating +
+                ", createDate=" + createDate +
                 '}';
     }
 }

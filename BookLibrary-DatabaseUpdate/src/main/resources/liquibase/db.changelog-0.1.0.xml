@@ -35,7 +35,7 @@
             <column name="COMMENTER_NAME" type="VARCHAR(255)">
                 <constraints nullable="false"/>
             </column>
-            <column name="COMMENT" type="CLOB(0)">
+            <column name="COMMENT_BODY" type="CLOB(0)">
                 <constraints nullable="false"/>
             </column>
             <column name="RATING" type="BIGINT">
