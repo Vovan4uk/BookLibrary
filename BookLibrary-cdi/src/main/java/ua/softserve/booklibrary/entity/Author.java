@@ -28,7 +28,13 @@ public class Author implements Serializable, EntityInterface {
     @Column(name = "CREATE_DATE", nullable = false, updatable = false)
     private Date createDate;
 
-    @Formula("(SELECT AVG(r.RATING) FROM AUTHOR a, BOOK_AUTHOR ba, BOOK b, REVIEW r WHERE a.ID = ID AND a.ID=ba.AUTHOR_ID AND ba.BOOK_ID=b.ID AND b.ID=r.BOOK_ID)")
+    @Formula("(SELECT AVG(r.RATING) " +
+            "FROM AUTHOR a " +
+            "INNER JOIN BOOK_AUTHOR ba " +
+            "ON a.ID = ba.AUTHOR_ID " +
+            "INNER JOIN BOOK b " +
+            "ON ba.BOOK_ID = b.ID " +
+            "INNER JOIN REVIEW r ON b.ID = r.BOOK_ID)")
     private Double averageRating;
 
     @ManyToMany(mappedBy="authors")

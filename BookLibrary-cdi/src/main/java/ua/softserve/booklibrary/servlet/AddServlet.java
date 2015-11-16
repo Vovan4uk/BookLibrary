@@ -17,6 +17,7 @@ import java.io.IOException;
 @WebServlet ("/add")
 public class AddServlet extends HttpServlet {
 
+    private static final long serialVersionUID = -7709667022839878773L;
     private static ValidatorFactory vf;
     private static Validator validator;
 
