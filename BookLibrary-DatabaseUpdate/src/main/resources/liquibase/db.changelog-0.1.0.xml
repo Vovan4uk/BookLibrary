@@ -12,15 +12,9 @@
             <column name="NAME" type="VARCHAR(255)">
                 <constraints nullable="false"/>
             </column>
-            <column name="PUBLISHED_DATE" type="DATE">
-                <constraints nullable="true"/>
-            </column>
-            <column name="ISBN" type="VARCHAR(40)">
-                <constraints nullable="true"/>
-            </column>
-            <column name="PUBLISHER" type="VARCHAR(255)">
-                <constraints nullable="true"/>
-            </column>
+            <column name="PUBLISHED_DATE" type="DATE"/>
+            <column name="ISBN" type="VARCHAR(40)"/>
+            <column name="PUBLISHER" type="VARCHAR(255)"/>
             <column name="CREATE_DATE" type="DATE">
                 <constraints nullable="false"/>
             </column>
@@ -50,7 +44,7 @@
         </createTable>
         <addPrimaryKey tableName="REVIEW" constraintName="REVIEW_PK" columnNames="ID"/>
         <sql>
-            ALTER TABLE REVIEW ADD CONSTRAINT CHECK_REVIEW CHECK ( RATING BETWEEN 1 and 5)
+            ALTER TABLE REVIEW ADD CONSTRAINT CHECK_REVIEW CHECK (RATING BETWEEN 1 AND 5)
         </sql>
 
 
@@ -61,9 +55,7 @@
             <column name="FIRST_NAME" type="VARCHAR(255)">
                 <constraints nullable="false"/>
             </column>
-            <column name="SECOND_NAME" type="VARCHAR(255)">
-                <constraints nullable="true"/>
-            </column>
+            <column name="SECOND_NAME" type="VARCHAR(255)"/>
             <column name="CREATE_DATE" type="DATE">
                 <constraints nullable="false"/>
             </column>
@@ -91,13 +83,9 @@
                                  referencedTableName="BOOK" referencedColumnNames="ID" onDelete="CASCADE"
                                  onUpdate="CASCADE"/>
 
-        <createSequence sequenceName="BOOK_S" minValue="1" maxValue="9999999999999999" incrementBy="1" startValue="1"/>
-
-        <createSequence sequenceName="AUTHOR_S" minValue="1" maxValue="9999999999999999" incrementBy="1"
-                        startValue="1"/>
-
-        <createSequence sequenceName="REVIEW_S" minValue="1" maxValue="9999999999999999" incrementBy="1"
-                        startValue="1"/>
+        <createSequence sequenceName="BOOK_S"/>
+        <createSequence sequenceName="AUTHOR_S"/>
+        <createSequence sequenceName="REVIEW_S"/>
 
     </changeSet>
 </databaseChangeLog>

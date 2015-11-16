@@ -1,8 +1,7 @@
 package ua.softserve.booklibrary.servlet;
 
-import ua.softserve.booklibrary.entity.Author;
-import ua.softserve.booklibrary.service.AuthorService;
-import ua.softserve.booklibrary.service.ReviewService;
+import ua.softserve.booklibrary.dao.facade.ReviewFacade;
+import ua.softserve.booklibrary.entity.Review;
 
 import javax.ejb.EJB;
 import javax.servlet.ServletException;
@@ -12,16 +11,13 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.List;
 
 @WebServlet ("/")
 public class MainServlet extends HttpServlet {
 
     @EJB
-    ReviewService reviewService;
-    @EJB
-    AuthorService authorService;
+    ReviewFacade reviewFacade;
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp)
@@ -31,6 +27,7 @@ public class MainServlet extends HttpServlet {
         PrintWriter out = resp.getWriter();
         out.println(author);
 */
+/*
         Set<Author> authors = new HashSet<>();
         Author author = new Author();
         author.setFirstName("werwer");
@@ -39,8 +36,8 @@ public class MainServlet extends HttpServlet {
         authors.add(author);
         PrintWriter out = resp.getWriter();
         out.println(authors.size());
-/*
-        List<Review> reviewList = reviewService.getAllReviews();
+*/
+        List<Review> reviewList = reviewFacade.findAll();
         PrintWriter out = resp.getWriter();
         out.println("All objects");
         for (Review review : reviewList) {
@@ -48,6 +45,5 @@ public class MainServlet extends HttpServlet {
             out.println("     Mapped book " + review.getBook());
             out.println();
         }
-*/
     }
 }

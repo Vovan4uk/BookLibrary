@@ -11,8 +11,9 @@ import java.util.Set;
 @Entity
 @Table(name = "AUTHOR")
 public class Author implements Serializable {
+    private static final long serialVersionUID = 5544814440011028323L;
     @Id
-    @SequenceGenerator(name = "AUTHOR_ID_GENERATOR", sequenceName = "AUTHOR_S")
+    @SequenceGenerator(name = "AUTHOR_ID_GENERATOR", sequenceName = "AUTHOR_S", allocationSize = 1)
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "AUTHOR_ID_GENERATOR")
     @Column(name = "ID", nullable = false)
     private Long id;
@@ -24,7 +25,7 @@ public class Author implements Serializable {
     private String secondName;
 
     @Temporal(TemporalType.DATE)
-    @Column(name = "CREATE_DATE", nullable = false, insertable = false)
+    @Column(name = "CREATE_DATE", nullable = false, updatable = false)
     private Date createDate;
 
     @Formula("(SELECT AVG(r.RATING) FROM AUTHOR a, BOOK_AUTHOR ba, BOOK b, REVIEW r WHERE a.ID = ID AND a.ID=ba.AUTHOR_ID AND ba.BOOK_ID=b.ID AND b.ID=r.BOOK_ID)")

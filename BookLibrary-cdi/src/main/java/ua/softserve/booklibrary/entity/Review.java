@@ -10,40 +10,34 @@ import java.util.Date;
 
 @Entity
 @Table(name = "REVIEW")
+
 public class Review implements Serializable {
-
-    private static final int MIN_COMMENTER_NAME_SIZE = 2;
-    private static final int MAX_COMMENTER_NAME_SIZE = 100;
-    private static final int MIN_COMMENT_BODY_SIZE = 2;
-    private static final int MAX_COMMENT_BODY_SIZE = 2000;
-    private static final int MIN_RATING_SIZE = 1;
-    private static final int MAX_RATING_SIZE = 5;
-
+    private static final long serialVersionUID = -8631161684971086224L;
     @Id
-    @SequenceGenerator(name = "REVIEW_ID_GENERATOR", sequenceName = "REVIEW_S")
+    @SequenceGenerator(name = "REVIEW_ID_GENERATOR", sequenceName = "REVIEW_S", allocationSize = 1)
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "REVIEW_ID_GENERATOR")
     @Column(name = "ID", nullable = false)
     private Long id;
 
     @NotNull
-    @Size(min = MIN_COMMENTER_NAME_SIZE, max = MAX_COMMENTER_NAME_SIZE)
+    @Size(min = 2, max = 255)
     @Column(name = "COMMENTER_NAME", nullable = false)
     private String commenterName;
 
     @NotNull
     @Lob
-    @Size(min = MIN_COMMENT_BODY_SIZE, max = MAX_COMMENT_BODY_SIZE)
+    @Size(min = 2, max = 2000)
     @Column(name = "COMMENT_BODY", nullable = false)
     private String commentBody;
 
     @NotNull
-    @Min(MIN_RATING_SIZE)
-    @Max(MAX_RATING_SIZE)
+    @Min(1)
+    @Max(5)
     @Column(name = "RATING", nullable = false)
     private Integer rating;
 
     @Temporal(TemporalType.DATE)
-    @Column(name = "CREATE_DATE", nullable = false, insertable = false)
+    @Column(name = "CREATE_DATE", nullable = false, updatable = false)
     private Date createDate;
 
     @ManyToOne

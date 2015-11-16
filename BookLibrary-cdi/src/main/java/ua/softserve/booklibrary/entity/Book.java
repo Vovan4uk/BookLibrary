@@ -11,8 +11,9 @@ import java.util.Set;
 @Entity
 @Table(name = "BOOK")
 public class Book implements Serializable {
+    private static final long serialVersionUID = 9073502830659864431L;
     @Id
-    @SequenceGenerator(name = "BOOK_ID_GENERATOR", sequenceName = "BOOK_S")
+    @SequenceGenerator(name = "BOOK_ID_GENERATOR", sequenceName = "BOOK_S", allocationSize = 1)
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "BOOK_ID_GENERATOR")
     @Column(name = "ID", nullable = false)
     private Long id;
@@ -31,7 +32,7 @@ public class Book implements Serializable {
     private String publisher;
 
     @Temporal(TemporalType.DATE)
-    @Column(name = "CREATE_DATE", nullable = false, insertable = false)
+    @Column(name = "CREATE_DATE", nullable = false, updatable = false)
     private Date createDate;
 
     @OneToMany(mappedBy = "book", cascade = CascadeType.ALL)
