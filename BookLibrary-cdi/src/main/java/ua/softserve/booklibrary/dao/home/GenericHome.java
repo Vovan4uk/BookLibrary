@@ -1,6 +1,8 @@
 package ua.softserve.booklibrary.dao.home;
 
-public interface GenericHome<T> {
+import ua.softserve.booklibrary.entity.EntityInterface;
+
+public interface GenericHome<T extends EntityInterface> {
     void save(T entity);
 
     T update(T entity);

@@ -11,7 +11,7 @@ import java.util.Date;
 @Entity
 @Table(name = "REVIEW")
 
-public class Review implements Serializable {
+public class Review implements Serializable, EntityInterface {
     private static final long serialVersionUID = -8631161684971086224L;
     @Id
     @SequenceGenerator(name = "REVIEW_ID_GENERATOR", sequenceName = "REVIEW_S", allocationSize = 1)

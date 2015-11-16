@@ -10,7 +10,7 @@ import java.util.Set;
 
 @Entity
 @Table(name = "AUTHOR")
-public class Author implements Serializable {
+public class Author implements Serializable, EntityInterface {
     private static final long serialVersionUID = 5544814440011028323L;
     @Id
     @SequenceGenerator(name = "AUTHOR_ID_GENERATOR", sequenceName = "AUTHOR_S", allocationSize = 1)
