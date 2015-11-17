@@ -27,14 +27,16 @@ public class Author implements Serializable, EntityInterface {
     @Temporal(TemporalType.DATE)
     @Column(name = "CREATE_DATE", nullable = false, updatable = false)
     private Date createDate;
-
-    @Formula("(SELECT AVG(r.RATING) " +
-            "FROM AUTHOR a " +
-            "INNER JOIN BOOK_AUTHOR ba " +
-            "ON a.ID = ba.AUTHOR_ID " +
-            "INNER JOIN BOOK b " +
-            "ON ba.BOOK_ID = b.ID " +
-            "INNER JOIN REVIEW r ON b.ID = r.BOOK_ID)")
+    /*
+        @Formula("(SELECT AVG(r.RATING) " +
+                "FROM Review r " +
+                "LEFT JOIN BOOK_AUTHOR ba " +
+                "ON a.ID = ba.AUTHOR_ID " +
+                "LEFT JOIN BOOK b " +
+                "ON ba.BOOK_ID = b.ID " +
+                "LEFT JOIN REVIEW r ON b.ID = r.BOOK_ID)")
+    */
+    @Formula("(SELECT AVG(r.RATING) FROM Review r, BOOK_AUTHOR ba WHERE r.BOOK_ID = ba.BOOK_ID AND ba.AUTHOR_ID = ID)")
     private Double averageRating;
 
     @ManyToMany(mappedBy="authors")

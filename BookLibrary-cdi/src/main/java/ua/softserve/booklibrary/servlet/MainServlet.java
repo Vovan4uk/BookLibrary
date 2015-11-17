@@ -25,7 +25,7 @@ public class MainServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp)
             throws ServletException, IOException {
-        Author author = authorFacade.findByPk(1L);
+        Author author = authorFacade.findByPk(2L);
         PrintWriter out = resp.getWriter();
         out.println(author);
 /*

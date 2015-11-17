@@ -36,6 +36,7 @@ public class Book implements Serializable, EntityInterface {
     private Date createDate;
 
     @OneToMany(mappedBy = "book", cascade = CascadeType.ALL)
+//    @OrderBy("createDate DESC")
     private Set<Review> reviews = new HashSet<>();
 
     @Formula("(SELECT AVG(r.RATING) FROM REVIEW r WHERE r.BOOK_ID = ID)")

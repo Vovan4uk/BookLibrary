@@ -35,6 +35,12 @@
             <column name="SECOND_NAME" value="author second name"/>
             <column name="CREATE_DATE" value="to_date('09.11.2015','DD.MM.RRRR')"/>
         </insert>
+        <insert tableName="AUTHOR">
+            <column name="ID" valueComputed="AUTHOR_S.NEXTVAL"/>
+            <column name="FIRST_NAME" value="author first name 2"/>
+            <column name="SECOND_NAME" value="author second name 2"/>
+            <column name="CREATE_DATE" value="to_date('09.11.2015','DD.MM.RRRR')"/>
+        </insert>
         <insert tableName="BOOK_AUTHOR">
             <column name="BOOK_ID" value="1"/>
             <column name="AUTHOR_ID" value="1"/>
@@ -45,7 +51,7 @@
         </insert>
         <insert tableName="BOOK_AUTHOR">
             <column name="BOOK_ID" value="3"/>
-            <column name="AUTHOR_ID" value="1"/>
+            <column name="AUTHOR_ID" value="2"/>
         </insert>
         <insert tableName="REVIEW">
             <column name="ID" valueComputed="REVIEW_S.NEXTVAL"/>
@@ -71,6 +77,31 @@
             <column name="CREATE_DATE" value="to_date('09.11.2015','DD.MM.RRRR')"/>
             <column name="BOOK_ID" value="2"/>
         </insert>
+        <insert tableName="REVIEW">
+            <column name="ID" valueComputed="REVIEW_S.NEXTVAL"/>
+            <column name="COMMENTER_NAME" value="commenter name 4"/>
+            <column name="COMMENT_BODY" value="comment body 4"/>
+            <column name="RATING" value="2"/>
+            <column name="CREATE_DATE" value="to_date('09.11.2015','DD.MM.RRRR')"/>
+            <column name="BOOK_ID" value="3"/>
+        </insert>
+        <insert tableName="REVIEW">
+            <column name="ID" valueComputed="REVIEW_S.NEXTVAL"/>
+            <column name="COMMENTER_NAME" value="commenter name 5"/>
+            <column name="COMMENT_BODY" value="comment body 5"/>
+            <column name="RATING" value="4"/>
+            <column name="CREATE_DATE" value="to_date('09.11.2015','DD.MM.RRRR')"/>
+            <column name="BOOK_ID" value="3"/>
+        </insert>
+        <insert tableName="REVIEW">
+            <column name="ID" valueComputed="REVIEW_S.NEXTVAL"/>
+            <column name="COMMENTER_NAME" value="commenter name 6"/>
+            <column name="COMMENT_BODY" value="comment body 6"/>
+            <column name="RATING" value="1"/>
+            <column name="CREATE_DATE" value="to_date('09.11.2015','DD.MM.RRRR')"/>
+            <column name="BOOK_ID" value="3"/>
+        </insert>
+
     </changeSet>
 
 </databaseChangeLog>

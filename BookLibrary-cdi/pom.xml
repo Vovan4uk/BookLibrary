@@ -69,6 +69,11 @@
             <version>1.7.12</version>
             <scope>provided</scope>
         </dependency>
+        <dependency>
+            <groupId>org.richfaces</groupId>
+            <artifactId>richfaces</artifactId>
+            <version>4.5.10.Final</version>
+        </dependency>
 
     </dependencies>
 
