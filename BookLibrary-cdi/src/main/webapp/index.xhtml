@@ -1,0 +1,60 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:rich="http://richfaces.org/rich">
+    <f:view>
+        <h:head></h:head>
+        <h:body>
+            <rich:panel header="Richfaces running on JBoss AS 9">
+                <rich:editor value="#{reviewController.testString}"></rich:editor>
+                <h:form>
+                    <h:commandButton value="sozdat" action="#{reviewController.save}"></h:commandButton>
+                </h:form>
+                <rich:calendar></rich:calendar>
+                <h:link outcome="test.xhtml">test</h:link>
+            </rich:panel>
+        </h:body>
+    </f:view>
+    <h:commandButton value="Call the popup">
+        <rich:componentControl target="popup" operation="show"/>
+    </h:commandButton>
+
+    <rich:popupPanel id="popup" modal="false" autosized="true" resizeable="false">
+        <f:facet name="header">
+            <h:outputText value="Simple popup panel"/>
+        </f:facet>
+        <f:facet name="controls">
+            <h:outputLink value="#" onclick="#{rich:component('popup')}.hide(); return false;">
+                X
+            </h:outputLink>
+        </f:facet>
+
+        <p>Any content might be inside this panel.</p>
+
+        <p>
+            The popup panel is open and closed from the javascript function of component client side object. The following code
+            <a href="#" onclick="#{rich:component('popup')}.hide()">hide this panel</a>:
+            <f:verbatim>&#35;</f:verbatim>{rich:component('popup')}.hide()
+        </p>
+    </rich:popupPanel>
+
+    <h:commandButton value="Call the popup">
+        <rich:componentControl target="modal" operation="show"/>
+    </h:commandButton>
+    <rich:popupPanel id="modal" modal="true" resizeable="true" onmaskclick="#{rich:component('modal')}.hide()">
+        <f:facet name="header">
+            <h:outputText value="Simple popup panel"/>
+        </f:facet>
+        <f:facet name="controls">
+            <h:outputLink value="#" onclick="#{rich:component('modal')}.hide(); return false;">
+                X
+            </h:outputLink>
+        </f:facet>
+
+        <p>You can also check and trigger events if the use clicks outside of the panel.</p>
+
+        <p>In this example clicking outside closes the panel.</p>
+    </rich:popupPanel>
+
+</ui:composition>

@@ -5,7 +5,6 @@ import ua.softserve.booklibrary.dao.home.ReviewHome;
 
 import javax.ejb.EJB;
 import javax.servlet.ServletException;
-import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -14,7 +13,7 @@ import javax.validation.Validator;
 import javax.validation.ValidatorFactory;
 import java.io.IOException;
 
-@WebServlet ("/add")
+//@WebServlet ("/add")
 public class AddServlet extends HttpServlet {
 
     private static final long serialVersionUID = -7709667022839878773L;
