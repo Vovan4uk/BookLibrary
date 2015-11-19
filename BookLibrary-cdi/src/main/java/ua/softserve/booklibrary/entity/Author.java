@@ -3,12 +3,11 @@ package ua.softserve.booklibrary.entity;
 import org.hibernate.annotations.Formula;
 
 import javax.persistence.*;
-import java.io.Serializable;
 import java.util.*;
 
 @Entity
 @Table(name = "AUTHOR")
-public class Author implements Serializable, EntityInterface {
+public class Author implements EntityInterface {
     private static final long serialVersionUID = 5544814440011028323L;
     @Id
     @SequenceGenerator(name = "AUTHOR_ID_GENERATOR", sequenceName = "AUTHOR_S", allocationSize = 1)

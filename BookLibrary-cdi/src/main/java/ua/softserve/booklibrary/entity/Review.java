@@ -5,7 +5,6 @@ import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
-import java.io.Serializable;
 import java.util.Date;
 
 @Entity
@@ -13,7 +12,7 @@ import java.util.Date;
 @NamedQueries({
         @NamedQuery(name = "Review.countBookReviews", query = "SELECT COUNT(r) as r_count FROM Review r WHERE r.book = :book")
 })
-public class Review implements Serializable, EntityInterface {
+public class Review implements EntityInterface {
     private static final long serialVersionUID = -8631161684971086224L;
     @Id
     @SequenceGenerator(name = "REVIEW_ID_GENERATOR", sequenceName = "REVIEW_S", allocationSize = 1)
@@ -28,7 +27,7 @@ public class Review implements Serializable, EntityInterface {
 
     @NotNull
     @Lob
-    @Size(min = 2, max = 2000)
+    @Size(min = 2, max = 20000)
     @Column(name = "COMMENT_BODY", nullable = false)
     private String commentBody;
 

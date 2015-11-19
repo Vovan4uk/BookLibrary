@@ -1,7 +1,8 @@
 <ui:composition xmlns="http://www.w3.org/1999/xhtml"
                 xmlns:ui="http://java.sun.com/jsf/facelets"
                 xmlns:rich="http://richfaces.org/rich"
-                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
         >
 
     <rich:panel header="Hot Book Releases">
@@ -11,17 +12,27 @@
                             rowClasses="odd-row, even-row"
                             styleClass="stable" style="width:100%;">
                 <rich:column>
-                    <h:outputText value="#{hotRelease.name}" styleClass="book_name"/><br/>
-                    <h:outputText value="#{hotRelease.averageRating}" styleClass="book_rating"/>
-                    <h:outputText value="(#{reviewManagerImpl.countBookReviews(hotRelease)})"
-                                  styleClass="count_book_rating"/><br/>
+                    <h:link styleClass="book_name" value="#{hotRelease.name}" outcome="/pages/books.xhtml">
+                        <f:param name="Id" value="#{hotRelease.id}"/>
+                    </h:link>
+                    <br/>
+                    <h:outputText
+                            value="#{hotRelease.averageRating} (#{reviewManagerImpl.countBookReviews(hotRelease)})"
+                            styleClass="book_rating"/><br/>
                     <h:outputText value="#{hotRelease.publishedDate}" styleClass="book_published_date"/><br/>
                     <h:outputText value="#{hotRelease.publisher}" styleClass="book_publisher"/>
+                    <rich:list value="#{hotRelease.authors}" id="list" var="author" type="unordered">
+                        <h:link value="#{author.firstName} #{author.secondName}" outcome="/pages/authors.xhtml">
+                            <f:param name="Id" value="#{author.id}"/>
+                        </h:link>
+                    </rich:list>
 
 
-                    <ui:repeat var="author" value="#{hotRelease.authors}">
-                        #{author.firstName}
-                    </ui:repeat>
+                    <!--
+                                        <ui:repeat var="author" value="#{hotRelease.authors}">
+                                            #{author.firstName}
+                                        </ui:repeat>
+                    -->
 
                 </rich:column>
             </rich:dataTable>
