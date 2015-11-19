@@ -4,9 +4,7 @@ import org.hibernate.annotations.Formula;
 
 import javax.persistence.*;
 import java.io.Serializable;
-import java.util.Date;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.*;
 
 @Entity
 @Table(name = "AUTHOR")
@@ -77,8 +75,8 @@ public class Author implements Serializable, EntityInterface {
         this.createDate = createDate;
     }
 
-    public Set<Book> getBooks() {
-        return books;
+    public List<Book> getBooks() {
+        return new ArrayList<>(books);
     }
 
     public void setBooks(Set<Book> books) {

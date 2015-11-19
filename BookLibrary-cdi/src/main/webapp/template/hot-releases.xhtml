@@ -6,7 +6,6 @@
 
     <rich:panel header="Hot Book Releases">
 
-
         <h:form id="form">
             <rich:dataTable value="#{bookController.hotReleases}" var="hotRelease" id="hot" rows="20"
                             rowClasses="odd-row, even-row"
@@ -18,14 +17,15 @@
                                   styleClass="count_book_rating"/><br/>
                     <h:outputText value="#{hotRelease.publishedDate}" styleClass="book_published_date"/><br/>
                     <h:outputText value="#{hotRelease.publisher}" styleClass="book_publisher"/>
+
+
+                    <ui:repeat var="author" value="#{hotRelease.authors}">
+                        #{author.firstName}
+                    </ui:repeat>
+
                 </rich:column>
             </rich:dataTable>
         </h:form>
-
-
-        <!--
-                <h:outputLabel value="#{bookController.hotReleases}"></h:outputLabel>
-        -->
 
     </rich:panel>
 </ui:composition>
