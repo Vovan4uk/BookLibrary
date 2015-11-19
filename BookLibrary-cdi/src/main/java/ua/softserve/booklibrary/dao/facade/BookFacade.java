@@ -8,4 +8,6 @@ import java.util.List;
 @Local
 public interface BookFacade extends GenericFacade<Book> {
     List<Book> findHotReleases();
+
+    List<Book> findBooksByRating(Integer minRating, Integer maxRating);
 }

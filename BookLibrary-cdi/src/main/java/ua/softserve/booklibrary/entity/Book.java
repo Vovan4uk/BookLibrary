@@ -8,7 +8,8 @@ import java.util.*;
 @javax.persistence.Entity
 @Table(name = "BOOK")
 @NamedQueries({
-        @NamedQuery(name = "Book.findHotReleases", query = "SELECT b FROM Book b ORDER BY createDate desc ")
+        @NamedQuery(name = "Book.findHotReleases", query = "SELECT b FROM Book b ORDER BY createDate desc "),
+        @NamedQuery(name = "Book.findBooksByRating", query = "SELECT b FROM Book b WHERE averageRating>= :minRating AND averageRating< :maxRating ")
 })
 public class Book implements Entity {
     private static final long serialVersionUID = 9073502830659864431L;

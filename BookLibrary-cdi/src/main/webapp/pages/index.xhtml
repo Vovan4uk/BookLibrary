@@ -1,17 +1,113 @@
 <ui:composition template="/template/layout.xhtml"
                 xmlns="http://www.w3.org/1999/xhtml"
                 xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
                 xmlns:ui="http://java.sun.com/jsf/facelets"
                 xmlns:rich="http://richfaces.org/rich">
 
     <ui:define name="title">Home Page</ui:define>
 
     <ui:define name="body">
-        <rich:panel header="Home page">
-            <h:link outcome="test.xhtml" value="Show Test Page"/>
-        </rich:panel>
-        <rich:panel header="Home page">
-            <h:link outcome="test.xhtml" value="Show Test Page"/>
+        <rich:panel header="Books by average rating">
+            <table class="rf-dt stable" width="100%">
+                <tr class="rf-dt-r rf-dt-fst-r odd-row">
+                    <td class="rf-dt-c">
+                        1 star
+                    </td>
+                    <td class="rf-dt-c">
+                        *
+                    </td>
+                    <td class="rf-dt-c">
+                        <h:link value="#{bookController.getCountBooksByRating(1,2)} books"
+                                outcome="/pages/booklist.xhtml">
+                            <f:param name="minRating" value="1"/>
+                            <f:param name="maxRating" value="2"/>
+                        </h:link>
+                    </td>
+                </tr>
+                <tr class="rf-dt-r rf-dt-fst-r odd-row">
+                    <td class="rf-dt-c">
+                        2 star
+                    </td>
+                    <td class="rf-dt-c">
+                        **
+                    </td>
+                    <td class="rf-dt-c">
+                        <h:link value="#{bookController.getCountBooksByRating(2,3)} books"
+                                outcome="/pages/booklist.xhtml">
+                            <f:param name="minRating" value="2"/>
+                            <f:param name="maxRating" value="3"/>
+                        </h:link>
+                    </td>
+                </tr>
+                <tr class="rf-dt-r rf-dt-fst-r odd-row">
+                    <td class="rf-dt-c">
+                        3 star
+                    </td>
+                    <td class="rf-dt-c">
+                        ***
+                    </td>
+                    <td class="rf-dt-c">
+                        <h:link value="#{bookController.getCountBooksByRating(3,4)} books"
+                                outcome="/pages/booklist.xhtml">
+                            <f:param name="minRating" value="3"/>
+                            <f:param name="maxRating" value="4"/>
+                        </h:link>
+                    </td>
+                </tr>
+                <tr class="rf-dt-r rf-dt-fst-r odd-row">
+                    <td class="rf-dt-c">
+                        4 star
+                    </td>
+                    <td class="rf-dt-c">
+                        ****
+                    </td>
+                    <td class="rf-dt-c">
+                        <h:link value="#{bookController.getCountBooksByRating(4,5)} books"
+                                outcome="/pages/booklist.xhtml">
+                            <f:param name="minRating" value="4"/>
+                            <f:param name="maxRating" value="5"/>
+                        </h:link>
+                    </td>
+                </tr>
+                <tr class="rf-dt-r rf-dt-fst-r odd-row">
+                    <td class="rf-dt-c">
+                        5 star
+                    </td>
+                    <td class="rf-dt-c">
+                        *****
+                    </td>
+                    <td class="rf-dt-c">
+                        <h:link value="#{bookController.getCountBooksByRating(5,6)} books"
+                                outcome="/pages/booklist.xhtml">
+                            <f:param name="minRating" value="5"/>
+                            <f:param name="maxRating" value="6"/>
+                        </h:link>
+                    </td>
+                </tr>
+            </table>
+        </rich:panel><br/>
+        <rich:panel header="Authors">
+            <rich:dataTable value="#{authorController.authors}" var="author" style="width:100%;">
+                <rich:column>
+                    <h:link value="#{author.firstName}" outcome="/pages/authorlist.xhtml">
+                        <f:param name="Id" value="#{author.id}"/>
+                    </h:link>
+                </rich:column>
+                <rich:column>
+                    <h:link value="#{author.secondName}" outcome="/pages/authorlist.xhtml">
+                        <f:param name="Id" value="#{author.id}"/>
+                    </h:link>
+                </rich:column>
+                <rich:column>
+                    <h:link value="#{author.books.size()} books" outcome="/pages/booklist.xhtml">
+                        <f:param name="authorId" value="#{author.id}"/>
+                    </h:link>
+                </rich:column>
+                <rich:column>
+                    <h:outputText value="#{author.averageRating}"/>
+                </rich:column>
+            </rich:dataTable>
         </rich:panel>
     </ui:define>
 </ui:composition>

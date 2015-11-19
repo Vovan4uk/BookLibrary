@@ -50,4 +50,8 @@ public class BookController implements Serializable {
     private void initHotReleases() {
         hotReleases = bookManager.findHotReleases();
     }
+
+    public Integer getCountBooksByRating(Integer minRating, Integer maxRating) {
+        return bookManager.findBooksByRating(minRating, maxRating).size();
+    }
 }
