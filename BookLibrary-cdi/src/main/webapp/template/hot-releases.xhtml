@@ -12,7 +12,7 @@
                             rowClasses="odd-row, even-row"
                             styleClass="stable" style="width:100%;">
                 <rich:column>
-                    <h:link styleClass="book_name" value="#{hotRelease.name}" outcome="/pages/books.xhtml">
+                    <h:link styleClass="book_name" value="#{hotRelease.name}" outcome="/pages/booklist.xhtml">
                         <f:param name="Id" value="#{hotRelease.id}"/>
                     </h:link>
                     <br/>
@@ -22,7 +22,7 @@
                     <h:outputText value="#{hotRelease.publishedDate}" styleClass="book_published_date"/><br/>
                     <h:outputText value="#{hotRelease.publisher}" styleClass="book_publisher"/>
                     <rich:list value="#{hotRelease.authors}" id="list" var="author" type="unordered">
-                        <h:link value="#{author.firstName} #{author.secondName}" outcome="/pages/authors.xhtml">
+                        <h:link value="#{author.firstName} #{author.secondName}" outcome="/pages/authorlist.xhtml">
                             <f:param name="Id" value="#{author.id}"/>
                         </h:link>
                     </rich:list>

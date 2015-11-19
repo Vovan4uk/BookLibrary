@@ -25,8 +25,12 @@ public class Author implements Entity {
     @Column(name = "CREATE_DATE", nullable = false, updatable = false)
     private Date createDate;
 
-    //    @Formula("(SELECT AVG(r.RATING) FROM Review r, BOOK_AUTHOR ba WHERE r.BOOK_ID = ba.BOOK_ID AND ba.AUTHOR_ID = ID)")
-    @Formula("(SELECT AVG(r.RATING) FROM (SELECT BOOK_ID FROM BOOK_AUTHOR ba WHERE ba.AUTHOR_ID = ID) bb LEFT JOIN REVIEW r ON r.BOOK_ID = bb.BOOK_ID)")
+    /*
+        Maybe fix later
+        javax.servlet.ServletException: org.hibernate.exception.SQLGrammarException: could not extract ResultSet
+        @Formula("(SELECT AVG(r.RATING) FROM (SELECT ba.BOOK_ID FROM BOOK_AUTHOR ba WHERE ba.AUTHOR_ID = 1) bb LEFT JOIN REVIEW r ON r.BOOK_ID = bb.BOOK_ID)")
+    */
+    @Formula("(SELECT AVG(r.RATING) FROM Review r, BOOK_AUTHOR ba WHERE r.BOOK_ID = ba.BOOK_ID AND ba.AUTHOR_ID = ID)")
     private Double averageRating;
 
     @ManyToMany(mappedBy="authors")
