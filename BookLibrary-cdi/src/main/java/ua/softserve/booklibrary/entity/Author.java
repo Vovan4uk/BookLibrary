@@ -5,9 +5,9 @@ import org.hibernate.annotations.Formula;
 import javax.persistence.*;
 import java.util.*;
 
-@Entity
+@javax.persistence.Entity
 @Table(name = "AUTHOR")
-public class Author implements EntityInterface {
+public class Author implements Entity {
     private static final long serialVersionUID = 5544814440011028323L;
     @Id
     @SequenceGenerator(name = "AUTHOR_ID_GENERATOR", sequenceName = "AUTHOR_S", allocationSize = 1)
@@ -24,16 +24,9 @@ public class Author implements EntityInterface {
     @Temporal(TemporalType.DATE)
     @Column(name = "CREATE_DATE", nullable = false, updatable = false)
     private Date createDate;
-    /*
-        @Formula("(SELECT AVG(r.RATING) " +
-                "FROM Review r " +
-                "LEFT JOIN BOOK_AUTHOR ba " +
-                "ON a.ID = ba.AUTHOR_ID " +
-                "LEFT JOIN BOOK b " +
-                "ON ba.BOOK_ID = b.ID " +
-                "LEFT JOIN REVIEW r ON b.ID = r.BOOK_ID)")
-    */
-    @Formula("(SELECT AVG(r.RATING) FROM Review r, BOOK_AUTHOR ba WHERE r.BOOK_ID = ba.BOOK_ID AND ba.AUTHOR_ID = ID)")
+
+    //    @Formula("(SELECT AVG(r.RATING) FROM Review r, BOOK_AUTHOR ba WHERE r.BOOK_ID = ba.BOOK_ID AND ba.AUTHOR_ID = ID)")
+    @Formula("(SELECT AVG(r.RATING) FROM (SELECT BOOK_ID FROM BOOK_AUTHOR ba WHERE ba.AUTHOR_ID = ID) bb LEFT JOIN REVIEW r ON r.BOOK_ID = bb.BOOK_ID)")
     private Double averageRating;
 
     @ManyToMany(mappedBy="authors")

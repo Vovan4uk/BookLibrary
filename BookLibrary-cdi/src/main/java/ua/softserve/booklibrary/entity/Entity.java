@@ -2,5 +2,5 @@ package ua.softserve.booklibrary.entity;
 
 import java.io.Serializable;
 
-public interface EntityInterface extends Serializable {
+public interface Entity extends Serializable {
 }

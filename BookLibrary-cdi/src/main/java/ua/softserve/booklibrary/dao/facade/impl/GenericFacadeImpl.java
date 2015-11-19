@@ -1,16 +1,16 @@
 package ua.softserve.booklibrary.dao.facade.impl;
 
 import ua.softserve.booklibrary.dao.facade.GenericFacade;
-import ua.softserve.booklibrary.entity.EntityInterface;
+import ua.softserve.booklibrary.entity.Entity;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import java.util.List;
 
-public abstract class GenericFacadeImpl<T extends EntityInterface> implements GenericFacade<T> {
+public abstract class GenericFacadeImpl<T extends Entity> implements GenericFacade<T> {
 
     @PersistenceContext(unitName = "OracleDS")
-    private EntityManager em;
+    protected EntityManager em;
 
     private final Class<T> entityClass;
 

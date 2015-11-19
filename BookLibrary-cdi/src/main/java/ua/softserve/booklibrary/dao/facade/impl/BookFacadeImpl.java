@@ -5,8 +5,6 @@ import ua.softserve.booklibrary.entity.Book;
 
 import javax.ejb.Stateless;
 import javax.inject.Named;
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
 import java.util.List;
 
 @Named
@@ -15,9 +13,6 @@ public class BookFacadeImpl extends GenericFacadeImpl<Book> implements BookFacad
     public BookFacadeImpl() {
         super(Book.class);
     }
-
-    @PersistenceContext(unitName = "OracleDS")
-    private EntityManager em;
 
     @Override
     public List<Book> findHotReleases() {

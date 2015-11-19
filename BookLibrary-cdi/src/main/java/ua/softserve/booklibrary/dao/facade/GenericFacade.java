@@ -1,10 +1,10 @@
 package ua.softserve.booklibrary.dao.facade;
 
-import ua.softserve.booklibrary.entity.EntityInterface;
+import ua.softserve.booklibrary.entity.Entity;
 
 import java.util.List;
 
-public interface GenericFacade<T extends EntityInterface> {
+public interface GenericFacade<T extends Entity> {
     T findByPk(Long id);
     List<T> findAll();
 }

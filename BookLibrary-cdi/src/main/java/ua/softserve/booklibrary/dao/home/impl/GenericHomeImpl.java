@@ -1,15 +1,15 @@
 package ua.softserve.booklibrary.dao.home.impl;
 
 import ua.softserve.booklibrary.dao.home.GenericHome;
-import ua.softserve.booklibrary.entity.EntityInterface;
+import ua.softserve.booklibrary.entity.Entity;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
-public abstract class GenericHomeImpl<T extends EntityInterface> implements GenericHome<T> {
+public abstract class GenericHomeImpl<T extends Entity> implements GenericHome<T> {
 
     @PersistenceContext(unitName = "OracleDS")
-    private EntityManager em;
+    protected EntityManager em;
 
     private final Class<T> entityClass;
 

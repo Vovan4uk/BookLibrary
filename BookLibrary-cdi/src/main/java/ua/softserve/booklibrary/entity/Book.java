@@ -5,12 +5,12 @@ import org.hibernate.annotations.Formula;
 import javax.persistence.*;
 import java.util.*;
 
-@Entity
+@javax.persistence.Entity
 @Table(name = "BOOK")
 @NamedQueries({
         @NamedQuery(name = "Book.findHotReleases", query = "SELECT b FROM Book b ORDER BY createDate desc ")
 })
-public class Book implements EntityInterface {
+public class Book implements Entity {
     private static final long serialVersionUID = 9073502830659864431L;
     @Id
     @SequenceGenerator(name = "BOOK_ID_GENERATOR", sequenceName = "BOOK_S", allocationSize = 1)

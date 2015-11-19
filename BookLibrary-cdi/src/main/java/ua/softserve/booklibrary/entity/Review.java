@@ -7,12 +7,12 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.util.Date;
 
-@Entity
+@javax.persistence.Entity
 @Table(name = "REVIEW")
 @NamedQueries({
         @NamedQuery(name = "Review.countBookReviews", query = "SELECT COUNT(r) as r_count FROM Review r WHERE r.book = :book")
 })
-public class Review implements EntityInterface {
+public class Review implements Entity {
     private static final long serialVersionUID = -8631161684971086224L;
     @Id
     @SequenceGenerator(name = "REVIEW_ID_GENERATOR", sequenceName = "REVIEW_S", allocationSize = 1)
