@@ -1,8 +1,31 @@
 <ui:composition xmlns="http://www.w3.org/1999/xhtml"
                 xmlns:ui="http://java.sun.com/jsf/facelets"
-                xmlns:rich="http://richfaces.org/rich">
+                xmlns:rich="http://richfaces.org/rich"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+        >
 
     <rich:panel header="Hot Book Releases">
-        Book 1<br/>Book 2
+
+
+        <h:form id="form">
+            <rich:dataTable value="#{bookController.hotReleases}" var="hotRelease" id="hot" rows="20"
+                            rowClasses="odd-row, even-row"
+                            styleClass="stable" style="width:100%;">
+                <rich:column>
+                    <h:outputText value="#{hotRelease.name}" styleClass="book_name"/><br/>
+                    <h:outputText value="#{hotRelease.averageRating}" styleClass="book_rating"/>
+                    <h:outputText value="(#{reviewManagerImpl.countBookReviews(hotRelease)})"
+                                  styleClass="count_book_rating"/><br/>
+                    <h:outputText value="#{hotRelease.publishedDate}" styleClass="book_published_date"/><br/>
+                    <h:outputText value="#{hotRelease.publisher}" styleClass="book_publisher"/>
+                </rich:column>
+            </rich:dataTable>
+        </h:form>
+
+
+        <!--
+                <h:outputLabel value="#{bookController.hotReleases}"></h:outputLabel>
+        -->
+
     </rich:panel>
 </ui:composition>

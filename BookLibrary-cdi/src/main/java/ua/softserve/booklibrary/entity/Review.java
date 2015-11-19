@@ -10,7 +10,9 @@ import java.util.Date;
 
 @Entity
 @Table(name = "REVIEW")
-
+@NamedQueries({
+        @NamedQuery(name = "Review.countBookReviews", query = "SELECT COUNT(r) as r_count FROM Review r WHERE r.book = :book")
+})
 public class Review implements Serializable, EntityInterface {
     private static final long serialVersionUID = -8631161684971086224L;
     @Id

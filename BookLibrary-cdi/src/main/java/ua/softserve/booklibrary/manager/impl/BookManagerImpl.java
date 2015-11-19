@@ -52,6 +52,19 @@ public class BookManagerImpl implements BookManager {
 
     @Override
     public List<Book> findAll() {
-        return null;
+        List<Book> books = bookFacade.findAll();
+        for (Book book : books) {
+            book.getAuthors().size();
+        }
+        return books;
+    }
+
+    @Override
+    public List<Book> findHotReleases() {
+        List<Book> books = bookFacade.findHotReleases();
+        for (Book book : books) {
+            book.getAuthors().size();
+        }
+        return books;
     }
 }

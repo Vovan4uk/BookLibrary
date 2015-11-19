@@ -4,6 +4,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import ua.softserve.booklibrary.dao.facade.ReviewFacade;
 import ua.softserve.booklibrary.dao.home.ReviewHome;
+import ua.softserve.booklibrary.entity.Book;
 import ua.softserve.booklibrary.entity.Review;
 import ua.softserve.booklibrary.manager.ReviewManager;
 
@@ -53,5 +54,10 @@ public class ReviewManagerImpl implements ReviewManager {
     @Override
     public List<Review> findAll() {
         return null;
+    }
+
+    @Override
+    public Integer countBookReviews(Book book) {
+        return reviewFacade.countBookReviews(book);
     }
 }

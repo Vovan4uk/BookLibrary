@@ -10,6 +10,10 @@ import java.util.Set;
 
 @Entity
 @Table(name = "BOOK")
+@NamedQueries({
+        @NamedQuery(name = "Book.findHotReleases", query = "SELECT b FROM Book b ORDER BY createDate DESC")
+})
+
 public class Book implements Serializable, EntityInterface {
     private static final long serialVersionUID = 9073502830659864431L;
     @Id
