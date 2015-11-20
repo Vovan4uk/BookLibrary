@@ -19,10 +19,10 @@ public class AuthorManagerImpl implements AuthorManager {
     private static final Logger LOG = LoggerFactory.getLogger(AuthorManager.class);
 
     @EJB
-    AuthorHome authorHome;
+    private AuthorHome authorHome;
 
     @EJB
-    AuthorFacade authorFacade;
+    private AuthorFacade authorFacade;
 
     @Override
     public void save(Author entity) {

@@ -2,16 +2,34 @@ package ua.softserve.booklibrary.entity;
 
 import org.hibernate.annotations.Formula;
 
-import javax.persistence.*;
-import java.util.*;
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
+import javax.persistence.OneToMany;
+import javax.persistence.SequenceGenerator;
+import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 @javax.persistence.Entity
 @Table(name = "BOOK")
 @NamedQueries({
         @NamedQuery(name = "Book.findHotReleases", query = "SELECT b FROM Book b ORDER BY createDate desc "),
-        @NamedQuery(name = "Book.findBooksByRating", query = "SELECT b FROM Book b WHERE averageRating>= :minRating AND averageRating< :maxRating ")
+        @NamedQuery(name = "Book.findBooksByRating", query = "SELECT b FROM Book b WHERE averageRating >= :minRating AND averageRating < :maxRating ")
 })
-public class Book implements Entity {
+public class Book extends Entity {
     private static final long serialVersionUID = 9073502830659864431L;
     @Id
     @SequenceGenerator(name = "BOOK_ID_GENERATOR", sequenceName = "BOOK_S", allocationSize = 1)
@@ -32,12 +50,7 @@ public class Book implements Entity {
     @Column(name = "PUBLISHER")
     private String publisher;
 
-    @Temporal(TemporalType.DATE)
-    @Column(name = "CREATE_DATE", nullable = false, updatable = false)
-    private Date createDate;
-
     @OneToMany(mappedBy = "book", cascade = CascadeType.ALL)
-//    @OrderBy("createDate DESC")
     private Set<Review> reviews = new HashSet<>();
 
     @Formula("(SELECT AVG(r.RATING) FROM REVIEW r WHERE r.BOOK_ID = ID)")
@@ -45,9 +58,9 @@ public class Book implements Entity {
 
     @ManyToMany
     @JoinTable(
-            name="BOOK_AUTHOR",
-            joinColumns=@JoinColumn(name="BOOK_ID"),
-            inverseJoinColumns=@JoinColumn(name="AUTHOR_ID"))
+            name = "BOOK_AUTHOR",
+            joinColumns = @JoinColumn(name = "BOOK_ID"),
+            inverseJoinColumns = @JoinColumn(name = "AUTHOR_ID"))
     private Set<Author> authors = new HashSet<>();
 
     public Book() {
@@ -93,14 +106,6 @@ public class Book implements Entity {
         this.publisher = publisher;
     }
 
-    public Date getCreateDate() {
-        return createDate;
-    }
-
-    public void setCreateDate(Date createDate) {
-        this.createDate = createDate;
-    }
-
     public List<Review> getReviews() {
         return new ArrayList<>(reviews);
     }
@@ -133,7 +138,6 @@ public class Book implements Entity {
                 ", publishedDate=" + publishedDate +
                 ", isbn='" + isbn + '\'' +
                 ", publisher='" + publisher + '\'' +
-                ", createDate=" + createDate +
                 ", averageRating=" + averageRating +
                 '}';
     }

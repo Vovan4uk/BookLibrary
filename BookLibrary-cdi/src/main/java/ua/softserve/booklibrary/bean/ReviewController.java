@@ -13,7 +13,7 @@ import javax.inject.Named;
 public class ReviewController {
 
     @EJB
-    ReviewManager reviewManager;
+    private ReviewManager reviewManager;
 
     private String testString = "hoh";
 

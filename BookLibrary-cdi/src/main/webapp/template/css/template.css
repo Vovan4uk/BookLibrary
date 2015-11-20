@@ -1,0 +1,15 @@
+body {
+}
+
+td.top_right_column {
+    width: 140px;
+}
+
+td.left_column {
+    width: 300px;
+    vertical-align: top;
+}
+
+td.right_column {
+    vertical-align: top;
+}

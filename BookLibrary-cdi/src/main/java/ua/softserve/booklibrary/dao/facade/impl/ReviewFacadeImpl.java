@@ -16,6 +16,6 @@ public class ReviewFacadeImpl extends GenericFacadeImpl<Review> implements Revie
 
     @Override
     public Integer countBookReviews(Book book) {
-        return em.createNamedQuery("Review.countBookReviews", Long.class).setParameter("book", book).getSingleResult().intValue();
+        return em.createNamedQuery("Review.countBookReviews", Number.class).setParameter("book", book).getSingleResult().intValue();
     }
 }

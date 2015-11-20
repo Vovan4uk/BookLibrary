@@ -1,18 +1,27 @@
 package ua.softserve.booklibrary.entity;
 
-import javax.persistence.*;
+import javax.persistence.Column;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.Lob;
+import javax.persistence.ManyToOne;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
+import javax.persistence.SequenceGenerator;
+import javax.persistence.Table;
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
-import java.util.Date;
 
 @javax.persistence.Entity
 @Table(name = "REVIEW")
 @NamedQueries({
         @NamedQuery(name = "Review.countBookReviews", query = "SELECT COUNT(r) as r_count FROM Review r WHERE r.book = :book")
 })
-public class Review implements Entity {
+public class Review extends Entity {
     private static final long serialVersionUID = -8631161684971086224L;
     @Id
     @SequenceGenerator(name = "REVIEW_ID_GENERATOR", sequenceName = "REVIEW_S", allocationSize = 1)
@@ -28,7 +37,7 @@ public class Review implements Entity {
     @NotNull
     @Lob
     @Size(min = 2, max = 20000)
-    @Column(name = "COMMENT_BODY", nullable = false)
+    @Column(name = "COMMENT_BODY", nullable = false, length = 20000)
     private String commentBody;
 
     @NotNull
@@ -36,10 +45,6 @@ public class Review implements Entity {
     @Max(5)
     @Column(name = "RATING", nullable = false)
     private Integer rating;
-
-    @Temporal(TemporalType.DATE)
-    @Column(name = "CREATE_DATE", nullable = false, updatable = false)
-    private Date createDate;
 
     @ManyToOne
     @JoinColumn(name = "BOOK_ID")
@@ -80,14 +85,6 @@ public class Review implements Entity {
         this.rating = rating;
     }
 
-    public Date getCreateDate() {
-        return createDate;
-    }
-
-    public void setCreateDate(Date createDate) {
-        this.createDate = createDate;
-    }
-
     public Book getBook() {
         return book;
     }
@@ -103,7 +100,6 @@ public class Review implements Entity {
                 ", commenterName='" + commenterName + '\'' +
                 ", commentBody='" + commentBody + '\'' +
                 ", rating=" + rating +
-                ", createDate=" + createDate +
                 '}';
     }
 }

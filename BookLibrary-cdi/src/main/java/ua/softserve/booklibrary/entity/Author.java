@@ -2,12 +2,21 @@ package ua.softserve.booklibrary.entity;
 
 import org.hibernate.annotations.Formula;
 
-import javax.persistence.*;
-import java.util.*;
+import javax.persistence.Column;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.ManyToMany;
+import javax.persistence.SequenceGenerator;
+import javax.persistence.Table;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 @javax.persistence.Entity
 @Table(name = "AUTHOR")
-public class Author implements Entity {
+public class Author extends Entity {
     private static final long serialVersionUID = 5544814440011028323L;
     @Id
     @SequenceGenerator(name = "AUTHOR_ID_GENERATOR", sequenceName = "AUTHOR_S", allocationSize = 1)
@@ -21,10 +30,6 @@ public class Author implements Entity {
     @Column(name = "SECOND_NAME")
     private String secondName;
 
-    @Temporal(TemporalType.DATE)
-    @Column(name = "CREATE_DATE", nullable = false, updatable = false)
-    private Date createDate;
-
     /*
         Maybe fix later
         javax.servlet.ServletException: org.hibernate.exception.SQLGrammarException: could not extract ResultSet
@@ -33,7 +38,7 @@ public class Author implements Entity {
     @Formula("(SELECT AVG(r.RATING) FROM Review r, BOOK_AUTHOR ba WHERE r.BOOK_ID = ba.BOOK_ID AND ba.AUTHOR_ID = ID)")
     private Double averageRating;
 
-    @ManyToMany(mappedBy="authors")
+    @ManyToMany(mappedBy = "authors")
     private Set<Book> books = new HashSet<>();
 
     public Author() {
@@ -63,14 +68,6 @@ public class Author implements Entity {
         this.secondName = secondName;
     }
 
-    public Date getCreateDate() {
-        return createDate;
-    }
-
-    public void setCreateDate(Date createDate) {
-        this.createDate = createDate;
-    }
-
     public List<Book> getBooks() {
         return new ArrayList<>(books);
     }
@@ -93,7 +90,6 @@ public class Author implements Entity {
                 "id=" + id +
                 ", firstName='" + firstName + '\'' +
                 ", secondName='" + secondName + '\'' +
-                ", createDate=" + createDate +
                 ", averageRating=" + averageRating +
                 '}';
     }

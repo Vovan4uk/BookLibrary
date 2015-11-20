@@ -13,9 +13,9 @@ import java.util.List;
 public class AuthorController {
 
     @EJB
-    AuthorManager authorManager;
+    private AuthorManager authorManager;
 
-    private List<Author> authors = null;
+    private List<Author> authors;
 
     public AuthorController() {
     }

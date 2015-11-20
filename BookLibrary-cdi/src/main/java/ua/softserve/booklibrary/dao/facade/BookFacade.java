@@ -9,5 +9,5 @@ import java.util.List;
 public interface BookFacade extends GenericFacade<Book> {
     List<Book> findHotReleases();
 
-    List<Book> findBooksByRating(Integer minRating, Integer maxRating);
+    List<Book> findBooksByRating(Integer minRating);
 }

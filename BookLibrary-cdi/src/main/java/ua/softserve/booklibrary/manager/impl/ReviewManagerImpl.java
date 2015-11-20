@@ -20,10 +20,10 @@ public class ReviewManagerImpl implements ReviewManager {
     private static final Logger LOG = LoggerFactory.getLogger(ReviewManager.class);
 
     @EJB
-    ReviewHome reviewHome;
+    private ReviewHome reviewHome;
 
     @EJB
-    ReviewFacade reviewFacade;
+    private ReviewFacade reviewFacade;
 
     @Override
     public void save(Review entity) {

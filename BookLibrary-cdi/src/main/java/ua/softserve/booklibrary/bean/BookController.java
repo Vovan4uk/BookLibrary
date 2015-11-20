@@ -16,10 +16,10 @@ import java.util.List;
 public class BookController implements Serializable {
     private static final long serialVersionUID = 6489108625203081136L;
     @EJB
-    BookManager bookManager;
+    private BookManager bookManager;
 
-    private List<Book> hotReleases = null;
-    private List<Book> books = null;
+    private List<Book> hotReleases;
+    private List<Book> books;
 
     public List<Book> getBooks() {
         if (books == null) {
@@ -51,7 +51,7 @@ public class BookController implements Serializable {
         hotReleases = bookManager.findHotReleases();
     }
 
-    public Integer getCountBooksByRating(Integer minRating, Integer maxRating) {
-        return bookManager.findBooksByRating(minRating, maxRating).size();
+    public Integer getCountBooksByRating(Integer minRating) {
+        return bookManager.findBooksByRating(minRating).size();
     }
 }

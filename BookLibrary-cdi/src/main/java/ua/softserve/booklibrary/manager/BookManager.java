@@ -9,5 +9,5 @@ import java.util.List;
 public interface BookManager extends GenericManager<Book> {
     List<Book> findHotReleases();
 
-    List<Book> findBooksByRating(Integer minRating, Integer maxRating);
+    List<Book> findBooksByRating(Integer minRating);
 }

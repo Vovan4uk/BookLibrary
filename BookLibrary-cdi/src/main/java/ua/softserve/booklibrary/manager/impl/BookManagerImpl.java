@@ -19,10 +19,10 @@ public class BookManagerImpl implements BookManager {
     private static final Logger LOG = LoggerFactory.getLogger(BookManager.class);
 
     @EJB
-    BookHome bookHome;
+    private BookHome bookHome;
 
     @EJB
-    BookFacade bookFacade;
+    private BookFacade bookFacade;
 
     @Override
     public void save(Book entity) {
@@ -70,7 +70,7 @@ public class BookManagerImpl implements BookManager {
     }
 
     @Override
-    public List<Book> findBooksByRating(Integer minRating, Integer maxRating) {
-        return bookFacade.findBooksByRating(minRating, maxRating);
+    public List<Book> findBooksByRating(Integer minRating) {
+        return bookFacade.findBooksByRating(minRating);
     }
 }

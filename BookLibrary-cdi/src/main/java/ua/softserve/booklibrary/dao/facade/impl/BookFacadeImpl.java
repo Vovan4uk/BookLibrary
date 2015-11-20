@@ -20,7 +20,8 @@ public class BookFacadeImpl extends GenericFacadeImpl<Book> implements BookFacad
     }
 
     @Override
-    public List<Book> findBooksByRating(Integer minRating, Integer maxRating) {
+    public List<Book> findBooksByRating(Integer minRating) {
+        Integer maxRating = minRating + 1;
         return em.createNamedQuery("Book.findBooksByRating", Book.class).setParameter("minRating", minRating.doubleValue()).setParameter("maxRating", maxRating.doubleValue()).getResultList();
     }
 }
