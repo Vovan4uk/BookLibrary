@@ -1,14 +1,66 @@
 <ui:composition template="/template/layout.xhtml"
                 xmlns="http://www.w3.org/1999/xhtml"
                 xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
                 xmlns:ui="http://java.sun.com/jsf/facelets"
                 xmlns:rich="http://richfaces.org/rich">
 
     <ui:define name="title">Books Page</ui:define>
 
     <ui:define name="body">
+        <div style="float: right;padding-top: 25px;padding-right: 12px;">
+            <h:commandButton value="Add">
+                <rich:componentControl target="modal" operation="show"/>
+            </h:commandButton>
+            <h:commandButton value="Edit" action="/pages/book.xhtml"/>
+            <h:commandButton value="Delete" action="/pages/book.xhtml"/>
+        </div>
         <rich:panel header="Books page">
-            <h:link outcome="test.xhtml" value="Show Test Page"/>
+            <rich:dataTable value="#{bookController.books}" var="book" style="width:100%;">
+                <rich:column>
+                    <h:link value="#{book.name}" outcome="/pages/book.xhtml">
+                        <f:param name="Id" value="#{book.id}"/>
+                    </h:link>
+                </rich:column>
+                <rich:column>
+                    <h:outputText value="#{book.isbn}"/>
+                </rich:column>
+                <rich:column>
+                    <ui:repeat value="#{book.authors}" var="author">
+                        <h:outputText value="#{author.firstName}"/><br/>
+                    </ui:repeat>
+                </rich:column>
+                <rich:column>
+                    <h:outputText value="#{book.publishedDate}"/>
+                </rich:column>
+                <rich:column>
+                    <h:outputText value="#{book.publisher}"/>
+                </rich:column>
+                <rich:column>
+                    <h:outputText value="#{book.averageRating}"/><br/>
+                    <h:link value="(#{book.reviews.size()} reviews)" outcome="/pages/book.xhtml">
+                        <f:param name="Id" value="#{book.id}"/>
+                    </h:link>
+                </rich:column>
+            </rich:dataTable>
+
+            <rich:popupPanel id="modal" modal="true" resizeable="true" onmaskclick="#{rich:component('modal')}.hide()">
+                <f:facet name="header">
+                    <h:outputText value="Add new book"/>
+                </f:facet>
+                <f:facet name="controls">
+                    <h:outputLink value="#" onclick="#{rich:component('modal')}.hide(); return false;">
+                        X
+                    </h:outputLink>
+                </f:facet>
+                <h:form>
+                    <h:inputText value="" id="name"/><br/><br/>
+                    <h:inputText value="" id="isbn"/><br/><br/>
+                    <h:inputText value="" id="publisher"/><br/><br/>
+                    <h:commandButton value="Save" action="#{reviewController.save}"/>
+                </h:form>
+            </rich:popupPanel>
+
         </rich:panel>
     </ui:define>
 </ui:composition>

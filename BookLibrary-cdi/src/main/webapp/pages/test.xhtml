@@ -9,11 +9,11 @@
 
     <ui:define name="body">
         <rich:panel header="Test panel">
-            <rich:editor value="#{reviewController.testString}"></rich:editor>
+            <rich:editor value="#{reviewController.testString}"/>
             <h:form>
-                <h:commandButton value="sozdat" action="#{reviewController.save}"></h:commandButton>
+                <h:commandButton value="sozdat" action="#{reviewController.save}"/>
             </h:form>
-            <rich:calendar></rich:calendar>
+            <rich:calendar/>
             <h:commandButton value="Call the popup">
                 <rich:componentControl target="popup" operation="show"/>
             </h:commandButton>

@@ -90,12 +90,12 @@
         <rich:panel header="Authors">
             <rich:dataTable value="#{authorController.authors}" var="author" style="width:100%;">
                 <rich:column>
-                    <h:link value="#{author.firstName}" outcome="/pages/authorlist.xhtml">
+                    <h:link value="#{author.firstName}" outcome="/pages/author.xhtml">
                         <f:param name="Id" value="#{author.id}"/>
                     </h:link>
                 </rich:column>
                 <rich:column>
-                    <h:link value="#{author.secondName}" outcome="/pages/authorlist.xhtml">
+                    <h:link value="#{author.secondName}" outcome="/pages/author.xhtml">
                         <f:param name="Id" value="#{author.id}"/>
                     </h:link>
                 </rich:column>

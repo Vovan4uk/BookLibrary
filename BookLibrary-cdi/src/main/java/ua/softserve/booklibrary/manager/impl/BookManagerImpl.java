@@ -55,6 +55,7 @@ public class BookManagerImpl implements BookManager {
         List<Book> books = bookFacade.findAll();
         for (Book book : books) {
             book.getAuthors().size();
+            book.getReviews().size();
         }
         return books;
     }
