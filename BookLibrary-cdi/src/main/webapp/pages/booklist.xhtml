@@ -3,10 +3,10 @@
                 xmlns:h="http://java.sun.com/jsf/html"
                 xmlns:f="http://java.sun.com/jsf/core"
                 xmlns:ui="http://java.sun.com/jsf/facelets"
-                xmlns:rich="http://richfaces.org/rich">
+                xmlns:rich="http://richfaces.org/rich"
+                xmlns:a4j="http://richfaces.org/a4j">
 
     <ui:define name="title">Books Page</ui:define>
-
     <ui:define name="body">
         <div style="float: right;padding-top: 25px;padding-right: 12px;">
             <h:commandButton value="Add">
@@ -16,7 +16,7 @@
             <h:commandButton value="Delete" action="/pages/book.xhtml"/>
         </div>
         <rich:panel header="Books page">
-            <rich:dataTable value="#{bookController.books}" var="book" style="width:100%;">
+            <rich:dataTable value="#{bookController.books}" var="book" style="width:100%;" rows="1">
                 <rich:column>
                     <h:link value="#{book.name}" outcome="/pages/book.xhtml">
                         <f:param name="Id" value="#{book.id}"/>
@@ -26,9 +26,9 @@
                     <h:outputText value="#{book.isbn}"/>
                 </rich:column>
                 <rich:column>
-                    <ui:repeat value="#{book.authors}" var="author">
+                    <a4j:repeat value="#{book.authors}" var="author" rows="15" id="repeat">
                         <h:outputText value="#{author.firstName}"/><br/>
-                    </ui:repeat>
+                    </a4j:repeat>
                 </rich:column>
                 <rich:column>
                     <h:outputText value="#{book.publishedDate}"/>
@@ -42,6 +42,9 @@
                         <f:param name="Id" value="#{book.id}"/>
                     </h:link>
                 </rich:column>
+                <f:facet name="footer">
+                    <rich:dataScroller/>
+                </f:facet>
             </rich:dataTable>
 
             <rich:popupPanel id="modal" modal="true" resizeable="true" onmaskclick="#{rich:component('modal')}.hide()">

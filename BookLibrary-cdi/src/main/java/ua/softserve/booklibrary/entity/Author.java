@@ -9,9 +9,7 @@ import javax.persistence.Id;
 import javax.persistence.ManyToMany;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
-import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 @javax.persistence.Entity
@@ -68,8 +66,8 @@ public class Author extends Entity {
         this.secondName = secondName;
     }
 
-    public List<Book> getBooks() {
-        return new ArrayList<>(books);
+    public Set<Book> getBooks() {
+        return books;
     }
 
     public void setBooks(Set<Book> books) {

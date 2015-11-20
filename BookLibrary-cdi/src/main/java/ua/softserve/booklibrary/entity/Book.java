@@ -17,10 +17,8 @@ import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 @javax.persistence.Entity
@@ -106,16 +104,16 @@ public class Book extends Entity {
         this.publisher = publisher;
     }
 
-    public List<Review> getReviews() {
-        return new ArrayList<>(reviews);
+    public Set<Review> getReviews() {
+        return reviews;
     }
 
     public void setReviews(Set<Review> reviews) {
         this.reviews = reviews;
     }
 
-    public List<Author> getAuthors() {
-        return new ArrayList<>(authors);
+    public Set<Author> getAuthors() {
+        return authors;
     }
 
     public void setAuthors(Set<Author> authors) {
