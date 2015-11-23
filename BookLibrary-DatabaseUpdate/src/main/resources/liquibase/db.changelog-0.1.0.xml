@@ -70,6 +70,7 @@
                 <constraints nullable="false"/>
             </column>
         </createTable>
+        <addPrimaryKey tableName="BOOK_AUTHOR" constraintName="BOOK_AUTHOR_PK" columnNames="BOOK_ID, AUTHOR_ID"/>
 
         <addForeignKeyConstraint baseTableName="BOOK_AUTHOR" constraintName="BOOK_AUTHOR_FK1" baseColumnNames="BOOK_ID"
                                  referencedTableName="BOOK" referencedColumnNames="ID" onDelete="CASCADE"

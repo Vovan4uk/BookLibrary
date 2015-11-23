@@ -7,97 +7,411 @@
     <changeSet id="0.2.0" author="vperep">
         <insert tableName="BOOK">
             <column name="ID" valueComputed="BOOK_S.NEXTVAL"/>
-            <column name="NAME" value="book name"/>
-            <column name="PUBLISHED_DATE" value="to_date('09.11.2015','DD.MM.RRRR')"/>
-            <column name="ISBN" value="ISBN-3-2456-5677"/>
-            <column name="PUBLISHER" value="publisher"/>
-            <column name="CREATE_DATE" value="to_date('09.11.2015','DD.MM.RRRR')"/>
+            <column name="NAME" value="Spring in action"/>
+            <column name="PUBLISHED_DATE" value="to_date('27.01.2012','DD.MM.RRRR')"/>
+            <column name="ISBN" value="ISBN-3-2456-2676"/>
+            <column name="PUBLISHER" value="Apress"/>
+            <column name="CREATE_DATE" value="to_date('04.11.2015','DD.MM.RRRR')"/>
         </insert>
         <insert tableName="BOOK">
             <column name="ID" valueComputed="BOOK_S.NEXTVAL"/>
-            <column name="NAME" value="book name 2"/>
-            <column name="PUBLISHED_DATE" value="to_date('09.11.2015','DD.MM.RRRR')"/>
-            <column name="ISBN" value="ISBN-3-2456-5673"/>
-            <column name="PUBLISHER" value="publisher"/>
-            <column name="CREATE_DATE" value="to_date('09.11.2015','DD.MM.RRRR')"/>
+            <column name="NAME" value="Hibernate in action"/>
+            <column name="PUBLISHED_DATE" value="to_date('07.09.2012','DD.MM.RRRR')"/>
+            <column name="ISBN" value="ISBN-3-2456-2476"/>
+            <column name="PUBLISHER" value="Apress"/>
+            <column name="CREATE_DATE" value="to_date('05.11.2015','DD.MM.RRRR')"/>
         </insert>
         <insert tableName="BOOK">
             <column name="ID" valueComputed="BOOK_S.NEXTVAL"/>
-            <column name="NAME" value="book name 3"/>
-            <column name="PUBLISHED_DATE" value="to_date('09.11.2015','DD.MM.RRRR')"/>
-            <column name="ISBN" value="ISBN-3-2456-5676"/>
-            <column name="PUBLISHER" value="publisher"/>
+            <column name="NAME" value="Beginning JSP, JSF and Tomcat: Java Web Development"/>
+            <column name="PUBLISHED_DATE" value="to_date('17.02.2010','DD.MM.RRRR')"/>
+            <column name="ISBN" value="ISBN-3-1456-2676"/>
+            <column name="PUBLISHER" value="Prentice Hall"/>
+            <column name="CREATE_DATE" value="to_date('01.11.2015','DD.MM.RRRR')"/>
+        </insert>
+        <insert tableName="BOOK">
+            <column name="ID" valueComputed="BOOK_S.NEXTVAL"/>
+            <column name="NAME" value="Core JavaServer Faces"/>
+            <column name="PUBLISHED_DATE" value="to_date('11.12.2009','DD.MM.RRRR')"/>
+            <column name="ISBN" value="ISBN-3-8456-2676"/>
+            <column name="PUBLISHER" value="Prentice Hall"/>
+            <column name="CREATE_DATE" value="to_date('01.11.2015','DD.MM.RRRR')"/>
+        </insert>
+        <insert tableName="BOOK">
+            <column name="ID" valueComputed="BOOK_S.NEXTVAL"/>
+            <column name="NAME" value="Core Servlets and JavaServer Pages: Core Technologies"/>
+            <column name="PUBLISHED_DATE" value="to_date('21.12.2014','DD.MM.RRRR')"/>
+            <column name="ISBN" value="ISBN-3-8446-2676"/>
+            <column name="PUBLISHER" value="Prentice Hall"/>
+            <column name="CREATE_DATE" value="to_date('01.11.2015','DD.MM.RRRR')"/>
+        </insert>
+        <insert tableName="BOOK">
+            <column name="ID" valueComputed="BOOK_S.NEXTVAL"/>
+            <column name="NAME" value="Exploring HTML5 with JSF 2.0"/>
+            <column name="PUBLISHED_DATE" value="to_date('24.10.2014','DD.MM.RRRR')"/>
+            <column name="ISBN" value="ISBN-3-8443-2676"/>
+            <column name="PUBLISHER" value="Oracle"/>
+            <column name="CREATE_DATE" value="to_date('01.09.2015','DD.MM.RRRR')"/>
+        </insert>
+        <insert tableName="BOOK">
+            <column name="ID" valueComputed="BOOK_S.NEXTVAL"/>
+            <column name="NAME" value="Processing XML With Java: A Guide to SAX, DOM, JDOM, JAXP, and TrAX"/>
+            <column name="PUBLISHED_DATE" value="to_date('24.05.2013','DD.MM.RRRR')"/>
+            <column name="ISBN" value="ISBN-3-2443-2676"/>
+            <column name="PUBLISHER" value="Addison-Wesley Professional"/>
+            <column name="CREATE_DATE" value="to_date('01.07.2015','DD.MM.RRRR')"/>
+        </insert>
+        <insert tableName="BOOK">
+            <column name="ID" valueComputed="BOOK_S.NEXTVAL"/>
+            <column name="NAME" value="Functional Requirements and Use Cases"/>
+            <column name="PUBLISHED_DATE" value="to_date('22.05.2013','DD.MM.RRRR')"/>
+            <column name="ISBN" value="ISBN-3-2413-2676"/>
+            <column name="PUBLISHER" value="Ruth"/>
+            <column name="CREATE_DATE" value="to_date('13.07.2015','DD.MM.RRRR')"/>
+        </insert>
+        <insert tableName="BOOK">
+            <column name="ID" valueComputed="BOOK_S.NEXTVAL"/>
+            <column name="NAME" value="JavaScript, jQuery: The Missing Manual"/>
+            <column name="PUBLISHED_DATE" value="to_date('20.05.2013','DD.MM.RRRR')"/>
+            <column name="ISBN" value="ISBN-3-2913-2676"/>
+            <column name="PUBLISHER" value="Pogue Press"/>
+            <column name="CREATE_DATE" value="to_date('13.07.2015','DD.MM.RRRR')"/>
+        </insert>
+        <insert tableName="BOOK">
+            <column name="ID" valueComputed="BOOK_S.NEXTVAL"/>
+            <column name="NAME" value="HTML5 Hacks"/>
+            <column name="PUBLISHED_DATE" value="to_date('20.05.2012','DD.MM.RRRR')"/>
+            <column name="ISBN" value="ISBN-3-2913-2673"/>
+            <column name="PUBLISHER" value="O'Reilly Media"/>
+            <column name="CREATE_DATE" value="to_date('13.07.2015','DD.MM.RRRR')"/>
+        </insert>
+        <insert tableName="BOOK">
+            <column name="ID" valueComputed="BOOK_S.NEXTVAL"/>
+            <column name="NAME" value="Fast Track UML 2.0"/>
+            <column name="PUBLISHED_DATE" value="to_date('10.06.2004','DD.MM.RRRR')"/>
+            <column name="ISBN" value="ISBN-3-2913-2273"/>
+            <column name="PUBLISHER" value="Apress"/>
+            <column name="CREATE_DATE" value="to_date('23.07.2015','DD.MM.RRRR')"/>
+        </insert>
+        <insert tableName="BOOK">
+            <column name="ID" valueComputed="BOOK_S.NEXTVAL"/>
+            <column name="NAME" value="Pragmatic Version Control Using Git"/>
+            <column name="PUBLISHED_DATE" value="to_date('10.11.2012','DD.MM.RRRR')"/>
+            <column name="ISBN" value="ISBN-3-1913-2273"/>
+            <column name="PUBLISHER" value="Pragmatic Bookshelf"/>
+            <column name="CREATE_DATE" value="to_date('23.08.2015','DD.MM.RRRR')"/>
+        </insert>
+
+
+        <insert tableName="AUTHOR">
+            <column name="ID" valueComputed="AUTHOR_S.NEXTVAL"/>
+            <column name="FIRST_NAME" value="Herrington"/>
+            <column name="SECOND_NAME" value="Jack"/>
             <column name="CREATE_DATE" value="to_date('09.11.2015','DD.MM.RRRR')"/>
         </insert>
         <insert tableName="AUTHOR">
             <column name="ID" valueComputed="AUTHOR_S.NEXTVAL"/>
-            <column name="FIRST_NAME" value="author first name"/>
-            <column name="SECOND_NAME" value="author second name"/>
+            <column name="FIRST_NAME" value="Kim"/>
+            <column name="SECOND_NAME" value="Emily"/>
             <column name="CREATE_DATE" value="to_date('09.11.2015','DD.MM.RRRR')"/>
         </insert>
         <insert tableName="AUTHOR">
             <column name="ID" valueComputed="AUTHOR_S.NEXTVAL"/>
-            <column name="FIRST_NAME" value="author first name 2"/>
-            <column name="SECOND_NAME" value="author second name 2"/>
+            <column name="FIRST_NAME" value="Lafore"/>
+            <column name="SECOND_NAME" value="Robert"/>
             <column name="CREATE_DATE" value="to_date('09.11.2015','DD.MM.RRRR')"/>
         </insert>
+        <insert tableName="AUTHOR">
+            <column name="ID" valueComputed="AUTHOR_S.NEXTVAL"/>
+            <column name="FIRST_NAME" value="Waite"/>
+            <column name="SECOND_NAME" value="Mitchell"/>
+            <column name="CREATE_DATE" value="to_date('09.11.2015','DD.MM.RRRR')"/>
+        </insert>
+        <insert tableName="AUTHOR">
+            <column name="ID" valueComputed="AUTHOR_S.NEXTVAL"/>
+            <column name="FIRST_NAME" value="Warner"/>
+            <column name="SECOND_NAME" value="Janine"/>
+            <column name="CREATE_DATE" value="to_date('09.11.2015','DD.MM.RRRR')"/>
+        </insert>
+        <insert tableName="AUTHOR">
+            <column name="ID" valueComputed="AUTHOR_S.NEXTVAL"/>
+            <column name="FIRST_NAME" value="Lafontaine"/>
+            <column name="SECOND_NAME" value="David"/>
+            <column name="CREATE_DATE" value="to_date('09.11.2015','DD.MM.RRRR')"/>
+        </insert>
+        <insert tableName="AUTHOR">
+            <column name="ID" valueComputed="AUTHOR_S.NEXTVAL"/>
+            <column name="FIRST_NAME" value="Andron"/>
+            <column name="SECOND_NAME" value="Lee"/>
+            <column name="CREATE_DATE" value="to_date('09.11.2015','DD.MM.RRRR')"/>
+        </insert>
+        <insert tableName="AUTHOR">
+            <column name="ID" valueComputed="AUTHOR_S.NEXTVAL"/>
+            <column name="FIRST_NAME" value="Walch"/>
+            <column name="SECOND_NAME" value="Rob"/>
+            <column name="CREATE_DATE" value="to_date('09.11.2015','DD.MM.RRRR')"/>
+        </insert>
+        <insert tableName="AUTHOR">
+            <column name="ID" valueComputed="AUTHOR_S.NEXTVAL"/>
+            <column name="FIRST_NAME" value="Lafferty"/>
+            <column name="SECOND_NAME" value="Mur"/>
+            <column name="CREATE_DATE" value="to_date('09.11.2015','DD.MM.RRRR')"/>
+        </insert>
+        <insert tableName="AUTHOR">
+            <column name="ID" valueComputed="AUTHOR_S.NEXTVAL"/>
+            <column name="FIRST_NAME" value="Landoll"/>
+            <column name="SECOND_NAME" value="Douglas"/>
+            <column name="CREATE_DATE" value="to_date('09.11.2015','DD.MM.RRRR')"/>
+        </insert>
+        <insert tableName="AUTHOR">
+            <column name="ID" valueComputed="AUTHOR_S.NEXTVAL"/>
+            <column name="FIRST_NAME" value="Lane"/>
+            <column name="SECOND_NAME" value="David"/>
+            <column name="CREATE_DATE" value="to_date('09.11.2015','DD.MM.RRRR')"/>
+        </insert>
+        <insert tableName="AUTHOR">
+            <column name="ID" valueComputed="AUTHOR_S.NEXTVAL"/>
+            <column name="FIRST_NAME" value="Williams"/>
+            <column name="SECOND_NAME" value="Hugh"/>
+            <column name="CREATE_DATE" value="to_date('09.11.2015','DD.MM.RRRR')"/>
+        </insert>
+
+
         <insert tableName="BOOK_AUTHOR">
             <column name="BOOK_ID" value="1"/>
             <column name="AUTHOR_ID" value="1"/>
+        </insert>
+        <insert tableName="BOOK_AUTHOR">
+            <column name="BOOK_ID" value="1"/>
+            <column name="AUTHOR_ID" value="7"/>
         </insert>
         <insert tableName="BOOK_AUTHOR">
             <column name="BOOK_ID" value="2"/>
             <column name="AUTHOR_ID" value="1"/>
         </insert>
         <insert tableName="BOOK_AUTHOR">
+            <column name="BOOK_ID" value="2"/>
+            <column name="AUTHOR_ID" value="3"/>
+        </insert>
+        <insert tableName="BOOK_AUTHOR">
             <column name="BOOK_ID" value="3"/>
             <column name="AUTHOR_ID" value="2"/>
         </insert>
+        <insert tableName="BOOK_AUTHOR">
+            <column name="BOOK_ID" value="4"/>
+            <column name="AUTHOR_ID" value="5"/>
+        </insert>
+        <insert tableName="BOOK_AUTHOR">
+            <column name="BOOK_ID" value="4"/>
+            <column name="AUTHOR_ID" value="6"/>
+        </insert>
+        <insert tableName="BOOK_AUTHOR">
+            <column name="BOOK_ID" value="5"/>
+            <column name="AUTHOR_ID" value="4"/>
+        </insert>
+        <insert tableName="BOOK_AUTHOR">
+            <column name="BOOK_ID" value="5"/>
+            <column name="AUTHOR_ID" value="8"/>
+        </insert>
+        <insert tableName="BOOK_AUTHOR">
+            <column name="BOOK_ID" value="6"/>
+            <column name="AUTHOR_ID" value="9"/>
+        </insert>
+        <insert tableName="BOOK_AUTHOR">
+            <column name="BOOK_ID" value="7"/>
+            <column name="AUTHOR_ID" value="10"/>
+        </insert>
+        <insert tableName="BOOK_AUTHOR">
+            <column name="BOOK_ID" value="8"/>
+            <column name="AUTHOR_ID" value="11"/>
+        </insert>
+        <insert tableName="BOOK_AUTHOR">
+            <column name="BOOK_ID" value="8"/>
+            <column name="AUTHOR_ID" value="12"/>
+        </insert>
+        <insert tableName="BOOK_AUTHOR">
+            <column name="BOOK_ID" value="8"/>
+            <column name="AUTHOR_ID" value="10"/>
+        </insert>
+        <insert tableName="BOOK_AUTHOR">
+            <column name="BOOK_ID" value="9"/>
+            <column name="AUTHOR_ID" value="3"/>
+        </insert>
+        <insert tableName="BOOK_AUTHOR">
+            <column name="BOOK_ID" value="10"/>
+            <column name="AUTHOR_ID" value="3"/>
+        </insert>
+        <insert tableName="BOOK_AUTHOR">
+            <column name="BOOK_ID" value="10"/>
+            <column name="AUTHOR_ID" value="8"/>
+        </insert>
+        <insert tableName="BOOK_AUTHOR">
+            <column name="BOOK_ID" value="11"/>
+            <column name="AUTHOR_ID" value="2"/>
+        </insert>
+        <insert tableName="BOOK_AUTHOR">
+            <column name="BOOK_ID" value="12"/>
+            <column name="AUTHOR_ID" value="7"/>
+        </insert>
+
+
         <insert tableName="REVIEW">
             <column name="ID" valueComputed="REVIEW_S.NEXTVAL"/>
-            <column name="COMMENTER_NAME" value="commenter name 1"/>
-            <column name="COMMENT_BODY" value="comment body 1"/>
+            <column name="COMMENTER_NAME" value="Lusi"/>
+            <column name="COMMENT_BODY" value="Great.Must-read."/>
             <column name="RATING" value="5"/>
             <column name="CREATE_DATE" value="to_date('09.11.2015','DD.MM.RRRR')"/>
             <column name="BOOK_ID" value="1"/>
         </insert>
         <insert tableName="REVIEW">
             <column name="ID" valueComputed="REVIEW_S.NEXTVAL"/>
-            <column name="COMMENTER_NAME" value="commenter name 2"/>
-            <column name="COMMENT_BODY" value="comment body 2"/>
-            <column name="RATING" value="2"/>
-            <column name="CREATE_DATE" value="to_date('09.11.2015','DD.MM.RRRR')"/>
-            <column name="BOOK_ID" value="1"/>
-        </insert>
-        <insert tableName="REVIEW">
-            <column name="ID" valueComputed="REVIEW_S.NEXTVAL"/>
-            <column name="COMMENTER_NAME" value="commenter name 3"/>
-            <column name="COMMENT_BODY" value="comment body 3"/>
-            <column name="RATING" value="1"/>
+            <column name="COMMENTER_NAME" value="Albert"/>
+            <column name="COMMENT_BODY" value="Great.Must-read."/>
+            <column name="RATING" value="3"/>
             <column name="CREATE_DATE" value="to_date('09.11.2015','DD.MM.RRRR')"/>
             <column name="BOOK_ID" value="2"/>
         </insert>
         <insert tableName="REVIEW">
             <column name="ID" valueComputed="REVIEW_S.NEXTVAL"/>
-            <column name="COMMENTER_NAME" value="commenter name 4"/>
-            <column name="COMMENT_BODY" value="comment body 4"/>
+            <column name="COMMENTER_NAME" value="Elisabet"/>
+            <column name="COMMENT_BODY" value="Great.Must-read."/>
+            <column name="RATING" value="1"/>
+            <column name="CREATE_DATE" value="to_date('09.11.2015','DD.MM.RRRR')"/>
+            <column name="BOOK_ID" value="3"/>
+        </insert>
+        <insert tableName="REVIEW">
+            <column name="ID" valueComputed="REVIEW_S.NEXTVAL"/>
+            <column name="COMMENTER_NAME" value="Lusi"/>
+            <column name="COMMENT_BODY" value="Great.Must-read."/>
+            <column name="RATING" value="5"/>
+            <column name="CREATE_DATE" value="to_date('09.11.2015','DD.MM.RRRR')"/>
+            <column name="BOOK_ID" value="4"/>
+        </insert>
+        <insert tableName="REVIEW">
+            <column name="ID" valueComputed="REVIEW_S.NEXTVAL"/>
+            <column name="COMMENTER_NAME" value="Lusi"/>
+            <column name="COMMENT_BODY" value="Great.Must-read."/>
+            <column name="RATING" value="5"/>
+            <column name="CREATE_DATE" value="to_date('09.11.2015','DD.MM.RRRR')"/>
+            <column name="BOOK_ID" value="5"/>
+        </insert>
+        <insert tableName="REVIEW">
+            <column name="ID" valueComputed="REVIEW_S.NEXTVAL"/>
+            <column name="COMMENTER_NAME" value="Lusi"/>
+            <column name="COMMENT_BODY" value="Great.Must-read."/>
+            <column name="RATING" value="5"/>
+            <column name="CREATE_DATE" value="to_date('09.11.2015','DD.MM.RRRR')"/>
+            <column name="BOOK_ID" value="6"/>
+        </insert>
+        <insert tableName="REVIEW">
+            <column name="ID" valueComputed="REVIEW_S.NEXTVAL"/>
+            <column name="COMMENTER_NAME" value="Lusi"/>
+            <column name="COMMENT_BODY" value="Great.Must-read."/>
+            <column name="RATING" value="5"/>
+            <column name="CREATE_DATE" value="to_date('09.11.2015','DD.MM.RRRR')"/>
+            <column name="BOOK_ID" value="7"/>
+        </insert>
+        <insert tableName="REVIEW">
+            <column name="ID" valueComputed="REVIEW_S.NEXTVAL"/>
+            <column name="COMMENTER_NAME" value="Lusi"/>
+            <column name="COMMENT_BODY" value="Great.Must-read."/>
+            <column name="RATING" value="5"/>
+            <column name="CREATE_DATE" value="to_date('09.11.2015','DD.MM.RRRR')"/>
+            <column name="BOOK_ID" value="8"/>
+        </insert>
+        <insert tableName="REVIEW">
+            <column name="ID" valueComputed="REVIEW_S.NEXTVAL"/>
+            <column name="COMMENTER_NAME" value="Lusi"/>
+            <column name="COMMENT_BODY" value="Great.Must-read."/>
+            <column name="RATING" value="5"/>
+            <column name="CREATE_DATE" value="to_date('09.11.2015','DD.MM.RRRR')"/>
+            <column name="BOOK_ID" value="10"/>
+        </insert>
+        <insert tableName="REVIEW">
+            <column name="ID" valueComputed="REVIEW_S.NEXTVAL"/>
+            <column name="COMMENTER_NAME" value="Lusi"/>
+            <column name="COMMENT_BODY" value="Great.Must-read."/>
+            <column name="RATING" value="5"/>
+            <column name="CREATE_DATE" value="to_date('09.11.2015','DD.MM.RRRR')"/>
+            <column name="BOOK_ID" value="11"/>
+        </insert>
+        <insert tableName="REVIEW">
+            <column name="ID" valueComputed="REVIEW_S.NEXTVAL"/>
+            <column name="COMMENTER_NAME" value="Lusi"/>
+            <column name="COMMENT_BODY" value="Great.Must-read."/>
+            <column name="RATING" value="5"/>
+            <column name="CREATE_DATE" value="to_date('09.11.2015','DD.MM.RRRR')"/>
+            <column name="BOOK_ID" value="12"/>
+        </insert>
+        <insert tableName="REVIEW">
+            <column name="ID" valueComputed="REVIEW_S.NEXTVAL"/>
+            <column name="COMMENTER_NAME" value="Xiani"/>
+            <column name="COMMENT_BODY" value="Great.Must-read."/>
             <column name="RATING" value="2"/>
             <column name="CREATE_DATE" value="to_date('09.11.2015','DD.MM.RRRR')"/>
-            <column name="BOOK_ID" value="3"/>
+            <column name="BOOK_ID" value="2"/>
         </insert>
         <insert tableName="REVIEW">
             <column name="ID" valueComputed="REVIEW_S.NEXTVAL"/>
-            <column name="COMMENTER_NAME" value="commenter name 5"/>
-            <column name="COMMENT_BODY" value="comment body 5"/>
-            <column name="RATING" value="4"/>
-            <column name="CREATE_DATE" value="to_date('09.11.2015','DD.MM.RRRR')"/>
-            <column name="BOOK_ID" value="3"/>
+            <column name="COMMENTER_NAME" value="Roodiger"/>
+            <column name="COMMENT_BODY" value="Great.Must-read."/>
+            <column name="RATING" value="5"/>
+            <column name="CREATE_DATE" value="to_date('09.10.2015','DD.MM.RRRR')"/>
+            <column name="BOOK_ID" value="2"/>
         </insert>
         <insert tableName="REVIEW">
             <column name="ID" valueComputed="REVIEW_S.NEXTVAL"/>
-            <column name="COMMENTER_NAME" value="commenter name 6"/>
-            <column name="COMMENT_BODY" value="comment body 6"/>
+            <column name="COMMENTER_NAME" value="Elbus"/>
+            <column name="COMMENT_BODY" value="Great.Must-read."/>
             <column name="RATING" value="1"/>
+            <column name="CREATE_DATE" value="to_date('07.11.2015','DD.MM.RRRR')"/>
+            <column name="BOOK_ID" value="2"/>
+        </insert>
+        <insert tableName="REVIEW">
+            <column name="ID" valueComputed="REVIEW_S.NEXTVAL"/>
+            <column name="COMMENTER_NAME" value="HowManyProblemDoYouHave?"/>
+            <column name="COMMENT_BODY" value="Great.Must-read."/>
+            <column name="RATING" value="5"/>
+            <column name="CREATE_DATE" value="to_date('09.12.2014','DD.MM.RRRR')"/>
+            <column name="BOOK_ID" value="2"/>
+        </insert>
+        <insert tableName="REVIEW">
+            <column name="ID" valueComputed="REVIEW_S.NEXTVAL"/>
+            <column name="COMMENTER_NAME" value="Frank"/>
+            <column name="COMMENT_BODY" value="Great.Must-read."/>
+            <column name="RATING" value="5"/>
+            <column name="CREATE_DATE" value="to_date('01.11.2015','DD.MM.RRRR')"/>
+            <column name="BOOK_ID" value="1"/>
+        </insert>
+        <insert tableName="REVIEW">
+            <column name="ID" valueComputed="REVIEW_S.NEXTVAL"/>
+            <column name="COMMENTER_NAME" value="Lisa"/>
+            <column name="COMMENT_BODY" value="Great.Must-read."/>
+            <column name="RATING" value="4"/>
+            <column name="CREATE_DATE" value="to_date('01.11.2015','DD.MM.RRRR')"/>
+            <column name="BOOK_ID" value="1"/>
+        </insert>
+        <insert tableName="REVIEW">
+            <column name="ID" valueComputed="REVIEW_S.NEXTVAL"/>
+            <column name="COMMENTER_NAME" value="Erik"/>
+            <column name="COMMENT_BODY" value="Great.Must-read."/>
+            <column name="RATING" value="5"/>
+            <column name="CREATE_DATE" value="to_date('09.11.2010','DD.MM.RRRR')"/>
+            <column name="BOOK_ID" value="1"/>
+        </insert>
+        <insert tableName="REVIEW">
+            <column name="ID" valueComputed="REVIEW_S.NEXTVAL"/>
+            <column name="COMMENTER_NAME" value="Soen"/>
+            <column name="COMMENT_BODY" value="Great.Must-read."/>
+            <column name="RATING" value="2"/>
+            <column name="CREATE_DATE" value="to_date('08.11.2015','DD.MM.RRRR')"/>
+            <column name="BOOK_ID" value="1"/>
+        </insert>
+        <insert tableName="REVIEW">
+            <column name="ID" valueComputed="REVIEW_S.NEXTVAL"/>
+            <column name="COMMENTER_NAME" value="Lee"/>
+            <column name="COMMENT_BODY" value="Great.Must-read."/>
+            <column name="RATING" value="5"/>
             <column name="CREATE_DATE" value="to_date('09.11.2015','DD.MM.RRRR')"/>
             <column name="BOOK_ID" value="3"/>
         </insert>

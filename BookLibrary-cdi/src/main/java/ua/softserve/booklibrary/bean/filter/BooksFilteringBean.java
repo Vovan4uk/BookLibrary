@@ -1,0 +1,61 @@
+package ua.softserve.booklibrary.bean.filter;
+
+import ua.softserve.booklibrary.entity.Author;
+import ua.softserve.booklibrary.entity.Book;
+import ua.softserve.booklibrary.manager.AuthorManager;
+
+import javax.ejb.EJB;
+import javax.faces.bean.ManagedBean;
+import javax.faces.bean.ViewScoped;
+import java.io.Serializable;
+
+@ManagedBean
+@ViewScoped
+public class BooksFilteringBean implements Serializable {
+    private static final long serialVersionUID = -3725901188975943276L;
+    private String authorFilter = "";
+    @EJB
+    private AuthorManager authorManager;
+
+    public boolean getFilterAuthorImpl(Object current) {
+        Book currentBook = (Book) current;
+        if ("".equals(authorFilter)) {
+            return true;
+        }
+        for (Author author : currentBook.getAuthors()) {
+            if (author.getFirstName().toLowerCase().contains(authorFilter.toLowerCase()) || author.getSecondName().toLowerCase().contains(authorFilter.toLowerCase())) {
+                return true;
+            }
+        }
+        return false;
+    }
+/*
+    public Filter<Book> getFilterAuthorImpl() {
+        System.out.println(authorFilter+"++++++++++++++++++++++++++++++++++++++");
+        return new Filter<Book>() {
+            public boolean accept(Book book) {
+                String authorString = getAuthorFilter();
+                if (authorString == null || authorString.length() == 0) {
+                    for (Author author: book.getAuthors()){
+                        if(author.getFirstName().equals(authorString)||author.getSecondName().equals(authorString)) {
+                            return true;
+                        }
+                        else {
+                            return false;
+                        }
+                    }
+                }
+                return false;
+            }
+        };
+    }
+*/
+
+    public String getAuthorFilter() {
+        return authorFilter;
+    }
+
+    public void setAuthorFilter(String authorFilter) {
+        this.authorFilter = authorFilter;
+    }
+}
