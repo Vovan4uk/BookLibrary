@@ -56,12 +56,6 @@ public class BooksSortingBean implements Serializable {
         }
     }
 
-    /*
-        public void reset() {
-            sortPriorities.clear();
-            sortsOrders.clear();
-        }
-    */
     public void reset(String param) {
         sortPriorities.remove(param);
         sortsOrders.remove(param);

@@ -46,7 +46,7 @@
                                                action="#{booksSortingBean.reset('name')}" render="table"/>
                         </h:panelGrid>
                     </f:facet>
-                    <h:link value="#{book.name}" outcome="/pages/book.xhtml">
+                    <h:link value="#{book.name}" outcome="/book.xhtml">
                         <f:param name="id" value="#{book.id}"/>
                     </h:link>
                 </rich:column>
@@ -67,7 +67,7 @@
                         </h:inputText>
                     </f:facet>
                     <a4j:repeat value="#{book.authors}" var="author" id="repeat">
-                        <h:link value="#{author.firstName} #{author.secondName}" outcome="/pages/author.xhtml">
+                        <h:link value="#{author.firstName} #{author.secondName}" outcome="/author.xhtml">
                             <f:param name="id" value="#{author.id}"/>
                         </h:link><br/>
                     </a4j:repeat>
@@ -160,7 +160,7 @@
                     </f:facet>
 
                     <h:outputText value="#{book.averageRating}"/><br/>
-                    <h:link value="(#{book.reviews.size()} reviews)" outcome="/pages/book.xhtml">
+                    <h:link value="(#{book.reviews.size()} reviews)" outcome="/book.xhtml">
                         <f:param name="id" value="#{book.id}"/>
                     </h:link>
                 </rich:column>
@@ -193,11 +193,23 @@
                     </f:facet>
                     <h:outputText value="#{book.createDate}"/>
                 </rich:column>
+                <rich:column>
+                    <f:facet name="header">
+                        <h:outputText value="Edit\Delete"/>
+                    </f:facet>
+                    <h:commandButton value="Edit">
+                        <rich:componentControl target="modal" operation="show"/>
+                    </h:commandButton>
+                    <h:commandButton value="Delete">
+                        <rich:componentControl target="modal" operation="show"/>
+                    </h:commandButton>
+                </rich:column>
 
                 <f:facet name="footer" id="pagination">
                     <rich:dataScroller/>
                 </f:facet>
             </rich:dataTable>
+
 
             <rich:popupPanel id="modal" modal="true" resizeable="true" onmaskclick="#{rich:component('modal')}.hide()">
                 <f:facet name="header">

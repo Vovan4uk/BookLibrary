@@ -74,19 +74,11 @@
             <artifactId>richfaces</artifactId>
             <version>4.5.10.Final</version>
         </dependency>
-        <!--
-                <dependency>
-                    <groupId>org.richfaces.ui</groupId>
-                    <artifactId>richfaces-components-ui</artifactId>
-                    <version>4.3.7.Final</version>
-                </dependency>
-                <dependency>
-                    <groupId>org.richfaces.core</groupId>
-                    <artifactId>richfaces-core-impl</artifactId>
-                    <version>4.3.7.Final</version>
-                </dependency>
-        -->
-
+        <dependency>
+            <groupId>javax</groupId>
+            <artifactId>javaee-api</artifactId>
+            <version>7.0</version>
+        </dependency>
     </dependencies>
 
     <build>

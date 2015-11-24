@@ -3,13 +3,13 @@ package ua.softserve.booklibrary.bean;
 import ua.softserve.booklibrary.manager.ReviewManager;
 
 import javax.ejb.EJB;
-import javax.ejb.Stateless;
 import javax.faces.application.FacesMessage;
+import javax.faces.bean.RequestScoped;
 import javax.faces.context.FacesContext;
 import javax.inject.Named;
 
 @Named
-@Stateless
+@RequestScoped
 public class ReviewController {
 
     @EJB

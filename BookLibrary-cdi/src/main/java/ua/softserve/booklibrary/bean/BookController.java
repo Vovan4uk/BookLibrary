@@ -14,16 +14,23 @@ import java.util.List;
 @ManagedBean
 @ViewScoped
 public class BookController implements Serializable {
+
     private static final long serialVersionUID = 6489108625203081136L;
+
     @EJB
     private BookManager bookManager;
 
     private List<Book> hotReleases;
     private List<Book> books;
+    private Book book;
+
+    public void save() {
+        bookManager.save(book);
+    }
 
     public List<Book> getBooks() {
         if (books == null) {
-            initBooks();
+            books = bookManager.findAll();
         }
         return books;
     }
@@ -34,21 +41,13 @@ public class BookController implements Serializable {
 
     public List<Book> getHotReleases() {
         if (hotReleases == null) {
-            initHotReleases();
+            hotReleases = bookManager.findHotReleases();
         }
         return hotReleases;
     }
 
     public void setHotReleases(List<Book> hotReleases) {
         this.hotReleases = hotReleases;
-    }
-
-    private void initBooks() {
-        books = bookManager.findAll();
-    }
-
-    private void initHotReleases() {
-        hotReleases = bookManager.findHotReleases();
     }
 
     public Integer getCountBooksByRating(Integer minRating) {

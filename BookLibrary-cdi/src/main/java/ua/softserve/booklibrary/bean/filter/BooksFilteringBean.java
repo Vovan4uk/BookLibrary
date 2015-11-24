@@ -29,27 +29,6 @@ public class BooksFilteringBean implements Serializable {
         }
         return false;
     }
-/*
-    public Filter<Book> getFilterAuthorImpl() {
-        System.out.println(authorFilter+"++++++++++++++++++++++++++++++++++++++");
-        return new Filter<Book>() {
-            public boolean accept(Book book) {
-                String authorString = getAuthorFilter();
-                if (authorString == null || authorString.length() == 0) {
-                    for (Author author: book.getAuthors()){
-                        if(author.getFirstName().equals(authorString)||author.getSecondName().equals(authorString)) {
-                            return true;
-                        }
-                        else {
-                            return false;
-                        }
-                    }
-                }
-                return false;
-            }
-        };
-    }
-*/
 
     public String getAuthorFilter() {
         return authorFilter;

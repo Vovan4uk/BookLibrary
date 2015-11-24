@@ -3,26 +3,35 @@ package ua.softserve.booklibrary.bean;
 import ua.softserve.booklibrary.entity.Author;
 import ua.softserve.booklibrary.manager.AuthorManager;
 
+import javax.annotation.ManagedBean;
 import javax.ejb.EJB;
-import javax.ejb.Stateless;
+import javax.faces.bean.ViewScoped;
 import javax.inject.Named;
+import java.io.Serializable;
 import java.util.List;
 
 @Named
-@Stateless
-public class AuthorController {
+@ManagedBean
+@ViewScoped
+public class AuthorController implements Serializable {
 
+    private static final long serialVersionUID = 3795838153393063077L;
     @EJB
     private AuthorManager authorManager;
 
     private List<Author> authors;
+    private Author author = new Author();
 
     public AuthorController() {
     }
 
+    public void save() {
+        authorManager.save(author);
+    }
+
     public List<Author> getAuthors() {
         if (authors == null) {
-            initAuthors();
+            authors = authorManager.findAll();
         }
         return authors;
     }
@@ -31,8 +40,11 @@ public class AuthorController {
         this.authors = authors;
     }
 
-    private void initAuthors() {
-        authors = authorManager.findAll();
+    public Author getAuthor() {
+        return author;
     }
 
+    public void setAuthor(Author author) {
+        this.author = author;
+    }
 }

@@ -19,7 +19,7 @@
                     </td>
                     <td class="rf-dt-c">
                         <h:link value="#{bookController.getCountBooksByRating(1)} books"
-                                outcome="/pages/booklist.xhtml">
+                                outcome="/booklist.xhtml">
                             <f:param name="byrating" value="1"/>
                         </h:link>
                     </td>
@@ -33,7 +33,7 @@
                     </td>
                     <td class="rf-dt-c">
                         <h:link value="#{bookController.getCountBooksByRating(2)} books"
-                                outcome="/pages/booklist.xhtml">
+                                outcome="/booklist.xhtml">
                             <f:param name="byrating" value="2"/>
                         </h:link>
                     </td>
@@ -47,7 +47,7 @@
                     </td>
                     <td class="rf-dt-c">
                         <h:link value="#{bookController.getCountBooksByRating(3)} books"
-                                outcome="/pages/booklist.xhtml">
+                                outcome="/booklist.xhtml">
                             <f:param name="byrating" value="3"/>
                         </h:link>
                     </td>
@@ -61,7 +61,7 @@
                     </td>
                     <td class="rf-dt-c">
                         <h:link value="#{bookController.getCountBooksByRating(4)} books"
-                                outcome="/pages/booklist.xhtml">
+                                outcome="/booklist.xhtml">
                             <f:param name="byrating" value="4"/>
                         </h:link>
                     </td>
@@ -75,7 +75,7 @@
                     </td>
                     <td class="rf-dt-c">
                         <h:link value="#{bookController.getCountBooksByRating(5)} books"
-                                outcome="/pages/booklist.xhtml">
+                                outcome="/booklist.xhtml">
                             <f:param name="byrating" value="5"/>
                         </h:link>
                     </td>
@@ -85,17 +85,17 @@
         <rich:panel header="Authors">
             <rich:dataTable value="#{authorController.authors}" var="author" style="width:100%;">
                 <rich:column>
-                    <h:link value="#{author.firstName}" outcome="/pages/author.xhtml">
+                    <h:link value="#{author.firstName}" outcome="/author.xhtml">
                         <f:param name="id" value="#{author.id}"/>
                     </h:link>
                 </rich:column>
                 <rich:column>
-                    <h:link value="#{author.secondName}" outcome="/pages/author.xhtml">
+                    <h:link value="#{author.secondName}" outcome="/author.xhtml">
                         <f:param name="id" value="#{author.id}"/>
                     </h:link>
                 </rich:column>
                 <rich:column>
-                    <h:link value="#{author.books.size()} books" outcome="/pages/booklist.xhtml">
+                    <h:link value="#{author.books.size()} books" outcome="/booklist.xhtml">
                         <f:param name="byauthor" value="#{author.id}"/>
                     </h:link>
                 </rich:column>
