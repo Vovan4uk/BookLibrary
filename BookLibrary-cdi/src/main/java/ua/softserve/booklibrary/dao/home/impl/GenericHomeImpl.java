@@ -29,7 +29,6 @@ public abstract class GenericHomeImpl<T extends Entity> implements GenericHome<T
 
     @Override
     public void removeByPk(Long id) {
-
         Object existEntity = em.getReference(entityClass, id);
         em.remove(existEntity);
 

@@ -61,6 +61,7 @@
             </column>
         </createTable>
         <addPrimaryKey tableName="AUTHOR" constraintName="AUTHOR_PK" columnNames="ID"/>
+        <addUniqueConstraint tableName="AUTHOR" constraintName="AUTHOR_UK" columnNames="FIRST_NAME,SECOND_NAME"/>
 
         <createTable tableName="BOOK_AUTHOR">
             <column name="BOOK_ID" type="BIGINT">

@@ -58,4 +58,15 @@ public class AuthorManagerImpl implements AuthorManager {
         }
         return authors;
     }
+
+    @Override
+    public List<Author> findAuthorsByRating(Integer minRating) {
+        return authorFacade.findAuthorsByRating(minRating);
+    }
+
+    @Override
+    public List<Author> findAuthorsWithoutRating() {
+        return authorFacade.findAuthorsWithoutRating();
+    }
+
 }

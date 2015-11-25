@@ -3,15 +3,13 @@ package ua.softserve.booklibrary.bean;
 import ua.softserve.booklibrary.entity.Author;
 import ua.softserve.booklibrary.manager.AuthorManager;
 
-import javax.annotation.ManagedBean;
 import javax.ejb.EJB;
-import javax.faces.bean.ViewScoped;
+import javax.faces.view.ViewScoped;
 import javax.inject.Named;
 import java.io.Serializable;
 import java.util.List;
 
 @Named
-@ManagedBean
 @ViewScoped
 public class AuthorController implements Serializable {
 
@@ -27,6 +25,10 @@ public class AuthorController implements Serializable {
 
     public void save() {
         authorManager.save(author);
+    }
+
+    public void remove(Long id) {
+        authorManager.removeByPk(id);
     }
 
     public List<Author> getAuthors() {
@@ -47,4 +49,16 @@ public class AuthorController implements Serializable {
     public void setAuthor(Author author) {
         this.author = author;
     }
+
+    public Integer getCountAuthorsByRating(Integer minRating) {
+        if (minRating >= 0 && minRating <= 5) {
+            return authorManager.findAuthorsByRating(minRating).size();
+        }
+        return 0;
+    }
+
+    public Integer getCountAuthorsWithoutRating() {
+        return authorManager.findAuthorsWithoutRating().size();
+    }
+
 }

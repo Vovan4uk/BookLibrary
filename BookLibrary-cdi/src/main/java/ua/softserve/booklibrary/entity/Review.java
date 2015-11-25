@@ -36,7 +36,6 @@ public class Review extends Entity {
 
     @NotNull
     @Lob
-    @Size(min = 2, max = 20000)
     @Column(name = "COMMENT_BODY", nullable = false, length = 20000)
     private String commentBody;
 

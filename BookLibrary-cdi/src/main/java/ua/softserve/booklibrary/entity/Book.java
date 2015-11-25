@@ -17,6 +17,8 @@ import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
@@ -25,7 +27,8 @@ import java.util.Set;
 @Table(name = "BOOK")
 @NamedQueries({
         @NamedQuery(name = "Book.findHotReleases", query = "SELECT b FROM Book b ORDER BY createDate desc "),
-        @NamedQuery(name = "Book.findBooksByRating", query = "SELECT b FROM Book b WHERE averageRating >= :minRating AND averageRating < :maxRating ")
+        @NamedQuery(name = "Book.findBooksByRating", query = "SELECT b FROM Book b WHERE averageRating >= :minRating AND averageRating < :maxRating "),
+        @NamedQuery(name = "Book.findBooksWithoutRating", query = "SELECT b FROM Book b WHERE averageRating IS NULL")
 })
 public class Book extends Entity {
     private static final long serialVersionUID = 9073502830659864431L;
@@ -35,6 +38,8 @@ public class Book extends Entity {
     @Column(name = "ID", nullable = false)
     private Long id;
 
+    @NotNull
+    @Size(min = 2, max = 255)
     @Column(name = "NAME", nullable = false)
     private String name;
 
@@ -42,9 +47,11 @@ public class Book extends Entity {
     @Column(name = "PUBLISHED_DATE")
     private Date publishedDate;
 
+    @Size(max = 255)
     @Column(name = "ISBN", unique = true)
     private String isbn;
 
+    @Size(max = 255)
     @Column(name = "PUBLISHER")
     private String publisher;
 

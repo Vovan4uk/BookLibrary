@@ -16,12 +16,17 @@ public class BookFacadeImpl extends GenericFacadeImpl<Book> implements BookFacad
 
     @Override
     public List<Book> findHotReleases() {
-        return em.createNamedQuery("Book.findHotReleases", Book.class).setMaxResults(2).getResultList();
+        return em.createNamedQuery("Book.findHotReleases", Book.class).setMaxResults(5).getResultList();
     }
 
     @Override
     public List<Book> findBooksByRating(Integer minRating) {
         Integer maxRating = minRating + 1;
         return em.createNamedQuery("Book.findBooksByRating", Book.class).setParameter("minRating", minRating.doubleValue()).setParameter("maxRating", maxRating.doubleValue()).getResultList();
+    }
+
+    @Override
+    public List<Book> findBooksWithoutRating() {
+        return em.createNamedQuery("Book.findBooksWithoutRating", Book.class).getResultList();
     }
 }

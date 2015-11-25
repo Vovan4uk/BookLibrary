@@ -3,13 +3,11 @@ package ua.softserve.booklibrary.bean;
 import ua.softserve.booklibrary.manager.ReviewManager;
 
 import javax.ejb.EJB;
-import javax.faces.application.FacesMessage;
-import javax.faces.bean.RequestScoped;
-import javax.faces.context.FacesContext;
-import javax.inject.Named;
 
+/*
 @Named
-@RequestScoped
+@ViewScoped
+*/
 public class ReviewController {
 
     @EJB
@@ -21,9 +19,6 @@ public class ReviewController {
     }
 
     public String save() {
-        String msg = "test";
-        FacesMessage facesMsg = new FacesMessage(FacesMessage.SEVERITY_INFO, msg, msg);
-        FacesContext.getCurrentInstance().addMessage(null, facesMsg);
         return "test.xhtml";
     }
 

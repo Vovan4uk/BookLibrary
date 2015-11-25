@@ -73,4 +73,9 @@ public class BookManagerImpl implements BookManager {
     public List<Book> findBooksByRating(Integer minRating) {
         return bookFacade.findBooksByRating(minRating);
     }
+
+    @Override
+    public List<Book> findBooksWithoutRating() {
+        return bookFacade.findBooksWithoutRating();
+    }
 }

@@ -9,27 +9,26 @@
     <ui:define name="body">
         <rich:panel header="Author">
 
-            <!--
-                        <h:form>
-                            <h:panelGrid columns="2" cellspacing="10px">
-                                <h:outputText value="First name"/>
-                                <h:inputText value="#{authorController.author.firstName}" id="firstName"/>
-                                <h:outputText value="Last name"/>
-                                <h:inputText value="#{authorController.author.secondName}" id="secondName"/>
-                            </h:panelGrid>
-                            <h:commandButton action="#{authorController.save}" value="save"/>
-                        </h:form>
-            -->
-
-
             <h:form id="author">
-                <h:panelGrid columns="2">
-                    <h:outputLabel value="Ok"/>
-                    <h:inputText value="#{authorController.author.firstName}"/>
-                    <h:outputLabel value="Ok"/>
-                    <h:inputText value="#{authorController.author.secondName}"/>
+                <h:panelGrid columns="3">
+
+
+                    <h:outputText value="First name:"/>
+                    <h:inputText value="#{authorController.author.firstName}" id="firstName" label="firstName">
+                        <rich:validator/>
+                    </h:inputText>
+                    <rich:message for="firstName"/>
+
+
+                    <h:outputText value="Second name:"/>
+                    <h:inputText value="#{authorController.author.secondName}" id="secondName" label="secondName">
+                        <rich:validator/>
+                    </h:inputText>
+                    <rich:message for="secondName"/>
+
+
                 </h:panelGrid>
-                <h:commandButton action="#{authorController.save}" value="add"/>
+                <h:commandButton value="Save" action="#{authorController.save}"/>
             </h:form>
 
         </rich:panel>

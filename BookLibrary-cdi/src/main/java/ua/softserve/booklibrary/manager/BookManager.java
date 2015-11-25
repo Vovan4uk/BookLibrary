@@ -10,4 +10,6 @@ public interface BookManager extends GenericManager<Book> {
     List<Book> findHotReleases();
 
     List<Book> findBooksByRating(Integer minRating);
+
+    List<Book> findBooksWithoutRating();
 }

@@ -13,3 +13,30 @@ td.left_column {
 td.right_column {
     vertical-align: top;
 }
+
+.col_book_name, .col_author_name {
+}
+
+.col_book_authors {
+    width: 10%;
+}
+
+.col_book_publisher {
+    width: 10%;
+}
+
+.col_book_published_date {
+    width: 10%;
+}
+
+.col_book_average_rating, .col_author_average_rating {
+    width: 10%;
+}
+
+.col_book_create_date, .col_author_create_date {
+    width: 10%;
+}
+
+.col_book_action, .col_author_action {
+    width: 10%;
+}

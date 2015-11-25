@@ -3,15 +3,14 @@ package ua.softserve.booklibrary.bean;
 import ua.softserve.booklibrary.entity.Book;
 import ua.softserve.booklibrary.manager.BookManager;
 
-import javax.annotation.ManagedBean;
 import javax.ejb.EJB;
-import javax.faces.bean.ViewScoped;
+import javax.faces.context.FacesContext;
+import javax.faces.view.ViewScoped;
 import javax.inject.Named;
 import java.io.Serializable;
 import java.util.List;
 
 @Named
-@ManagedBean
 @ViewScoped
 public class BookController implements Serializable {
 
@@ -46,6 +45,10 @@ public class BookController implements Serializable {
         return hotReleases;
     }
 
+    private void initBooks() {
+        String byauthor = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap().get("byauthor");
+    }
+
     public void setHotReleases(List<Book> hotReleases) {
         this.hotReleases = hotReleases;
     }
@@ -53,4 +56,9 @@ public class BookController implements Serializable {
     public Integer getCountBooksByRating(Integer minRating) {
         return bookManager.findBooksByRating(minRating).size();
     }
+
+    public Integer getCountBooksWithoutRating() {
+        return bookManager.findBooksWithoutRating().size();
+    }
+
 }
