@@ -51,10 +51,7 @@ public class AuthorController implements Serializable {
     }
 
     public Integer getCountAuthorsByRating(Integer minRating) {
-        if (minRating >= 0 && minRating <= 5) {
-            return authorManager.findAuthorsByRating(minRating).size();
-        }
-        return 0;
+        return authorManager.findAuthorsByRating(minRating).size();
     }
 
     public Integer getCountAuthorsWithoutRating() {

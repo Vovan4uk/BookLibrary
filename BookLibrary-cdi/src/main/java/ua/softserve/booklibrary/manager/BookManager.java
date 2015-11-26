@@ -12,4 +12,10 @@ public interface BookManager extends GenericManager<Book> {
     List<Book> findBooksByRating(Integer minRating);
 
     List<Book> findBooksWithoutRating();
+
+    List<Book> findLatestBooksByAuthorId(Long id, Integer count);
+
+    List<Book> findBestBooksByAuthorId(Long id, Integer count);
+
+    List<Book> findBooksByAuthorId(Long id);
 }

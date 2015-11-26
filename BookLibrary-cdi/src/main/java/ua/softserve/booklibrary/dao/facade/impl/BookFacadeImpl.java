@@ -29,4 +29,20 @@ public class BookFacadeImpl extends GenericFacadeImpl<Book> implements BookFacad
     public List<Book> findBooksWithoutRating() {
         return em.createNamedQuery("Book.findBooksWithoutRating", Book.class).getResultList();
     }
+
+    @Override
+    public List<Book> findLatestBooksByAuthorId(Long id, Integer count) {
+        return em.createNamedQuery("Book.findLatestBooksByAuthorId", Book.class).setParameter("id", id).setMaxResults(count).getResultList();
+    }
+
+    @Override
+    public List<Book> findBestBooksByAuthorId(Long id, Integer count) {
+        return em.createNamedQuery("Book.findBestBooksByAuthorId", Book.class).setParameter("id", id).setMaxResults(count).getResultList();
+    }
+
+    @Override
+    public List<Book> findBooksByAuthorId(Long id) {
+        return em.createNamedQuery("Book.findBooksByAuthorId", Book.class).setParameter("id", id).getResultList();
+    }
+
 }

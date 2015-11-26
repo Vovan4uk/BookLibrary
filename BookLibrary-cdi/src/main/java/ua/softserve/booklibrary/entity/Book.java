@@ -23,12 +23,25 @@ import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 
+/*
+* "SELECT DISTINCT p "
+			+ "FROM DailyMenu dm "
+			+ "JOIN dm.submenus s "
+			+ "JOIN s.dishes d "
+			+ "JOIN d.components c "
+			+ "JOIN c.product p "
+			+ "WHERE dm.date = :date";
+* */
+
 @javax.persistence.Entity
 @Table(name = "BOOK")
 @NamedQueries({
         @NamedQuery(name = "Book.findHotReleases", query = "SELECT b FROM Book b ORDER BY createDate desc "),
         @NamedQuery(name = "Book.findBooksByRating", query = "SELECT b FROM Book b WHERE averageRating >= :minRating AND averageRating < :maxRating "),
-        @NamedQuery(name = "Book.findBooksWithoutRating", query = "SELECT b FROM Book b WHERE averageRating IS NULL")
+        @NamedQuery(name = "Book.findBooksWithoutRating", query = "SELECT b FROM Book b WHERE averageRating IS NULL"),
+        @NamedQuery(name = "Book.findLatestBooksByAuthorId", query = "SELECT DISTINCT b FROM Book b JOIN b.authors a WHERE a.id= :id ORDER BY b.publishedDate DESC"),
+        @NamedQuery(name = "Book.findBestBooksByAuthorId", query = "SELECT DISTINCT b FROM Book b JOIN b.authors a WHERE a.id= :id ORDER BY b.averageRating DESC"),
+        @NamedQuery(name = "Book.findBooksByAuthorId", query = "SELECT DISTINCT b FROM Book b JOIN b.authors a WHERE a.id= :id")
 })
 public class Book extends Entity {
     private static final long serialVersionUID = 9073502830659864431L;

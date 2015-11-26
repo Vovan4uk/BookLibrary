@@ -35,7 +35,7 @@
                                                rendered="#{booksSortingBean.sortsOrders['name']==null}">
                                 <f:param name="sortProperty" value="name"/>
                             </a4j:commandButton>
-                            <a4j:commandButton execute="@this" value="Name" render="table"
+                        <a4j:commandButton execute="@this" value="Book name" render="table"
                                                action="#{booksSortingBean.sort}">
                                 <f:param name="sortProperty" value="name"/>
                             </a4j:commandButton>
@@ -51,8 +51,7 @@
                     <f:facet name="header">
                         <h:outputText value="Authors"/><br/>
                         <h:inputText value="#{booksFilteringBean.authorFilter}" id="input">
-                            <a4j:ajax event="change" render="table footer" execute="@this" ignoreDupResponses="true"
-                                      requestDelay="300"/>
+                            <a4j:ajax event="change" render="table footer" execute="@this"/>
                         </h:inputText>
                     </f:facet>
                     <a4j:repeat value="#{book.authors}" var="author" id="repeat">
@@ -189,7 +188,7 @@
                 </rich:column>
 
                 <f:facet name="footer" id="pagination">
-                    <rich:dataScroller/>
+                    <rich:dataScroller renderIfSinglePage="false"/>
                 </f:facet>
             </rich:dataTable>
 

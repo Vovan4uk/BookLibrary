@@ -23,7 +23,7 @@ public class BooksFilteringBean implements Serializable {
             return true;
         }
         for (Author author : currentBook.getAuthors()) {
-            if (author.getFirstName().toLowerCase().contains(authorFilter.toLowerCase()) || author.getSecondName().toLowerCase().contains(authorFilter.toLowerCase())) {
+            if ((author.getFirstName() + " " + author.getSecondName()).toLowerCase().contains(authorFilter.toLowerCase())) {
                 return true;
             }
         }

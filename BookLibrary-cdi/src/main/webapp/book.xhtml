@@ -1,14 +1,44 @@
 <ui:composition template="/template/layout.xhtml"
                 xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
                 xmlns:ui="http://java.sun.com/jsf/facelets"
                 xmlns:rich="http://richfaces.org/rich"
-                xmlns:h="http://java.sun.com/jsf/html">
+                xmlns:a4j="http://richfaces.org/a4j">
 
-    <ui:define name="title">Add book</ui:define>
+    <ui:define name="title">Book details</ui:define>
 
     <ui:define name="body">
-        <rich:panel header="Add book">
+        <rich:panel header="#{bookController.currentBook.name}">
             <h:form>
+                <h:outputText value="#{bookController.currentBook.averageRating}"/><br/>
+                <h:outputText value="#{bookController.currentBook.reviews.size()} reviews"/><br/>
+                <h:outputText
+                        value="#{bookController.currentBook.publisher} #{bookController.currentBook.publishedDate}"/><br/>
+                <h:outputText value="#{bookController.currentBook.isbn}"/><br/>
+                <h:outputText value="Authors:" styleClass="book_authors"/>
+                <a4j:repeat value="#{bookController.currentBook.authors}" var="author" id="repeat">
+                    <h:link value="#{author.firstName} #{author.secondName}" outcome="/author.xhtml">
+                        <f:param name="id" value="#{author.id}"/>
+                    </h:link>
+                    <h:outputText value=" "/>
+                </a4j:repeat><br/>
+                <h:outputText value="#{bookController.currentBook.createDate}"/><br/><br/>
+
+                <rich:panel header="Book reviews">
+                    <rich:dataTable value="#{bookController.currentBook.reviews}" var="review" id="reviews" rows="3"
+                                    style="width: 100%;">
+                        <rich:column>
+                            <h:outputText value="#{review.rating}"/><br/>
+                            <h:outputText value="#{review.createDate}"/><br/>
+                            <h:outputText value="#{review.commentBody}"/>
+                        </rich:column>
+                        <f:facet name="footer" id="pagination">
+                            <rich:dataScroller renderIfSinglePage="false"/>
+                        </f:facet>
+                    </rich:dataTable>
+                </rich:panel>
+
             </h:form>
         </rich:panel>
     </ui:define>

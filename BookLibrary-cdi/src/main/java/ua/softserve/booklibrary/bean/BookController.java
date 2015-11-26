@@ -22,9 +22,25 @@ public class BookController implements Serializable {
     private List<Book> hotReleases;
     private List<Book> books;
     private Book book;
+    private Book currentBook;
+    private String bookId;
 
     public void save() {
         bookManager.save(book);
+    }
+
+    public Book getCurrentBook() {
+        bookId = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap().get("id");
+        try {
+            currentBook = bookManager.findByPk(Long.parseLong(bookId));
+        } catch (IllegalArgumentException e) {
+            currentBook = null;
+        }
+        return currentBook;
+    }
+
+    public void setCurrentBook(Book currentBook) {
+        this.currentBook = currentBook;
     }
 
     public List<Book> getBooks() {
@@ -45,10 +61,6 @@ public class BookController implements Serializable {
         return hotReleases;
     }
 
-    private void initBooks() {
-        String byauthor = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap().get("byauthor");
-    }
-
     public void setHotReleases(List<Book> hotReleases) {
         this.hotReleases = hotReleases;
     }
@@ -59,6 +71,14 @@ public class BookController implements Serializable {
 
     public Integer getCountBooksWithoutRating() {
         return bookManager.findBooksWithoutRating().size();
+    }
+
+    public List<Book> getLatestBooksByAuthorId(Long id, Integer count) {
+        return bookManager.findLatestBooksByAuthorId(id, count);
+    }
+
+    public List<Book> getBestBooksByAuthorId(Long id, Integer count) {
+        return bookManager.findBestBooksByAuthorId(id, count);
     }
 
 }

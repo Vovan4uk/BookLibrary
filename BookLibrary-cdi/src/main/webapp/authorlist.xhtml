@@ -36,7 +36,7 @@
                                                rendered="#{authorsSortingBean.sortsOrders['firstName']==null}">
                                 <f:param name="sortProperty" value="firstName"/>
                             </a4j:commandButton>
-                            <a4j:commandButton execute="@this" value="Author's name" render="table"
+                            <a4j:commandButton execute="@this" value="Author name" render="table"
                                                action="#{authorsSortingBean.sort}">
                                 <f:param name="sortProperty" value="firstName"/>
                             </a4j:commandButton>
@@ -46,6 +46,29 @@
                         <h:link value="#{author.firstName} #{author.secondName}" outcome="/author.xhtml">
                             <f:param name="id" value="#{author.id}"/>
                         </h:link>
+                    </rich:column>
+                    <rich:column styleClass="col_author_best_book" headerClass="col_author_best_book">
+                        <f:facet name="header">
+                            <h:outputText value="The best author's book"/>
+                        </f:facet>
+                        <a4j:repeat value="#{bookController.getBestBooksByAuthorId(author.id,1)}" var="book"
+                                    id="repeat1">
+                            <h:link value="#{book.name}" outcome="/book.xhtml">
+                                <f:param name="id" value="#{book.id}"/>
+                            </h:link><br/>
+                        </a4j:repeat>
+                    </rich:column>
+
+                    <rich:column styleClass="col_author_latest_book" headerClass="col_author_latest_book">
+                        <f:facet name="header">
+                            <h:outputText value="The latest author's book"/>
+                        </f:facet>
+                        <a4j:repeat value="#{bookController.getLatestBooksByAuthorId(author.id,1)}" var="book"
+                                    id="repeat2">
+                            <h:link value="#{book.name}" outcome="/book.xhtml">
+                                <f:param name="id" value="#{book.id}"/>
+                            </h:link><br/>
+                        </a4j:repeat>
                     </rich:column>
                     <rich:column sortBy="#{author.averageRating}"
                                  sortOrder="#{authorsSortingBean.sortsOrders['averageRating']}"
@@ -79,7 +102,6 @@
                         <h:link value="#{author.books.size()} books" outcome="/booklist.xhtml">
                             <f:param name="byauthor" value="#{author.id}"/>
                         </h:link>
-
                     </rich:column>
                     <rich:column sortBy="#{author.createDate}"
                                  sortOrder="#{authorsSortingBean.sortsOrders['createDate']}"
@@ -123,10 +145,9 @@
                     </rich:column>
 
                     <f:facet name="footer" id="pagination">
-                        <rich:dataScroller/>
+                        <rich:dataScroller renderIfSinglePage="false"/>
                     </f:facet>
                 </rich:dataTable>
-
 
                 <rich:popupPanel id="modal" modal="true" resizeable="true"
                                  onmaskclick="#{rich:component('modal')}.hide()">

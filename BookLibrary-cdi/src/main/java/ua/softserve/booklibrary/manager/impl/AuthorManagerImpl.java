@@ -5,10 +5,12 @@ import org.slf4j.LoggerFactory;
 import ua.softserve.booklibrary.dao.facade.AuthorFacade;
 import ua.softserve.booklibrary.dao.home.AuthorHome;
 import ua.softserve.booklibrary.entity.Author;
+import ua.softserve.booklibrary.exception.ParameterFormatException;
 import ua.softserve.booklibrary.manager.AuthorManager;
 
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
+import javax.faces.context.FacesContext;
 import javax.inject.Named;
 import java.util.List;
 
@@ -20,7 +22,6 @@ public class AuthorManagerImpl implements AuthorManager {
 
     @EJB
     private AuthorHome authorHome;
-
     @EJB
     private AuthorFacade authorFacade;
 
@@ -52,21 +53,42 @@ public class AuthorManagerImpl implements AuthorManager {
 
     @Override
     public List<Author> findAll() {
-        List<Author> authors = authorFacade.findAll();
+
+        return initAuthorList(getAuthors());
+    }
+
+    private List<Author> getAuthors() {
+        String byRating = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap().get("byrating");
+        List<Author> resultList;
+        try {
+            Integer rating = Integer.parseInt(byRating);
+            if (rating == 0) {
+                resultList = findAuthorsWithoutRating();
+            } else if (rating > 0 && rating <= 5) {
+                resultList = findAuthorsByRating(rating);
+            } else {
+                throw new ParameterFormatException();
+            }
+        } catch (ParameterFormatException | NumberFormatException e) {
+            resultList = authorFacade.findAll();
+        }
+        return resultList;
+    }
+
+    @Override
+    public List<Author> findAuthorsByRating(Integer minRating) {
+        return initAuthorList(authorFacade.findAuthorsByRating(minRating));
+    }
+
+    @Override
+    public List<Author> findAuthorsWithoutRating() {
+        return initAuthorList(authorFacade.findAuthorsWithoutRating());
+    }
+
+    private List<Author> initAuthorList(List<Author> authors) {
         for (Author author : authors) {
             author.getBooks().size();
         }
         return authors;
     }
-
-    @Override
-    public List<Author> findAuthorsByRating(Integer minRating) {
-        return authorFacade.findAuthorsByRating(minRating);
-    }
-
-    @Override
-    public List<Author> findAuthorsWithoutRating() {
-        return authorFacade.findAuthorsWithoutRating();
-    }
-
 }
