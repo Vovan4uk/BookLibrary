@@ -30,11 +30,13 @@ public class BookController implements Serializable {
     }
 
     public Book getCurrentBook() {
-        bookId = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap().get("id");
-        try {
-            currentBook = bookManager.findByPk(Long.parseLong(bookId));
-        } catch (IllegalArgumentException e) {
-            currentBook = null;
+        if (currentBook == null) {
+            bookId = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap().get("id");
+            try {
+                currentBook = bookManager.findByPk(Long.parseLong(bookId));
+            } catch (IllegalArgumentException e) {
+                currentBook = null;
+            }
         }
         return currentBook;
     }
