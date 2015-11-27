@@ -1,9 +1,13 @@
 package ua.softserve.booklibrary.bean;
 
+import org.richfaces.JsfVersion;
 import ua.softserve.booklibrary.entity.Author;
 import ua.softserve.booklibrary.manager.AuthorManager;
 
 import javax.ejb.EJB;
+import javax.faces.component.EditableValueHolder;
+import javax.faces.component.UIComponent;
+import javax.faces.context.FacesContext;
 import javax.faces.view.ViewScoped;
 import javax.inject.Named;
 import java.io.Serializable;
@@ -19,6 +23,8 @@ public class AuthorController implements Serializable {
 
     private List<Author> authors;
     private Author author = new Author();
+    private Long currentAuthorIndex;
+    private Author currentAuthor;
 
     public AuthorController() {
     }
@@ -27,15 +33,16 @@ public class AuthorController implements Serializable {
         authorManager.save(author);
     }
 
-    public void remove(Long id) {
-        authorManager.removeByPk(id);
+    public void update() {
+        authorManager.update(currentAuthor);
+    }
+
+    public void remove() {
+        authorManager.removeByPk(currentAuthorIndex);
     }
 
     public List<Author> getAuthors() {
-        if (authors == null) {
-            authors = authorManager.findAll();
-        }
-        return authors;
+        return authorManager.findAll();
     }
 
     public void setAuthors(List<Author> authors) {
@@ -58,4 +65,29 @@ public class AuthorController implements Serializable {
         return authorManager.findAuthorsWithoutRating().size();
     }
 
+    public void setCurrentAuthorIndex(Long currentAuthorIndex) {
+        this.currentAuthorIndex = currentAuthorIndex;
+    }
+
+    public Long getCurrentAuthorIndex() {
+        return currentAuthorIndex;
+    }
+
+    public void setCurrentAuthor(Author currentAuthor) {
+        this.currentAuthor = currentAuthor;
+    }
+
+    public Author getCurrentAuthor() {
+        return currentAuthor;
+    }
+
+    public void resetValues() {
+        if (!JsfVersion.getCurrent().isCompliantWith(JsfVersion.JSF_2_2)) {
+            FacesContext fc = FacesContext.getCurrentInstance();
+            UIComponent comp = fc.getViewRoot().findComponent("form:editGrid");
+
+            ((EditableValueHolder) comp.findComponent("form:firstName")).resetValue();
+            ((EditableValueHolder) comp.findComponent("form:secondName")).resetValue();
+        }
+    }
 }

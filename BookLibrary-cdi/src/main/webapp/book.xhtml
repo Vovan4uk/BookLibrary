@@ -29,6 +29,7 @@
                     <rich:dataTable value="#{bookController.currentBook.reviews}" var="review" id="reviews" rows="3"
                                     style="width: 100%;">
                         <rich:column>
+                            <h:outputText value="#{review.commenterName}"/><br/>
                             <h:outputText value="#{review.rating}"/><br/>
                             <h:outputText value="#{review.createDate}"/><br/>
                             <h:outputText value="#{review.commentBody}"/>

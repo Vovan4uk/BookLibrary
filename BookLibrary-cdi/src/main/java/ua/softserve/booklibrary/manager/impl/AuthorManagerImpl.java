@@ -9,6 +9,7 @@ import ua.softserve.booklibrary.exception.ParameterFormatException;
 import ua.softserve.booklibrary.manager.AuthorManager;
 
 import javax.ejb.EJB;
+import javax.ejb.EJBException;
 import javax.ejb.Stateless;
 import javax.faces.context.FacesContext;
 import javax.inject.Named;
@@ -33,12 +34,16 @@ public class AuthorManagerImpl implements AuthorManager {
 
     @Override
     public Author update(Author entity) {
-        return null;
+        return authorHome.update(entity);
     }
 
     @Override
     public void removeByPk(Long id) {
-
+        try {
+            authorHome.removeByPk(id);
+        } catch (IllegalArgumentException | EJBException e) {
+            //Show some message
+        }
     }
 
     @Override

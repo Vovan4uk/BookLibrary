@@ -35,7 +35,7 @@ public class BookManagerImpl implements BookManager {
 
     @Override
     public Book update(Book entity) {
-        return null;
+        return bookHome.update(entity);
     }
 
     @Override

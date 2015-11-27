@@ -29,10 +29,11 @@ public abstract class GenericHomeImpl<T extends Entity> implements GenericHome<T
 
     @Override
     public void removeByPk(Long id) {
+        if (id == null) {
+            String errorMsg = "null argument";
+            throw new IllegalArgumentException(errorMsg);
+        }
         Object existEntity = em.getReference(entityClass, id);
         em.remove(existEntity);
-
-//        em.remove(em.contains(entity) ? entity : em.merge(entity));
-//        em.remove(entity);
     }
 }

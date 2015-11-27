@@ -11,7 +11,6 @@ import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
-import javax.validation.constraints.Max;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.util.HashSet;
@@ -37,7 +36,7 @@ public class Author extends Entity {
     @Column(name = "FIRST_NAME", nullable = false)
     private String firstName;
 
-    @Max(value = 255)
+    @Size(max = 255)
     @Column(name = "SECOND_NAME")
     private String secondName;
 
