@@ -5,7 +5,6 @@ import org.slf4j.LoggerFactory;
 import ua.softserve.booklibrary.dao.facade.AuthorFacade;
 import ua.softserve.booklibrary.dao.home.AuthorHome;
 import ua.softserve.booklibrary.entity.Author;
-import ua.softserve.booklibrary.exception.ParameterFormatException;
 import ua.softserve.booklibrary.manager.AuthorManager;
 
 import javax.ejb.EJB;
@@ -58,8 +57,7 @@ public class AuthorManagerImpl implements AuthorManager {
 
     @Override
     public List<Author> findAll() {
-
-        return initAuthorList(getAuthors());
+        return initAuthorList(authorFacade.findAll());
     }
 
     private List<Author> getAuthors() {
@@ -72,9 +70,9 @@ public class AuthorManagerImpl implements AuthorManager {
             } else if (rating > 0 && rating <= 5) {
                 resultList = findAuthorsByRating(rating);
             } else {
-                throw new ParameterFormatException();
+                throw new IllegalArgumentException();
             }
-        } catch (ParameterFormatException | NumberFormatException e) {
+        } catch (IllegalArgumentException e) {
             resultList = authorFacade.findAll();
         }
         return resultList;

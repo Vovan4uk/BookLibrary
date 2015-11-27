@@ -14,7 +14,7 @@
                     <td class="rf-dt-c" width="33%">1 star</td>
                     <td class="rf-dt-c" width="33%">*</td>
                     <td class="rf-dt-c">
-                        <h:link value="#{bookController.getCountBooksByRating(1)} books" outcome="/booklist.xhtml">
+                        <h:link value="#{bookAction.getCountBooksByRating(1)} books" outcome="/booklist.xhtml">
                             <f:param name="byrating" value="1"/>
                         </h:link>
                     </td>
@@ -23,7 +23,7 @@
                     <td class="rf-dt-c">2 star</td>
                     <td class="rf-dt-c">**</td>
                     <td class="rf-dt-c">
-                        <h:link value="#{bookController.getCountBooksByRating(2)} books" outcome="/booklist.xhtml">
+                        <h:link value="#{bookAction.getCountBooksByRating(2)} books" outcome="/booklist.xhtml">
                             <f:param name="byrating" value="2"/>
                         </h:link>
                     </td>
@@ -32,7 +32,7 @@
                     <td class="rf-dt-c">3 star</td>
                     <td class="rf-dt-c">***</td>
                     <td class="rf-dt-c">
-                        <h:link value="#{bookController.getCountBooksByRating(3)} books" outcome="/booklist.xhtml">
+                        <h:link value="#{bookAction.getCountBooksByRating(3)} books" outcome="/booklist.xhtml">
                             <f:param name="byrating" value="3"/>
                         </h:link>
                     </td>
@@ -41,7 +41,7 @@
                     <td class="rf-dt-c">4 star</td>
                     <td class="rf-dt-c">****</td>
                     <td class="rf-dt-c">
-                        <h:link value="#{bookController.getCountBooksByRating(4)} books" outcome="/booklist.xhtml">
+                        <h:link value="#{bookAction.getCountBooksByRating(4)} books" outcome="/booklist.xhtml">
                             <f:param name="byrating" value="4"/>
                         </h:link>
                     </td>
@@ -50,7 +50,7 @@
                     <td class="rf-dt-c">5 star</td>
                     <td class="rf-dt-c">*****</td>
                     <td class="rf-dt-c">
-                        <h:link value="#{bookController.getCountBooksByRating(5)} books" outcome="/booklist.xhtml">
+                        <h:link value="#{bookAction.getCountBooksByRating(5)} books" outcome="/booklist.xhtml">
                             <f:param name="byrating" value="5"/>
                         </h:link>
                     </td>
@@ -59,7 +59,7 @@
                     <td class="rf-dt-c">Without rating</td>
                     <td class="rf-dt-c">-------------------------------------------------</td>
                     <td class="rf-dt-c">
-                        <h:link value="#{bookController.getCountBooksWithoutRating()} books" outcome="/booklist.xhtml">
+                        <h:link value="#{bookAction.getCountBooksWithoutRating()} books" outcome="/booklist.xhtml">
                             <f:param name="byrating" value="0"/>
                         </h:link>
                     </td>
@@ -74,7 +74,7 @@
                     <td class="rf-dt-c" width="33%">1 star</td>
                     <td class="rf-dt-c" width="33%">*</td>
                     <td class="rf-dt-c">
-                        <h:link value="#{authorController.getCountAuthorsByRating(1)} authors"
+                        <h:link value="#{authorAction.getCountAuthorsByRating(1)} authors"
                                 outcome="/authorlist.xhtml">
                             <f:param name="byrating" value="1"/>
                         </h:link>
@@ -84,7 +84,7 @@
                     <td class="rf-dt-c">2 star</td>
                     <td class="rf-dt-c">**</td>
                     <td class="rf-dt-c">
-                        <h:link value="#{authorController.getCountAuthorsByRating(2)} authors"
+                        <h:link value="#{authorAction.getCountAuthorsByRating(2)} authors"
                                 outcome="/authorlist.xhtml">
                             <f:param name="byrating" value="2"/>
                         </h:link>
@@ -94,7 +94,7 @@
                     <td class="rf-dt-c">3 star</td>
                     <td class="rf-dt-c">***</td>
                     <td class="rf-dt-c">
-                        <h:link value="#{authorController.getCountAuthorsByRating(3)} authors"
+                        <h:link value="#{authorAction.getCountAuthorsByRating(3)} authors"
                                 outcome="/authorlist.xhtml">
                             <f:param name="byrating" value="3"/>
                         </h:link>
@@ -104,7 +104,7 @@
                     <td class="rf-dt-c">4 star</td>
                     <td class="rf-dt-c">****</td>
                     <td class="rf-dt-c">
-                        <h:link value="#{authorController.getCountAuthorsByRating(4)} authors"
+                        <h:link value="#{authorAction.getCountAuthorsByRating(4)} authors"
                                 outcome="/authorlist.xhtml">
                             <f:param name="byrating" value="4"/>
                         </h:link>
@@ -114,7 +114,7 @@
                     <td class="rf-dt-c">5 star</td>
                     <td class="rf-dt-c">*****</td>
                     <td class="rf-dt-c">
-                        <h:link value="#{authorController.getCountAuthorsByRating(5)} authors"
+                        <h:link value="#{authorAction.getCountAuthorsByRating(5)} authors"
                                 outcome="/authorlist.xhtml">
                             <f:param name="byrating" value="5"/>
                         </h:link>
@@ -124,7 +124,7 @@
                     <td class="rf-dt-c">Without rating</td>
                     <td class="rf-dt-c">-------------------------------------------------</td>
                     <td class="rf-dt-c">
-                        <h:link value="#{authorController.countAuthorsWithoutRating} authors"
+                        <h:link value="#{authorAction.countAuthorsWithoutRating} authors"
                                 outcome="/authorlist.xhtml">
                             <f:param name="byrating" value="0"/>
                         </h:link>

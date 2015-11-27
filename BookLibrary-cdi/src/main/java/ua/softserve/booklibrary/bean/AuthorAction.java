@@ -15,18 +15,18 @@ import java.util.List;
 
 @Named
 @ViewScoped
-public class AuthorController implements Serializable {
+public class AuthorAction implements Serializable {
 
     private static final long serialVersionUID = 3795838153393063077L;
     @EJB
     private AuthorManager authorManager;
 
     private List<Author> authors;
-    private Author author = new Author();
+    private Author author;
     private Long currentAuthorIndex;
     private Author currentAuthor;
 
-    public AuthorController() {
+    public AuthorAction() {
     }
 
     public void save() {
@@ -42,7 +42,10 @@ public class AuthorController implements Serializable {
     }
 
     public List<Author> getAuthors() {
-        return authorManager.findAll();
+        if (authors == null) {
+            authors = authorManager.findAll();
+        }
+        return authors;
     }
 
     public void setAuthors(List<Author> authors) {

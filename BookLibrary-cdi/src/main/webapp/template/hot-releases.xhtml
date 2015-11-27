@@ -7,12 +7,12 @@
     <rich:panel header="Hot Book Releases">
 
         <h:form>
-            <rich:dataTable value="#{bookController.hotReleases}" var="hotRelease" id="hot" rows="20"
+            <rich:dataTable value="#{bookAction.hotReleases}" var="hotRelease" id="hot" rows="20"
                             rowClasses="odd-row, even-row"
                             styleClass="stable" style="width:100%;">
                 <rich:column>
                     <h:link styleClass="book_name" value="#{hotRelease.name}" outcome="/book.xhtml">
-                        <f:param name="Id" value="#{hotRelease.id}"/>
+                        <f:param name="id" value="#{hotRelease.id}"/>
                     </h:link>
                     <br/>
                     <h:outputText

@@ -32,7 +32,7 @@ public class Author extends Entity {
     private Long id;
 
     @NotNull
-    @Size(min = 2, max = 255)
+    @Size(max = 255)
     @Column(name = "FIRST_NAME", nullable = false)
     private String firstName;
 
@@ -50,9 +50,6 @@ public class Author extends Entity {
 
     @ManyToMany(mappedBy = "authors")
     private Set<Book> books = new HashSet<>();
-
-    public Author() {
-    }
 
     public Long getId() {
         return id;

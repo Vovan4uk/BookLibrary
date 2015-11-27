@@ -13,7 +13,7 @@ import java.util.Map;
 
 @ManagedBean
 @ViewScoped
-public class BooksSortingBean implements Serializable {
+public class MainSortingBean implements Serializable {
     private static final long serialVersionUID = -7944021928506372310L;
     private Map<String, SortOrder> sortsOrders;
     private List<String> sortPriorities;
@@ -22,7 +22,7 @@ public class BooksSortingBean implements Serializable {
     private static final String AVERAGE_RATING_SORT = "averageRating";
     private static final String CREATE_DATE_SORT = "createDate";
 
-    public BooksSortingBean() {
+    public MainSortingBean() {
         sortsOrders = new HashMap<>();
         sortPriorities = new ArrayList<>();
 
@@ -36,6 +36,10 @@ public class BooksSortingBean implements Serializable {
     }
 
     public void sort() {
+        System.out.println(sortPriorities + "------------------------------------");
+        System.out.println(sortsOrders + "+++++++++++++++++++++++++++++++++++");
+        System.out.println();
+        System.out.println();
         String property = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap()
                 .get(SORT_PROPERTY_PARAMETER);
 

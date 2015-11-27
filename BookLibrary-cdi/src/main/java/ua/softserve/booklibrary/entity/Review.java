@@ -49,9 +49,6 @@ public class Review extends Entity {
     @JoinColumn(name = "BOOK_ID")
     private Book book;
 
-    public Review() {
-    }
-
     public Long getId() {
         return id;
     }

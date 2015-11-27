@@ -11,6 +11,7 @@ import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import javax.faces.context.FacesContext;
 import javax.inject.Named;
+import java.util.IllegalFormatException;
 import java.util.List;
 
 @Named
@@ -24,8 +25,6 @@ public class BookManagerImpl implements BookManager {
 
     @EJB
     private BookFacade bookFacade;
-    private String byRating;
-    private String byAuthor;
 
     @Override
     public void save(Book entity) {
@@ -58,47 +57,36 @@ public class BookManagerImpl implements BookManager {
 
     @Override
     public List<Book> findAll() {
+        return initBookList(bookFacade.findAll());
+    }
 
-        byRating = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap().get("byrating");
-        byAuthor = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap().get("byauthor");
+    public List<Book> findAll2() {
+        String byRating = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap().get("byrating");
         List<Book> resultList;
-        if (byRating != null && !"".equals(byRating)) {
+        if (byRating != null && !byRating.isEmpty()) {
             resultList = getBooksByRating();
-        } else if (byAuthor != null && !"".equals(byAuthor)) {
-            resultList = getBooksByAuthor();
         } else {
             resultList = bookFacade.findAll();
         }
         return initBookList(resultList);
-
     }
 
     private List<Book> getBooksByRating() {
+        String byRating = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap().get("byrating");
+        List<Book> resultList;
         try {
             Integer rating = Integer.parseInt(byRating);
             if (rating == 0) {
-                return findBooksWithoutRating();
+                resultList = findBooksWithoutRating();
             } else if (rating > 0 && rating <= 5) {
-                return findBooksByRating(rating);
+                resultList = findBooksByRating(rating);
             } else {
                 throw new IllegalArgumentException();
             }
-        } catch (IllegalArgumentException e) {
-            return bookFacade.findAll();
+        } catch (IllegalFormatException e) {
+            resultList = bookFacade.findAll();
         }
-    }
-
-    private List<Book> getBooksByAuthor() {
-        try {
-            Long authorId = Long.parseLong(byAuthor);
-            if (authorId == 0) {
-                throw new IllegalArgumentException();
-            } else {
-                return findBooksByAuthorId(authorId);
-            }
-        } catch (IllegalArgumentException e) {
-            return bookFacade.findAll();
-        }
+        return resultList;
     }
 
     private List<Book> initBookList(List<Book> books) {

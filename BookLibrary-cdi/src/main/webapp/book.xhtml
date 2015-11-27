@@ -9,24 +9,24 @@
     <ui:define name="title">Book details</ui:define>
 
     <ui:define name="body">
-        <rich:panel header="#{bookController.currentBook.name}">
+        <rich:panel header="#{bookAction.currentBook.name}">
             <h:form>
-                <h:outputText value="#{bookController.currentBook.averageRating}"/><br/>
-                <h:outputText value="#{bookController.currentBook.reviews.size()} reviews"/><br/>
+                <h:outputText value="#{bookAction.currentBook.averageRating}"/><br/>
+                <h:outputText value="#{bookAction.currentBook.reviews.size()} reviews"/><br/>
                 <h:outputText
-                        value="#{bookController.currentBook.publisher} #{bookController.currentBook.publishedDate}"/><br/>
-                <h:outputText value="#{bookController.currentBook.isbn}"/><br/>
+                        value="#{bookAction.currentBook.publisher} #{bookAction.currentBook.publishedDate}"/><br/>
+                <h:outputText value="#{bookAction.currentBook.isbn}"/><br/>
                 <h:outputText value="Authors:" styleClass="book_authors"/>
-                <a4j:repeat value="#{bookController.currentBook.authors}" var="author" id="repeat">
+                <a4j:repeat value="#{bookAction.currentBook.authors}" var="author" id="repeat">
                     <h:link value="#{author.firstName} #{author.secondName}" outcome="/author.xhtml">
                         <f:param name="id" value="#{author.id}"/>
                     </h:link>
                     <h:outputText value=" "/>
                 </a4j:repeat><br/>
-                <h:outputText value="#{bookController.currentBook.createDate}"/><br/><br/>
+                <h:outputText value="#{bookAction.currentBook.createDate}"/><br/><br/>
 
                 <rich:panel header="Book reviews">
-                    <rich:dataTable value="#{bookController.currentBook.reviews}" var="review" id="reviews" rows="3"
+                    <rich:dataTable value="#{bookAction.currentBook.reviews}" var="review" id="reviews" rows="3"
                                     style="width: 100%;">
                         <rich:column>
                             <h:outputText value="#{review.commenterName}"/><br/>

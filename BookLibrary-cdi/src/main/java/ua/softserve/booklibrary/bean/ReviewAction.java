@@ -8,14 +8,14 @@ import javax.ejb.EJB;
 @Named
 @ViewScoped
 */
-public class ReviewController {
+public class ReviewAction {
 
     @EJB
     private ReviewManager reviewManager;
 
     private String testString = "hoh";
 
-    public ReviewController() {
+    public ReviewAction() {
     }
 
     public String save() {

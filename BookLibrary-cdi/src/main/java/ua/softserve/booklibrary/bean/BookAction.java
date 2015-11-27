@@ -12,7 +12,7 @@ import java.util.List;
 
 @Named
 @ViewScoped
-public class BookController implements Serializable {
+public class BookAction implements Serializable {
 
     private static final long serialVersionUID = 6489108625203081136L;
 
