@@ -57,10 +57,6 @@ public class BookManagerImpl implements BookManager {
 
     @Override
     public List<Book> findAll() {
-        return initBookList(bookFacade.findAll());
-    }
-
-    public List<Book> findAll2() {
         String byRating = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap().get("byrating");
         List<Book> resultList;
         if (byRating != null && !byRating.isEmpty()) {

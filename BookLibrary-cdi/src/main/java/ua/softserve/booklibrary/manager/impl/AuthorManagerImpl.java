@@ -57,7 +57,7 @@ public class AuthorManagerImpl implements AuthorManager {
 
     @Override
     public List<Author> findAll() {
-        return initAuthorList(authorFacade.findAll());
+        return initAuthorList(getAuthors());
     }
 
     private List<Author> getAuthors() {
