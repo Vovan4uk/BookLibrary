@@ -11,15 +11,18 @@ import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
+import javax.persistence.UniqueConstraint;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.util.HashSet;
 import java.util.Set;
 
 @javax.persistence.Entity
-@Table(name = "AUTHOR")
+@Table(name = "AUTHOR", uniqueConstraints = @UniqueConstraint(columnNames = {"SECOND_NAME", "FIRST_NAME"}))
 @NamedQueries({
         @NamedQuery(name = "Author.findAuthorsByRating", query = "SELECT a FROM Author a WHERE averageRating >= :minRating AND averageRating < :maxRating "),
+        @NamedQuery(name = "Author.findBySecondAndFirstName", query = "SELECT a FROM Author a WHERE secondName = :secondName AND firstName = :firstName "),
+        @NamedQuery(name = "Author.findByFirstName", query = "SELECT a FROM Author a WHERE secondName IS NULL AND firstName = :firstName "),
         @NamedQuery(name = "Author.findAuthorsWithoutRating", query = "SELECT a FROM Author a WHERE averageRating IS NULL")
 })
 
@@ -32,7 +35,7 @@ public class Author extends Entity {
     private Long id;
 
     @NotNull
-    @Size(max = 255)
+    @Size(min = 1, max = 255)
     @Column(name = "FIRST_NAME", nullable = false)
     private String firstName;
 

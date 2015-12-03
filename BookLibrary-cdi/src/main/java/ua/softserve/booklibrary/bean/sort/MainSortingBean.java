@@ -36,16 +36,12 @@ public class MainSortingBean implements Serializable {
     }
 
     public void sort() {
-        System.out.println(sortPriorities + "------------------------------------");
-        System.out.println(sortsOrders + "+++++++++++++++++++++++++++++++++++");
-        System.out.println();
-        System.out.println();
         String property = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap()
                 .get(SORT_PROPERTY_PARAMETER);
 
         if (property != null) {
             SortOrder currentPropertySortOrder = sortsOrders.get(property);
-
+            reset();
             if (!sortPriorities.contains(property)) {
                 sortPriorities.add(property);
             }
@@ -58,11 +54,10 @@ public class MainSortingBean implements Serializable {
         }
     }
 
-    public void reset(String param) {
-        sortPriorities.remove(param);
-        sortsOrders.remove(param);
+    public void reset() {
+        sortPriorities.clear();
+        sortsOrders.clear();
     }
-
     public List<String> getSortPriorities() {
         return sortPriorities;
     }

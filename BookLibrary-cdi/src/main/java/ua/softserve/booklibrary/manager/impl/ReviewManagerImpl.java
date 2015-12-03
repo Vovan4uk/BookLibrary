@@ -4,6 +4,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import ua.softserve.booklibrary.dao.facade.ReviewFacade;
 import ua.softserve.booklibrary.dao.home.ReviewHome;
+import ua.softserve.booklibrary.entity.Author;
 import ua.softserve.booklibrary.entity.Book;
 import ua.softserve.booklibrary.entity.Review;
 import ua.softserve.booklibrary.manager.ReviewManager;
@@ -17,7 +18,7 @@ import java.util.List;
 @Stateless
 public class ReviewManagerImpl implements ReviewManager {
 
-    private static final Logger LOG = LoggerFactory.getLogger(ReviewManager.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(ReviewManagerImpl.class);
 
     @EJB
     private ReviewHome reviewHome;
@@ -26,9 +27,9 @@ public class ReviewManagerImpl implements ReviewManager {
     private ReviewFacade reviewFacade;
 
     @Override
-    public void save(Review entity) {
-        LOG.debug("Save new Review ", entity);
-        reviewHome.save(entity);
+    public Review save(Review review) {
+        LOGGER.debug("Save new Review {}", review);
+        return reviewHome.save(review);
     }
 
     @Override
@@ -58,6 +59,15 @@ public class ReviewManagerImpl implements ReviewManager {
 
     @Override
     public Integer countBookReviews(Book book) {
+        LOGGER.debug("Get count reviews by book '{}'", book);
         return reviewFacade.countBookReviews(book);
+    }
+
+    @Override
+    public List<Review> findReviewsByAuthor(Author author) {
+        LOGGER.debug("Find reviews by author {}", author);
+        List<Review> reviews = reviewFacade.findReviewsByAuthor(author);
+        LOGGER.debug("Result list: {}", reviews);
+        return reviews;
     }
 }

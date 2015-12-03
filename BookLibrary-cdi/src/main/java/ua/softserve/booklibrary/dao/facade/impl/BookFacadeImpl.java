@@ -4,11 +4,14 @@ import ua.softserve.booklibrary.dao.facade.BookFacade;
 import ua.softserve.booklibrary.entity.Book;
 
 import javax.ejb.Stateless;
+import javax.ejb.TransactionAttribute;
+import javax.ejb.TransactionAttributeType;
 import javax.inject.Named;
 import java.util.List;
 
 @Named
 @Stateless
+@TransactionAttribute(TransactionAttributeType.SUPPORTS)
 public class BookFacadeImpl extends GenericFacadeImpl<Book> implements BookFacade {
     public BookFacadeImpl() {
         super(Book.class);

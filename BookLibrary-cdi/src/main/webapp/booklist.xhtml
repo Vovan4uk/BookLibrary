@@ -8,17 +8,12 @@
 
     <ui:define name="title">Books Page</ui:define>
     <ui:define name="body">
-        <div style="float: right;padding-top: 25px;padding-right: 12px;">
-            <h:commandButton value="Add New Book">
-                <rich:componentControl target="modal" operation="show"/>
-            </h:commandButton>
-        </div>
+
         <h:form>
         <rich:panel header="Books page">
             <rich:dataTable value="#{bookAction.books}" var="book" style="width:100%;" rows="10" id="table"
-                            sortPriority="#{mainSortingBean.sortPriorities}">
-                <rich:column sortBy="#{book.name}" sortOrder="#{mainSortingBean.sortsOrders['name']}"
-                             sortType="custom" styleClass="col_book_name" headerClass="col_book_name">
+                            sortPriority="#{mainSortingBean.sortPriorities}" selectionMode="none">
+                <rich:column sortBy="#{book.name}" styleClass="col_book_name" headerClass="col_book_name">
                     <f:facet name="header">
                             <a4j:commandButton execute="@this" value="&lt;" render="table"
                                                action="#{mainSortingBean.sort}"
@@ -61,8 +56,8 @@
                     </a4j:repeat>
                 </rich:column>
 
-                <rich:column sortBy="#{book.publisher}" sortOrder="#{mainSortingBean.sortsOrders['publisher']}"
-                             sortType="custom" styleClass="col_book_publisher" headerClass="col_book_publisher">
+                <rich:column sortBy="#{book.publisher}" styleClass="col_book_publisher"
+                             headerClass="col_book_publisher">
                     <f:facet name="header">
                             <a4j:commandButton execute="@this" value="&lt;" render="table"
                                                action="#{mainSortingBean.sort}"
@@ -88,8 +83,7 @@
                     </f:facet>
                     <h:outputText value="#{book.publisher}"/>
                 </rich:column>
-                <rich:column sortBy="#{book.publishedDate}" sortOrder="#{mainSortingBean.sortsOrders['publishedDate']}"
-                             sortType="custom" styleClass="col_book_published_date"
+                <rich:column sortBy="#{book.publishedDate}" styleClass="col_book_published_date"
                              headerClass="col_book_published_date">
                     <f:facet name="header">
                             <a4j:commandButton execute="@this" value="&lt;" render="table"
@@ -116,8 +110,7 @@
                     </f:facet>
                     <h:outputText value="#{book.publishedDate}"/>
                 </rich:column>
-                <rich:column sortBy="#{book.averageRating}" sortOrder="#{mainSortingBean.sortsOrders['averageRating']}"
-                             sortType="custom" styleClass="col_book_average_rating"
+                <rich:column sortBy="#{book.averageRating}" styleClass="col_book_average_rating"
                              headerClass="col_book_average_rating">
                     <f:facet name="header">
                             <a4j:commandButton execute="@this" value="&lt;" render="table"
@@ -143,10 +136,10 @@
                                                action="#{mainSortingBean.reset('averageRating')}" render="table"/>
                     </f:facet>
 
-                    <h:outputText value="#{book.averageRating}"/><h:outputText value=" (#{book.reviews.size()})"/>
+                    <h:outputText value="#{book.averageRating} (#{book.reviews.size()})"/>
                 </rich:column>
-                <rich:column sortBy="#{book.createDate}" sortOrder="#{mainSortingBean.sortsOrders['createDate']}"
-                             sortType="custom" styleClass="col_book_create_date" headerClass="col_book_create_date">
+                <rich:column sortBy="#{book.createDate}" styleClass="col_book_create_date"
+                             headerClass="col_book_create_date">
                     <f:facet name="header">
                             <a4j:commandButton execute="@this" value="&lt;" render="table"
                                                action="#{mainSortingBean.sort}"
@@ -172,39 +165,11 @@
                     </f:facet>
                     <h:outputText value="#{book.createDate}"/>
                 </rich:column>
-                <rich:column styleClass="col_book_action" headerClass="col_book_action">
-                    <f:facet name="header">
-                        <h:outputText value="Edit\Delete"/>
-                    </f:facet>
-                    <h:commandButton value="Edit">
-                        <rich:componentControl target="modal" operation="show"/>
-                    </h:commandButton>
-                    <h:commandButton value="Delete">
-                        <rich:componentControl target="modal" operation="show"/>
-                    </h:commandButton>
-                </rich:column>
 
                 <f:facet name="footer" id="pagination">
                     <rich:dataScroller renderIfSinglePage="false"/>
                 </f:facet>
             </rich:dataTable>
-
-
-            <rich:popupPanel id="modal" modal="true" resizeable="true" onmaskclick="#{rich:component('modal')}.hide()">
-                <f:facet name="header">
-                    <h:outputText value="Add new book"/>
-                </f:facet>
-                <f:facet name="controls">
-                    <h:outputLink value="#" onclick="#{rich:component('modal')}.hide(); return false;">
-                        X
-                    </h:outputLink>
-                </f:facet>
-                <h:form>
-                    <h:inputText value="" id="name"/><br/><br/>
-                    <h:inputText value="" id="isbn"/><br/><br/>
-                    <h:inputText value="" id="publisher"/><br/><br/>
-                </h:form>
-            </rich:popupPanel>
 
         </rich:panel>
         </h:form>

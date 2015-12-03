@@ -27,9 +27,9 @@ public class BookManagerImpl implements BookManager {
     private BookFacade bookFacade;
 
     @Override
-    public void save(Book entity) {
+    public Book save(Book entity) {
         LOG.debug("Save new Book ", entity);
-        bookHome.save(entity);
+        return bookHome.save(entity);
     }
 
     @Override

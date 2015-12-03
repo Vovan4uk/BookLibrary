@@ -19,7 +19,8 @@ import javax.validation.constraints.Size;
 @javax.persistence.Entity
 @Table(name = "REVIEW")
 @NamedQueries({
-        @NamedQuery(name = "Review.countBookReviews", query = "SELECT COUNT(r) as r_count FROM Review r WHERE r.book = :book")
+        @NamedQuery(name = "Review.countBookReviews", query = "SELECT COUNT(r) as r_count FROM Review r WHERE r.book = :book"),
+        @NamedQuery(name = "Review.findReviewsByAuthor", query = "SELECT r FROM Author a JOIN a.books b JOIN b.reviews r WHERE a = :author ORDER BY r.createDate DESC")
 })
 public class Review extends Entity {
     private static final long serialVersionUID = -8631161684971086224L;

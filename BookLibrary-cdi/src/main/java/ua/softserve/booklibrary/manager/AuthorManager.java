@@ -11,4 +11,5 @@ public interface AuthorManager extends GenericManager<Author> {
 
     List<Author> findAuthorsWithoutRating();
 
+    List<Author> findAll(String byRating);
 }

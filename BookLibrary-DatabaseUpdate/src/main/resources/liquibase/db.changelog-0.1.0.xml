@@ -55,7 +55,7 @@
             <column name="FIRST_NAME" type="VARCHAR(255)">
                 <constraints nullable="false"/>
             </column>
-            <column name="SECOND_NAME" type="VARCHAR(255)"/>
+            <column name="SECOND_NAME" type="VARCHAR(255)" defaultValue=""/>
             <column name="CREATE_DATE" type="DATE">
                 <constraints nullable="false"/>
             </column>

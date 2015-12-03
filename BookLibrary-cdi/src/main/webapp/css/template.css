@@ -44,3 +44,20 @@ td.right_column {
 .col_author_best_book, .col_author_latest_book {
     width: 27% !important;
 }
+
+*.rf-dt-c-srt {
+    color: #fff !important;
+}
+
+.even-row {
+    background-color: #FCFFFE;
+}
+
+.odd-row {
+    background-color: #ECF3FE;
+}
+
+.even-row:hover,
+.odd-row:hover {
+    background-color: #FFEBDA;
+}
