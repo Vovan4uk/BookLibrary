@@ -16,9 +16,7 @@ import javax.faces.context.FacesContext;
 import javax.faces.view.ViewScoped;
 import javax.inject.Named;
 import java.io.Serializable;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 @Named
 @ViewScoped
@@ -31,58 +29,72 @@ public class AuthorAction implements Serializable {
     private ReviewManager reviewManager;
 
     private List<Author> authors;
-    private Author author;
-    private String id;
     private Author newAuthor = new Author();
-    private Long currentAuthorIndex;
     private Author currentAuthor;
+
+    private Long currentAuthorIndex;
     private String byRating;
     private String title;
-    private Map<Object, Object> checkedItems = new HashMap<>();
+    private String id;
 
-
-    public AuthorAction() {
-    }
-
-    public Author getAuthor() {
+    public void loadData() {
         try {
-            author = authorManager.findByPk(Long.parseLong(getId()));
+            currentAuthor = authorManager.findByPk(Long.parseLong(getId()));
         } catch (NumberFormatException e) {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Author id is not valid", e.getMessage()));
-            author = null;
+            currentAuthor = null;
         } catch (IllegalArgumentException e) {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, e.getMessage(), e.getMessage()));
-            author = null;
+            currentAuthor = null;
+        } catch (EJBException e) {
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error has occurred. Try again, please.", e.getMessage()));
+            currentAuthor = null;
         }
-        return author;
     }
 
-    public void setAuthor(Author author) {
-        this.author = author;
-    }
-
-    public String getId() {
-        if (id == null) {
-            id = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap().get("id");
+    public void save() {
+        try {
+            authorManager.save(newAuthor);
+            newAuthor = new Author();
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Author saved successful", "Author saved successful"));
+        } catch (AlreadyExistException e) {
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, e.getMessage(), e.getMessage()));
+        } catch (EJBException e) {
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Save unsuccessful", e.getMessage()));
         }
-        return id;
+        initAuthors();
     }
 
-    public void setId(String id) {
-        this.id = id;
+    public void update() {
+        try {
+            authorManager.update(currentAuthor);
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Author updated successful", "Author updated successful"));
+        } catch (EJBException e) {
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Update unsuccessful", e.getMessage()));
+        }
+        initAuthors();
+    }
+
+    public void remove() {
+        try {
+            authorManager.removeByPk(currentAuthorIndex);
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Author removed successful", "Author removed successful"));
+        } catch (EJBException e) {
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Remove unsuccessful", e.getMessage()));
+        }
+        initAuthors();
+    }
+
+    public Integer getCountAuthorsByRating(Integer minRating) {
+        return authorManager.findAuthorsByRating(minRating).size();
+    }
+
+    public Integer getCountAuthorsWithoutRating() {
+        return authorManager.findAuthorsWithoutRating().size();
     }
 
     public List<Review> getReviewsByAuthor(Author author) {
         return reviewManager.findReviewsByAuthor(author);
-    }
-
-
-    public Map<Object, Object> getCheckedItems() {
-        return checkedItems;
-    }
-
-    public void setCheckedItems(Map<Object, Object> checkedItems) {
-        this.checkedItems = checkedItems;
     }
 
     public String getTitle() {
@@ -106,6 +118,17 @@ public class AuthorAction implements Serializable {
         this.title = title;
     }
 
+    public String getId() {
+        if (id == null) {
+            id = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap().get("id");
+        }
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
+
     public String getByRating() {
         if (byRating == null) {
             byRating = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap().get("byrating");
@@ -117,34 +140,15 @@ public class AuthorAction implements Serializable {
         this.byRating = byRating;
     }
 
-    public void save() {
-        try {
-            authorManager.save(newAuthor);
-            newAuthor = new Author();
-        } catch (AlreadyExistException e) {
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, e.getMessage(), e.getMessage()));
-        } catch (EJBException e) {
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Save unsuccessful", e.getMessage()));
-        }
-    }
-
-    public void update() {
-        try {
-            authorManager.update(currentAuthor);
-        } catch (AlreadyExistException e) {
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, e.getMessage(), e.getMessage()));
-        } catch (EJBException e) {
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Update unsuccessful", e.getMessage()));
-        }
-    }
-
-    public void remove() {
-        authorManager.removeByPk(currentAuthorIndex);
-    }
-
     public List<Author> getAuthors() {
-        authors = authorManager.findAll(getByRating());
+        if (authors == null) {
+            initAuthors();
+        }
         return authors;
+    }
+
+    private void initAuthors() {
+        authors = authorManager.findAll(getByRating());
     }
 
     public void setAuthors(List<Author> authors) {
@@ -157,14 +161,6 @@ public class AuthorAction implements Serializable {
 
     public void setNewAuthor(Author newAuthor) {
         this.newAuthor = newAuthor;
-    }
-
-    public Integer getCountAuthorsByRating(Integer minRating) {
-        return authorManager.findAuthorsByRating(minRating).size();
-    }
-
-    public Integer getCountAuthorsWithoutRating() {
-        return authorManager.findAuthorsWithoutRating().size();
     }
 
     public void setCurrentAuthorIndex(Long currentAuthorIndex) {

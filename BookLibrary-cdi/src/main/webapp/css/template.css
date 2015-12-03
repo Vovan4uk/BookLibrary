@@ -61,3 +61,11 @@ td.right_column {
 .odd-row:hover {
     background-color: #FFEBDA;
 }
+
+.message_col {
+
+}
+
+.button_col {
+    width: 50px;
+}

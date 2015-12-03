@@ -11,20 +11,24 @@
         <h:form id="form">
             <rich:panel header="Authors page #{authorAction.title}" id="mainPane">
 
-                <rich:panel style="text-align: right">
+                <h:panelGrid columns="2" columnClasses="message_col, button_col" width="100%">
+                    <rich:messages globalOnly="true"/>
+                    <h:panelGroup>
+                        <a4j:commandLink styleClass="no-decor" execute="@this" render="table, createPane"
+                                         oncomplete="#{rich:component('createPane')}.show()">
+                            <h:graphicImage value="/images/new.png" alt="add new"/>
+                            <a4j:param value="#{param['byrating']}" name="byrating"/>
+                        </a4j:commandLink>
 
-                    <a4j:commandLink styleClass="no-decor" execute="@this" render="table, createPane"
-                                     oncomplete="#{rich:component('createPane')}.show()">
-                        <h:graphicImage value="/images/new.png" alt="add new"/>
-                        <a4j:param value="#{param['byrating']}" name="byrating"/>
-                    </a4j:commandLink>
+                        <a4j:commandLink styleClass="no-decor" execute="@this" render="table"
+                                         oncomplete="#{rich:component('confirmPane')}.show()">
+                            <h:graphicImage value="/images/delete.png" alt="Delete selected"/>
+                            <a4j:param value="#{param['byrating']}" name="byrating"/>
+                        </a4j:commandLink>
+                    </h:panelGroup>
+                </h:panelGrid>
 
-                    <a4j:commandLink styleClass="no-decor" execute="@this" render="table"
-                                     oncomplete="#{rich:component('confirmPane')}.show()">
-                        <h:graphicImage value="/images/delete.png" alt="Delete selected"/>
-                        <a4j:param value="#{param['byrating']}" name="byrating"/>
-                    </a4j:commandLink>
-                </rich:panel>
+
                 <rich:dataTable style="width: 100%;" id="noItems">
                     <f:facet name="header">
                         <h:outputText value="No Authors Items Found" rendered="#{empty authorAction.authors}"/>
@@ -35,8 +39,7 @@
                                 sortPriority="#{mainSortingBean.sortPriorities}"
                                 rowClasses="odd-row, even-row">
                     <rich:column sortBy="#{author.firstName}" sortOrder="#{mainSortingBean.sortsOrders['firstName']}"
-                                 styleClass="col_author_name" headerClass="col_author_name" id="col1"
-                                 rendered="#{not empty authorAction.authors}">
+                                 styleClass="col_author_name" headerClass="col_author_name" id="col1">
                         <f:facet name="header">
                             <h:outputText value="Author name">
                             </h:outputText>
@@ -45,8 +48,7 @@
                             <f:param name="id" value="#{author.id}"/>
                         </h:link>
                     </rich:column>
-                    <rich:column styleClass="col_author_best_book" headerClass="col_author_best_book" id="col2"
-                                 rendered="#{not empty authorAction.authors}">
+                    <rich:column styleClass="col_author_best_book" headerClass="col_author_best_book" id="col2">
                         <f:facet name="header">
                             <h:outputText value="The best author's book"/>
                         </f:facet>
@@ -59,8 +61,7 @@
                         </a4j:repeat>
                     </rich:column>
 
-                    <rich:column styleClass="col_author_latest_book" headerClass="col_author_latest_book" id="col3"
-                                 rendered="#{not empty authorAction.authors}">
+                    <rich:column styleClass="col_author_latest_book" headerClass="col_author_latest_book" id="col3">
                         <f:facet name="header">
                             <h:outputText value="The latest author's book"/>
                         </f:facet>
@@ -75,8 +76,7 @@
                     <rich:column sortBy="#{author.averageRating}"
                                  sortOrder="#{mainSortingBean.sortsOrders['averageRating']}"
                                  styleClass="col_author_average_rating"
-                                 headerClass="col_author_average_rating" id="col4"
-                                 rendered="#{not empty authorAction.authors}">
+                                 headerClass="col_author_average_rating" id="col4">
                         <f:facet name="header">
                             <h:outputText value="Average rating"/>
                         </f:facet>
@@ -87,15 +87,13 @@
                     <rich:column sortBy="#{author.createDate}"
                                  sortOrder="#{mainSortingBean.sortsOrders['createDate']}"
                                  styleClass="col_author_create_date"
-                                 headerClass="col_author_create_date" id="col5"
-                                 rendered="#{not empty authorAction.authors}">
+                                 headerClass="col_author_create_date" id="col5">
                         <f:facet name="header">
                             <h:outputText value="Create date"/>
                         </f:facet>
                         <h:outputText value="#{author.createDate}"/>
                     </rich:column>
-                    <rich:column styleClass="col_author_action" headerClass="col_author_action" id="col6"
-                                 rendered="#{not empty authorAction.authors}">
+                    <rich:column styleClass="col_author_action" headerClass="col_author_action" id="col6">
                         <h:link outcome="/author.xhtml">
                             <f:param name="id" value="#{author.id}"/>
                             <h:graphicImage value="/images/detail.png" alt="detail"/>
@@ -122,7 +120,7 @@
 
 
                 <a4j:jsFunction name="remove" action="#{authorAction.remove}"
-                                render="table, noItems, col1, col2, col3, col4, col5, col6" execute="@this"
+                                render="message, table, noItems, col1, col2, col3, col4, col5, col6" execute="@this"
                                 oncomplete="#{rich:component('confirmPane')}.hide();">
                 </a4j:jsFunction>
 
@@ -161,8 +159,8 @@
 
                     </h:panelGrid>
                     <a4j:commandButton value="Update" action="#{authorAction.update}" render="table"
-                                       execute="editPane"
-                                       oncomplete="if (#{facesContext.maximumSeverity==null}) {#{rich:component('editPane')}.hide();}">
+                                       execute="message, editPane"
+                                       oncomplete="if (#{facesContext.maximumSeverity.ordinal==0 or facesContext.maximumSeverity==null}) {#{rich:component('editPane')}.hide();}">
                     </a4j:commandButton>
                     <a4j:commandButton value="Cancel" onclick="#{rich:component('editPane')}.hide(); return false;"/>
                 </rich:popupPanel>
@@ -183,9 +181,9 @@
                         <rich:message for="asecondName"/>
                     </h:panelGrid>
                     <a4j:commandButton value="Save" action="#{authorAction.save}"
-                                       render="table, noItems, col1, col2, col3, col4, col5, col6"
+                                       render="message, table, noItems, col1, col2, col3, col4, col5, col6"
                                        execute="createPane"
-                                       oncomplete="if (#{facesContext.maximumSeverity==null}) {#{rich:component('createPane')}.hide();}">
+                                       oncomplete="if (#{facesContext.maximumSeverity.ordinal==0 or facesContext.maximumSeverity==null}) {#{rich:component('createPane')}.hide();}">
                     </a4j:commandButton>
                     <a4j:commandButton value="Cancel" onclick="#{rich:component('createPane')}.hide(); return false;"/>
                 </rich:popupPanel>

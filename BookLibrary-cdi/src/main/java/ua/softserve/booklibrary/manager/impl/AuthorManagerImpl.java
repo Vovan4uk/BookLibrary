@@ -41,13 +41,8 @@ public class AuthorManagerImpl implements AuthorManager {
     }
 
     @Override
-    public Author update(Author author) throws AlreadyExistException {
-        if (isAlreadyExist(author)) {
-            String errorMessage = "Update unsuccessful. Author is already exist";
-            LOGGER.error(errorMessage);
-            throw new AlreadyExistException(errorMessage);
-        }
-        LOGGER.debug("Author was updated {}", author);
+    public Author update(Author author) {
+        LOGGER.debug("Update for author {}", author);
         return authorHome.update(author);
     }
 

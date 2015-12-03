@@ -11,7 +11,7 @@
     </appender>
 
     <logger name="ua.softserve.booklibrary">
-        <level value="INFO"/>
+        <level value="DEBUG"/>
         <appender-ref ref="ConsoleAppender"/>
     </logger>
 

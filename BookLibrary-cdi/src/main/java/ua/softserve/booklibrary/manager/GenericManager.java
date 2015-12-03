@@ -10,7 +10,7 @@ import java.util.List;
 public interface GenericManager<T extends Entity> {
     T save(T entity) throws AlreadyExistException;
 
-    T update(T entity) throws AlreadyExistException;
+    T update(T entity);
 
     void removeByPk(Long id);
 

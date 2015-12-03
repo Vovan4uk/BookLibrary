@@ -6,184 +6,211 @@
                 xmlns:rich="http://richfaces.org/rich"
                 xmlns:a4j="http://richfaces.org/a4j">
 
-    <ui:define
-            name="title">Author details: #{authorAction.author.secondName} #{authorAction.author.firstName}</ui:define>
+    <ui:define name="title">Author details</ui:define>
 
     <ui:define name="body">
-        <rich:panel header="#{authorAction.author.secondName} #{authorAction.author.firstName}" id="authorPane">
+        <h:form id="authorform">
+            <f:event type="preRenderView" listener="#{authorAction.loadData}"/>
+            <rich:panel header="#{authorAction.currentAuthor.secondName} #{authorAction.currentAuthor.firstName}"
+                        id="authorPane">
 
-            <a4j:commandLink styleClass="no-decor" render="authorPane" execute="@this"
-                             oncomplete="#{rich:component('editPane')}.show()" resetValues="true"
-                             actionListener="#{authorAction.resetValues()}">
-                <h:graphicImage value="/images/edit.gif" alt="edit"/>
-                <a4j:param value="#{authorAction.author.id}" assignTo="#{authorAction.currentAuthorIndex}"/>
-                <a4j:param value="#{param['id']}" name="id"/>
-                <f:setPropertyActionListener target="#{authorAction.currentAuthor}" value="#{authorAction.author}"/>
-            </a4j:commandLink>
-            <a4j:commandLink styleClass="no-decor" execute="@this" render="table, confirmPane"
-                             oncomplete="#{rich:component('confirmPane')}.show()">
-                <h:graphicImage value="/images/delete.gif" alt="delete"/>
-                <a4j:param value="#{authorAction.author.id}" assignTo="#{authorAction.currentAuthorIndex}"/>
-                <a4j:param value="#{param['id']}" name="id"/>
-                <f:setPropertyActionListener target="#{authorAction.currentAuthor}" value="#{authorAction.author}"/>
-            </a4j:commandLink>
-
-            <a4j:jsFunction name="remove" action="#{authorAction.remove}"
-                            render="table, noItems, col1, col2, col3, col4, col5, col6" execute="@this"
-                            oncomplete="#{rich:component('confirmPane')}.hide();">
-                <a4j:param value="#{param['byrating']}" name="byrating"/>
-            </a4j:jsFunction>
-
-
-            <rich:popupPanel id="confirmPane" autosized="true" header="Confirm delete"
-                             onmaskclick="#{rich:component('confirmPane')}.hide()">
-
-                <h:outputText
-                        value="Are you sure you want to delete #{authorAction.currentAuthor.secondName} #{authorAction.currentAuthor.firstName}"/>
-                <h:outputText value=" with his books: " rendered="#{0 ne authorAction.currentAuthor.books.size()}">
-                </h:outputText>
-                <a4j:repeat value="#{authorAction.currentAuthor.books}" var="book" id="repeat3">
-                    <br/><h:outputText value="#{book.name} "/>
-                </a4j:repeat>
-                <h:outputText value="?"/><br/>
-                <a4j:commandButton value="Delete" onclick="remove(); return false;">
-                    <a4j:param value="#{param['byrating']}" name="byrating"/>
-                </a4j:commandButton>
-                <a4j:commandButton value="Cancel" onclick="#{rich:component('confirmPane')}.hide(); return false;"/>
-            </rich:popupPanel>
-
-            <rich:popupPanel header="Edit Author" id="editPane" domElementAttachment="parent" width="400"
-                             height="150" onmaskclick="#{rich:component('editPane')}.hide()">
-                <rich:messages globalOnly="true"/>
-                <h:panelGrid columns="3" id="editGrid">
-                    <h:outputText value="First name"/>
-                    <h:inputText value="#{authorAction.currentAuthor.firstName}" id="firstName">
-                        <rich:validator/>
-                    </h:inputText>
-                    <rich:message id="firstNameMsg" for="firstName"/>
-
-                    <h:outputText value="Second name"/>
-                    <h:inputText value="#{authorAction.currentAuthor.secondName}" id="secondName">
-                        <rich:validator/>
-                    </h:inputText>
-                    <rich:message id="secondNameMsg" for="secondName"/>
-
+                <h:panelGrid columns="2" columnClasses="message_col, button_col" width="100%">
+                    <rich:messages globalOnly="true"/>
+                    <h:panelGroup>
+                        <a4j:commandLink styleClass="no-decor" render="authorPane" execute="@this"
+                                         oncomplete="#{rich:component('editPane')}.show()" resetValues="true"
+                                         actionListener="#{authorAction.resetValues()}">
+                            <h:graphicImage value="/images/edit.gif" alt="edit"/>
+                            <a4j:param value="#{param['id']}" name="id"/>
+                        </a4j:commandLink>
+                        <a4j:commandLink styleClass="no-decor" execute="@this" render="table, confirmPane"
+                                         oncomplete="#{rich:component('confirmPane')}.show()">
+                            <h:graphicImage value="/images/delete.gif" alt="delete"/>
+                            <a4j:param value="#{param['id']}" name="id"/>
+                        </a4j:commandLink>
+                    </h:panelGroup>
                 </h:panelGrid>
-                <a4j:commandButton value="Update" action="#{authorAction.update}" render="table"
-                                   execute="editPane"
-                                   oncomplete="if (#{facesContext.maximumSeverity==null}) {#{rich:component('editPane')}.hide();}">
-                    <a4j:param value="#{param['byrating']}" name="byrating"/>
-                </a4j:commandButton>
-                <a4j:commandButton value="Cancel" onclick="#{rich:component('editPane')}.hide(); return false;"/>
-            </rich:popupPanel>
 
 
-            <h:outputText value="#{authorAction.author.averageRating}"/><br/>
-            <h:outputText value="(#{authorAction.getReviewsByAuthor(authorAction.author).size()} reviews)"/><br/>
-            <h:outputText value="#{authorAction.author.createDate}"/>
-            <br/><br/>
-            <rich:panel header="All books by #{authorAction.author.secondName} #{authorAction.author.firstName}">
-                <rich:dataTable value="#{authorAction.author.books}" var="book" rows="2" rowClasses="odd-row, even-row"
-                                sortMode="single" sortPriority="#{mainSortingBean.sortPriorities}" style="width: 100%;">
-                    <rich:column styleClass="col_author_book_name" headerClass="col_author_book_name"
-                                 sortBy="#{book.name}" sortOrder="#{mainSortingBean.sortsOrders['name']}">
-                        <f:facet name="header">
-                            <h:outputText value="Book name"/>
-                        </f:facet>
-                        <h:link value="#{book.name}" outcome="/book.xhtml">
-                            <f:param name="id" value="#{book.id}"/>
-                        </h:link>
-                    </rich:column>
-                    <rich:column styleClass="col_author_book_isbn" headerClass="col_author_book_isbn">
-                        <f:facet name="header">
-                            <h:outputText value="Book ISBN"/>
-                        </f:facet>
-                        <h:outputText value="#{book.isbn}"/>
-                    </rich:column>
-                    <rich:column styleClass="col_author_book_publisher" headerClass="col_author_book_publisher"
-                                 sortBy="#{book.publisher}" sortOrder="#{mainSortingBean.sortsOrders['publisher']}">
-                        <f:facet name="header">
-                            <h:outputText value="Book publisher"/>
-                        </f:facet>
-                        <h:outputText value="#{book.publisher}"/>
-                    </rich:column>
-                    <rich:column styleClass="col_author_book_published_date"
-                                 headerClass="col_author_book_published_date"
-                                 sortBy="#{book.publishedDate}"
-                                 sortOrder="#{mainSortingBean.sortsOrders['publishedDate']}">
-                        <f:facet name="header">
-                            <h:outputText value="Book published date"/>
-                        </f:facet>
-                        <h:outputText value="#{book.publishedDate}"/>
-                    </rich:column>
-                    <rich:column styleClass="col_author_book_average_rating"
-                                 headerClass="col_author_book_average_rating"
-                                 sortBy="#{book.averageRating}"
-                                 sortOrder="#{mainSortingBean.sortsOrders['averageRating']}">
-                        <f:facet name="header">
-                            <h:outputText value="Book average rating"/>
-                        </f:facet>
-                        <h:outputText value="#{book.averageRating}"/>
-                        <h:outputText value="(#{book.reviews.size()})"/>
-                    </rich:column>
-                    <rich:column styleClass="col_author_book_create_date" headerClass="col_author_book_create_date"
-                                 sortBy="#{book.createDate}" sortOrder="#{mainSortingBean.sortsOrders['createDate']}">
-                        <f:facet name="header">
-                            <h:outputText value="Book create date"/>
-                        </f:facet>
-                        <h:outputText value="#{book.createDate}"/>
-                    </rich:column>
-                    <f:facet name="footer" id="pagination">
-                        <rich:dataScroller renderIfSinglePage="false"/>
+                <a4j:jsFunction name="remove" action="#{authorAction.remove}"
+                                render="table, noItems, col1, col2, col3, col4, col5, col6" execute="@this"
+                                oncomplete="#{rich:component('confirmPane')}.hide();">
+                    <a4j:param value="#{param['id']}" name="id"/>
+                </a4j:jsFunction>
+
+
+                <rich:popupPanel id="confirmPane" autosized="true" header="Confirm delete"
+                                 onmaskclick="#{rich:component('confirmPane')}.hide()">
+                    <h:outputText
+                            value="Are you sure you want to delete #{authorAction.currentAuthor.secondName} #{authorAction.currentAuthor.firstName}"/>
+                    <h:outputText value=" with his books: " rendered="#{0 ne authorAction.currentAuthor.books.size()}">
+                    </h:outputText>
+                    <a4j:repeat value="#{authorAction.currentAuthor.books}" var="book" id="repeat3">
+                        <br/><h:outputText value="#{book.name} "/>
+                    </a4j:repeat>
+                    <h:outputText value="?"/><br/>
+                    <a4j:commandButton value="Delete" onclick="remove(); return false;">
+                        <a4j:param value="#{param['id']}" name="id"/>
+                    </a4j:commandButton>
+                    <a4j:commandButton value="Cancel" onclick="#{rich:component('confirmPane')}.hide(); return false;"/>
+                </rich:popupPanel>
+
+                <rich:popupPanel header="Edit Author" id="editPane" domElementAttachment="parent" width="400"
+                                 height="150" onmaskclick="#{rich:component('editPane')}.hide()">
+                    <rich:messages globalOnly="true"/>
+                    <h:panelGrid columns="3" id="editGrid">
+                        <h:outputText value="First name"/>
+                        <h:inputText value="#{authorAction.currentAuthor.firstName}" id="firstName">
+                            <rich:validator/>
+                        </h:inputText>
+                        <rich:message id="firstNameMsg" for="firstName"/>
+
+                        <h:outputText value="Second name"/>
+                        <h:inputText value="#{authorAction.currentAuthor.secondName}" id="secondName">
+                            <rich:validator/>
+                        </h:inputText>
+                        <rich:message id="secondNameMsg" for="secondName"/>
+                    </h:panelGrid>
+                    <a4j:commandButton value="Update" action="#{authorAction.update}"
+                                       render="authorform, message, editPane"
+                                       execute="editPane"
+                                       oncomplete="if (#{facesContext.maximumSeverity.ordinal==0 or facesContext.maximumSeverity==null}) {#{rich:component('editPane')}.hide();}">
+                        <a4j:param value="#{param['id']}" name="id"/>
+                    </a4j:commandButton>
+                    <a4j:commandButton value="Cancel" onclick="#{rich:component('editPane')}.hide(); return false;"/>
+                </rich:popupPanel>
+
+
+                <h:outputText value="#{authorAction.currentAuthor.averageRating}"/><br/>
+                <h:outputText
+                        value="(#{authorAction.getReviewsByAuthor(authorAction.currentAuthor).size()} reviews)"/><br/>
+                <h:outputText value="#{authorAction.currentAuthor.createDate}"/>
+                <br/><br/>
+                <rich:dataTable style="width: 100%;">
+                    <f:facet name="header">
+                        <h:outputText value="Author has not any books yet"
+                                      rendered="#{empty authorAction.currentAuthor.books}"/>
                     </f:facet>
                 </rich:dataTable>
-            </rich:panel>
 
-            <br/><br/>
+                <rich:panel
+                        header="All books by #{authorAction.currentAuthor.secondName} #{authorAction.currentAuthor.firstName}"
+                        rendered="#{not empty authorAction.currentAuthor.books}">
+                    <rich:dataTable value="#{authorAction.currentAuthor.books}" var="book" rows="2"
+                                    rowClasses="odd-row, even-row"
+                                    sortMode="single" sortPriority="#{mainSortingBean.sortPriorities}"
+                                    style="width: 100%;">
+                        <rich:column styleClass="col_author_book_name" headerClass="col_author_book_name"
+                                     sortBy="#{book.name}" sortOrder="#{mainSortingBean.sortsOrders['name']}">
+                            <f:facet name="header">
+                                <h:outputText value="Book name"/>
+                            </f:facet>
+                            <h:link value="#{book.name}" outcome="/book.xhtml">
+                                <f:param name="id" value="#{book.id}"/>
+                            </h:link>
+                        </rich:column>
+                        <rich:column styleClass="col_author_book_isbn" headerClass="col_author_book_isbn">
+                            <f:facet name="header">
+                                <h:outputText value="Book ISBN"/>
+                            </f:facet>
+                            <h:outputText value="#{book.isbn}"/>
+                        </rich:column>
+                        <rich:column styleClass="col_author_book_publisher" headerClass="col_author_book_publisher"
+                                     sortBy="#{book.publisher}" sortOrder="#{mainSortingBean.sortsOrders['publisher']}">
+                            <f:facet name="header">
+                                <h:outputText value="Book publisher"/>
+                            </f:facet>
+                            <h:outputText value="#{book.publisher}"/>
+                        </rich:column>
+                        <rich:column styleClass="col_author_book_published_date"
+                                     headerClass="col_author_book_published_date"
+                                     sortBy="#{book.publishedDate}"
+                                     sortOrder="#{mainSortingBean.sortsOrders['publishedDate']}">
+                            <f:facet name="header">
+                                <h:outputText value="Book published date"/>
+                            </f:facet>
+                            <h:outputText value="#{book.publishedDate}"/>
+                        </rich:column>
+                        <rich:column styleClass="col_author_book_average_rating"
+                                     headerClass="col_author_book_average_rating"
+                                     sortBy="#{book.averageRating}"
+                                     sortOrder="#{mainSortingBean.sortsOrders['averageRating']}">
+                            <f:facet name="header">
+                                <h:outputText value="Book average rating"/>
+                            </f:facet>
+                            <h:outputText value="#{book.averageRating}"/>
+                            <h:outputText value="(#{book.reviews.size()})"/>
+                        </rich:column>
+                        <rich:column styleClass="col_author_book_create_date" headerClass="col_author_book_create_date"
+                                     sortBy="#{book.createDate}"
+                                     sortOrder="#{mainSortingBean.sortsOrders['createDate']}">
+                            <f:facet name="header">
+                                <h:outputText value="Book create date"/>
+                            </f:facet>
+                            <h:outputText value="#{book.createDate}"/>
+                        </rich:column>
+                        <f:facet name="footer" id="pagination">
+                            <rich:dataScroller renderIfSinglePage="false"/>
+                        </f:facet>
+                    </rich:dataTable>
+                </rich:panel>
 
-            <rich:panel header="All reviews by #{authorAction.author.secondName} #{authorAction.author.firstName}">
-                <rich:dataTable value="#{authorAction.getReviewsByAuthor(authorAction.author)}" var="authorReview"
-                                rows="5"
-                                rowClasses="odd-row, even-row" style="width: 100%;">
-                    <rich:column styleClass="col_author_review_commenter" headerClass="col_author_review_commenter">
-                        <f:facet name="header">
-                            <h:outputText value="Commenter name"/>
-                        </f:facet>
-                        <h:outputText value="#{authorReview.commenterName}"/>
-                    </rich:column>
-                    <rich:column styleClass="col_author_review_book" headerClass="col_author_review_book">
-                        <f:facet name="header">
-                            <h:outputText value="Book name"/>
-                        </f:facet>
-                        <h:link value="#{authorReview.book.name}" outcome="/book.xhtml">
-                            <f:param name="id" value="#{authorReview.book.id}"/>
-                        </h:link>
-                    </rich:column>
-                    <rich:column styleClass="col_author_review_comment" headerClass="col_author_review_comment">
-                        <f:facet name="header">
-                            <h:outputText value="Comment"/>
-                        </f:facet>
-                        <h:outputText value="#{authorReview.commentBody}"/>
-                    </rich:column>
-                    <rich:column styleClass="col_author_review_rating" headerClass="col_author_review_rating">
-                        <f:facet name="header">
-                            <h:outputText value="Comment rating"/>
-                        </f:facet>
-                        <h:outputText value="#{authorReview.rating}"/>
-                    </rich:column>
-                    <rich:column styleClass="col_author_review_create_date" headerClass="col_author_review_create_date">
-                        <f:facet name="header">
-                            <h:outputText value="Create date"/>
-                        </f:facet>
-                        <h:outputText value="#{authorReview.createDate}"/>
-                    </rich:column>
-                    <f:facet name="footer" id="pagination">
-                        <rich:dataScroller renderIfSinglePage="false"/>
+                <br/><br/>
+                <rich:dataTable style="width: 100%;">
+                    <f:facet name="header">
+                        <h:outputText value="Author has not any reviews yet"
+                                      rendered="#{empty authorAction.getReviewsByAuthor(authorAction.currentAuthor)}"/>
                     </f:facet>
                 </rich:dataTable>
+
+                <rich:panel
+                        header="All reviews by #{authorAction.currentAuthor.secondName} #{authorAction.currentAuthor.firstName}"
+                        rendered="#{not empty authorAction.getReviewsByAuthor(authorAction.currentAuthor)}">
+                    <rich:dataTable value="#{authorAction.getReviewsByAuthor(authorAction.currentAuthor)}"
+                                    var="authorReview"
+                                    rows="5"
+                                    rowClasses="odd-row, even-row" style="width: 100%;">
+                        <rich:column styleClass="col_author_review_commenter" headerClass="col_author_review_commenter">
+                            <f:facet name="header">
+                                <h:outputText value="Commenter name"/>
+                            </f:facet>
+                            <h:outputText value="#{authorReview.commenterName}"/>
+                        </rich:column>
+                        <rich:column styleClass="col_author_review_book" headerClass="col_author_review_book">
+                            <f:facet name="header">
+                                <h:outputText value="Book name"/>
+                            </f:facet>
+                            <h:link value="#{authorReview.book.name}" outcome="/book.xhtml">
+                                <f:param name="id" value="#{authorReview.book.id}"/>
+                            </h:link>
+                        </rich:column>
+                        <rich:column styleClass="col_author_review_comment" headerClass="col_author_review_comment">
+                            <f:facet name="header">
+                                <h:outputText value="Comment"/>
+                            </f:facet>
+                            <h:outputText value="#{authorReview.commentBody}"/>
+                        </rich:column>
+                        <rich:column styleClass="col_author_review_rating" headerClass="col_author_review_rating">
+                            <f:facet name="header">
+                                <h:outputText value="Comment rating"/>
+                            </f:facet>
+                            <h:outputText value="#{authorReview.rating}"/>
+                        </rich:column>
+                        <rich:column styleClass="col_author_review_create_date"
+                                     headerClass="col_author_review_create_date">
+                            <f:facet name="header">
+                                <h:outputText value="Create date"/>
+                            </f:facet>
+                            <h:outputText value="#{authorReview.createDate}"/>
+                        </rich:column>
+                        <f:facet name="footer" id="pagination">
+                            <rich:dataScroller renderIfSinglePage="false"/>
+                        </f:facet>
+                    </rich:dataTable>
+                </rich:panel>
+
+
             </rich:panel>
-
-
-        </rich:panel>
+        </h:form>
     </ui:define>
 </ui:composition>
