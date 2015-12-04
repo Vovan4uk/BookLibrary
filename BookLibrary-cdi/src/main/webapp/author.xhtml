@@ -33,7 +33,7 @@
 
 
                 <a4j:jsFunction name="remove" action="#{authorAction.remove}"
-                                render="table, noItems, col1, col2, col3, col4, col5, col6" execute="@this"
+                                render="table" execute="@this"
                                 oncomplete="#{rich:component('confirmPane')}.hide();">
                     <a4j:param value="#{param['id']}" name="id"/>
                 </a4j:jsFunction>
@@ -50,6 +50,8 @@
                     </a4j:repeat>
                     <h:outputText value="?"/><br/>
                     <a4j:commandButton value="Delete" onclick="remove(); return false;">
+                        <a4j:param value="#{authorAction.currentAuthor.id}"
+                                   assignTo="#{authorAction.currentAuthorIndex}"/>
                         <a4j:param value="#{param['id']}" name="id"/>
                     </a4j:commandButton>
                     <a4j:commandButton value="Cancel" onclick="#{rich:component('confirmPane')}.hide(); return false;"/>
@@ -74,7 +76,7 @@
                     <a4j:commandButton value="Update" action="#{authorAction.update}"
                                        render="authorform, message, editPane"
                                        execute="editPane"
-                                       oncomplete="if (#{facesContext.maximumSeverity.ordinal==0 or facesContext.maximumSeverity==null}) {#{rich:component('editPane')}.hide();}">
+                                       oncomplete="if (#{facesContext.maximumSeverity==null}) {#{rich:component('editPane')}.hide();}">
                         <a4j:param value="#{param['id']}" name="id"/>
                     </a4j:commandButton>
                     <a4j:commandButton value="Cancel" onclick="#{rich:component('editPane')}.hide(); return false;"/>
@@ -83,7 +85,7 @@
 
                 <h:outputText value="#{authorAction.currentAuthor.averageRating}"/><br/>
                 <h:outputText
-                        value="(#{authorAction.getReviewsByAuthor(authorAction.currentAuthor).size()} reviews)"/><br/>
+                        value="(#{authorAction.reviewsByAuthor.size()} reviews)"/><br/>
                 <h:outputText value="#{authorAction.currentAuthor.createDate}"/>
                 <br/><br/>
                 <rich:dataTable style="width: 100%;">
@@ -159,22 +161,28 @@
                 <rich:dataTable style="width: 100%;">
                     <f:facet name="header">
                         <h:outputText value="Author has not any reviews yet"
-                                      rendered="#{empty authorAction.getReviewsByAuthor(authorAction.currentAuthor)}"/>
+                                      rendered="#{empty authorAction.reviewsByAuthor}"/>
                     </f:facet>
                 </rich:dataTable>
 
                 <rich:panel
                         header="All reviews by #{authorAction.currentAuthor.secondName} #{authorAction.currentAuthor.firstName}"
-                        rendered="#{not empty authorAction.getReviewsByAuthor(authorAction.currentAuthor)}">
-                    <rich:dataTable value="#{authorAction.getReviewsByAuthor(authorAction.currentAuthor)}"
+                        rendered="#{not empty authorAction.reviewsByAuthor}">
+                    <rich:dataTable value="#{authorAction.reviewsByAuthor}"
                                     var="authorReview"
                                     rows="5"
                                     rowClasses="odd-row, even-row" style="width: 100%;">
-                        <rich:column styleClass="col_author_review_commenter" headerClass="col_author_review_commenter">
+                        <rich:column styleClass="col_author_review_rating" headerClass="col_author_review_rating">
                             <f:facet name="header">
-                                <h:outputText value="Commenter name"/>
+                                <h:outputText value="Comment rating"/>
                             </f:facet>
-                            <h:outputText value="#{authorReview.commenterName}"/>
+                            <h:outputText value="#{authorReview.rating}"/>
+                        </rich:column>
+                        <rich:column styleClass="col_author_review_comment" headerClass="col_author_review_comment">
+                            <f:facet name="header">
+                                <h:outputText value="Comment"/>
+                            </f:facet>
+                            <h:outputText value="#{authorReview.commentBody}"/>
                         </rich:column>
                         <rich:column styleClass="col_author_review_book" headerClass="col_author_review_book">
                             <f:facet name="header">
@@ -184,17 +192,11 @@
                                 <f:param name="id" value="#{authorReview.book.id}"/>
                             </h:link>
                         </rich:column>
-                        <rich:column styleClass="col_author_review_comment" headerClass="col_author_review_comment">
+                        <rich:column styleClass="col_author_review_commenter" headerClass="col_author_review_commenter">
                             <f:facet name="header">
-                                <h:outputText value="Comment"/>
+                                <h:outputText value="Commenter name"/>
                             </f:facet>
-                            <h:outputText value="#{authorReview.commentBody}"/>
-                        </rich:column>
-                        <rich:column styleClass="col_author_review_rating" headerClass="col_author_review_rating">
-                            <f:facet name="header">
-                                <h:outputText value="Comment rating"/>
-                            </f:facet>
-                            <h:outputText value="#{authorReview.rating}"/>
+                            <h:outputText value="#{authorReview.commenterName}"/>
                         </rich:column>
                         <rich:column styleClass="col_author_review_create_date"
                                      headerClass="col_author_review_create_date">

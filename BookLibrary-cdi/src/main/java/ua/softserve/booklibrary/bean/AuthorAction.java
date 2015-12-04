@@ -36,6 +36,7 @@ public class AuthorAction implements Serializable {
     private String byRating;
     private String title;
     private String id;
+    private List<Review> reviewsByAuthor;
 
     public void loadData() {
         try {
@@ -93,8 +94,15 @@ public class AuthorAction implements Serializable {
         return authorManager.findAuthorsWithoutRating().size();
     }
 
-    public List<Review> getReviewsByAuthor(Author author) {
-        return reviewManager.findReviewsByAuthor(author);
+    public List<Review> getReviewsByAuthor() {
+        if (reviewsByAuthor == null) {
+            reviewsByAuthor = reviewManager.findReviewsByAuthor(currentAuthor);
+        }
+        return reviewsByAuthor;
+    }
+
+    public void setReviewsByAuthor(List<Review> reviewsByAuthor) {
+        this.reviewsByAuthor = reviewsByAuthor;
     }
 
     public String getTitle() {

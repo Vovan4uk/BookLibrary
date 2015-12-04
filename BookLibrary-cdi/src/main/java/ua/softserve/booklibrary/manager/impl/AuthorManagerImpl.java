@@ -59,11 +59,8 @@ public class AuthorManagerImpl implements AuthorManager {
 
     @Override
     public void removeByPk(Long id) {
-        try {
-            authorHome.removeByPk(id);
-        } catch (IllegalArgumentException | EJBException e) {
-            //Show some message
-        }
+        LOGGER.debug("Remove Author by primary key: {}", id);
+        authorHome.removeByPk(id);
     }
 
     @Override
