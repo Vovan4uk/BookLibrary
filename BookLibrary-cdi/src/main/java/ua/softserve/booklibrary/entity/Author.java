@@ -2,6 +2,7 @@ package ua.softserve.booklibrary.entity;
 
 import org.hibernate.annotations.Formula;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -9,13 +10,15 @@ import javax.persistence.Id;
 import javax.persistence.ManyToMany;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
+import javax.persistence.OrderBy;
+import javax.persistence.PostLoad;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
-import java.util.HashSet;
 import java.util.Set;
+import java.util.TreeSet;
 
 @javax.persistence.Entity
 @Table(name = "AUTHOR", uniqueConstraints = @UniqueConstraint(columnNames = {"SECOND_NAME", "FIRST_NAME"}))
@@ -51,8 +54,9 @@ public class Author extends Entity {
     @Formula("(SELECT AVG(r.RATING) FROM Review r, BOOK_AUTHOR ba WHERE r.BOOK_ID = ba.BOOK_ID AND ba.AUTHOR_ID = ID)")
     private Double averageRating;
 
-    @ManyToMany(mappedBy = "authors")
-    private Set<Book> books = new HashSet<>();
+    @ManyToMany(mappedBy = "authors", cascade = CascadeType.ALL)
+    @OrderBy("name DESC")
+    private Set<Book> books = new TreeSet<>();
 
     public Long getId() {
         return id;
@@ -92,6 +96,13 @@ public class Author extends Entity {
 
     public void setAverageRating(Double averageRating) {
         this.averageRating = averageRating;
+    }
+
+    @PostLoad
+    private void onLoad() {
+        if (averageRating == null) {
+            averageRating = 0D;
+        }
     }
 
     @Override

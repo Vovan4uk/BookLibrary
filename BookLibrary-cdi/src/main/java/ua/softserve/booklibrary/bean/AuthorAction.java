@@ -2,7 +2,6 @@ package ua.softserve.booklibrary.bean;
 
 import org.richfaces.JsfVersion;
 import ua.softserve.booklibrary.entity.Author;
-import ua.softserve.booklibrary.entity.Review;
 import ua.softserve.booklibrary.exception.AlreadyExistException;
 import ua.softserve.booklibrary.manager.AuthorManager;
 import ua.softserve.booklibrary.manager.ReviewManager;
@@ -15,6 +14,7 @@ import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.view.ViewScoped;
 import javax.inject.Named;
+import javax.persistence.EntityNotFoundException;
 import java.io.Serializable;
 import java.util.List;
 
@@ -32,17 +32,16 @@ public class AuthorAction implements Serializable {
     private Author newAuthor = new Author();
     private Author currentAuthor;
 
-    private Long currentAuthorIndex;
+    private Long currentAuthorId;
     private String byRating;
     private String title;
     private String id;
-    private List<Review> reviewsByAuthor;
 
     public void loadData() {
         try {
             if (currentAuthor == null) {
                 currentAuthor = authorManager.findByPk(Long.parseLong(getId()));
-                currentAuthorIndex = currentAuthor.getId();
+                currentAuthorId = currentAuthor.getId();
             }
         } catch (NumberFormatException e) {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Author id is not valid", e.getMessage()));
@@ -59,20 +58,20 @@ public class AuthorAction implements Serializable {
     public void save() {
         try {
             authorManager.save(newAuthor);
-            newAuthor = new Author();
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Author saved successful", "Author saved successful"));
         } catch (AlreadyExistException e) {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, e.getMessage(), e.getMessage()));
         } catch (EJBException e) {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Save unsuccessful", e.getMessage()));
         }
+        newAuthor = new Author();
         initAuthors();
     }
 
     public void update() {
         try {
             authorManager.update(currentAuthor);
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Author updated successful", "Author updated successful"));
+        } catch (AlreadyExistException | EntityNotFoundException e) {
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, e.getMessage(), e.getMessage()));
         } catch (EJBException e) {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Update unsuccessful", e.getMessage()));
         }
@@ -81,8 +80,9 @@ public class AuthorAction implements Serializable {
 
     public void remove() {
         try {
-            authorManager.removeByPk(currentAuthorIndex);
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Author removed successful", "Author removed successful"));
+            authorManager.removeByPk(currentAuthorId);
+        } catch (EntityNotFoundException | IllegalArgumentException e) {
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, e.getMessage(), e.getMessage()));
         } catch (EJBException e) {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Remove unsuccessful", e.getMessage()));
         }
@@ -95,17 +95,6 @@ public class AuthorAction implements Serializable {
 
     public Integer getCountAuthorsWithoutRating() {
         return authorManager.findAuthorsWithoutRating().size();
-    }
-
-    public List<Review> getReviewsByAuthor() {
-        if (reviewsByAuthor == null) {
-            reviewsByAuthor = reviewManager.findReviewsByAuthor(currentAuthor);
-        }
-        return reviewsByAuthor;
-    }
-
-    public void setReviewsByAuthor(List<Review> reviewsByAuthor) {
-        this.reviewsByAuthor = reviewsByAuthor;
     }
 
     public String getTitle() {
@@ -174,12 +163,12 @@ public class AuthorAction implements Serializable {
         this.newAuthor = newAuthor;
     }
 
-    public void setCurrentAuthorIndex(Long currentAuthorIndex) {
-        this.currentAuthorIndex = currentAuthorIndex;
+    public void setCurrentAuthorId(Long currentAuthorId) {
+        this.currentAuthorId = currentAuthorId;
     }
 
-    public Long getCurrentAuthorIndex() {
-        return currentAuthorIndex;
+    public Long getCurrentAuthorId() {
+        return currentAuthorId;
     }
 
     public void setCurrentAuthor(Author currentAuthor) {
@@ -198,5 +187,13 @@ public class AuthorAction implements Serializable {
             ((EditableValueHolder) comp.findComponent("form:firstName")).resetValue();
             ((EditableValueHolder) comp.findComponent("form:secondName")).resetValue();
         }
+    }
+
+    public void resetAddValues() {
+        FacesContext fc = FacesContext.getCurrentInstance();
+        UIComponent comp = fc.getViewRoot().findComponent("form:createGrid");
+
+        ((EditableValueHolder) comp.findComponent("form:addFirstName")).resetValue();
+        ((EditableValueHolder) comp.findComponent("form:addSecondName")).resetValue();
     }
 }

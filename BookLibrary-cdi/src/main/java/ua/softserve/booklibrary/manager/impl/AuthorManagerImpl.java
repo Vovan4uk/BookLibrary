@@ -10,7 +10,6 @@ import ua.softserve.booklibrary.exception.AlreadyExistException;
 import ua.softserve.booklibrary.manager.AuthorManager;
 
 import javax.ejb.EJB;
-import javax.ejb.EJBException;
 import javax.ejb.Stateless;
 import javax.ejb.TransactionAttribute;
 import javax.ejb.TransactionAttributeType;
@@ -41,8 +40,13 @@ public class AuthorManagerImpl implements AuthorManager {
     }
 
     @Override
-    public Author update(Author author) {
+    public Author update(Author author) throws AlreadyExistException {
         LOGGER.debug("Update for author {}", author);
+        if (author.getId() == null) {
+            String errorMessage = "Save unsuccessful. Author is already exist";
+            LOGGER.error(errorMessage);
+            throw new AlreadyExistException(errorMessage);
+        }
         return authorHome.update(author);
     }
 

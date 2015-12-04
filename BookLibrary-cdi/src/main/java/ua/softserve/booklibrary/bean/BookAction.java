@@ -65,7 +65,14 @@ public class BookAction implements Serializable {
         if (hotReleases == null) {
             hotReleases = bookManager.findHotReleases();
         }
-        return hotReleases;
+        return initBooks(hotReleases);
+    }
+
+    private List<Book> initBooks(List<Book> books) {
+        for (Book book : books) {
+            book.getReviews().size();
+        }
+        return books;
     }
 
     public void setHotReleases(List<Book> hotReleases) {

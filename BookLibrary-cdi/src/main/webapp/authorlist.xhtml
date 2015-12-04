@@ -15,7 +15,8 @@
                     <rich:messages globalOnly="true"/>
                     <h:panelGroup>
                         <a4j:commandLink styleClass="no-decor" execute="@this" render="table, createPane"
-                                         oncomplete="#{rich:component('createPane')}.show()">
+                                         oncomplete="#{rich:component('createPane')}.show()" resetValues="true"
+                                         actionListener="#{authorAction.resetAddValues()}">
                             <h:graphicImage value="/images/new.png" alt="add new"/>
                             <a4j:param value="#{param['byrating']}" name="byrating"/>
                         </a4j:commandLink>
@@ -57,7 +58,9 @@
                             <h:link value="#{book.name}" outcome="/book.xhtml">
                                 <f:param name="id" value="#{book.id}"/>
                             </h:link><br/>
-                            <h:outputText value=" (#{book.averageRating})"/><br/>
+                            <h:outputText value=" (#{book.averageRating})">
+                                <f:convertNumber pattern="0.#"/>
+                            </h:outputText><br/>
                         </a4j:repeat>
                     </rich:column>
 
@@ -81,7 +84,9 @@
                             <h:outputText value="Average rating"/>
                         </f:facet>
 
-                        <h:outputText value="#{author.averageRating}"/><h:outputText
+                        <h:outputText value="#{author.averageRating}">
+                            <f:convertNumber pattern="0.#"/>
+                        </h:outputText><h:outputText
                             value=" (#{author.books.size()} books)"/>
                     </rich:column>
                     <rich:column sortBy="#{author.createDate}"
@@ -94,21 +99,17 @@
                         <h:outputText value="#{author.createDate}"/>
                     </rich:column>
                     <rich:column styleClass="col_author_action" headerClass="col_author_action" id="col6">
-                        <h:link outcome="/author.xhtml">
-                            <f:param name="id" value="#{author.id}"/>
-                            <h:graphicImage value="/images/detail.png" alt="detail"/>
-                        </h:link>
                         <a4j:commandLink styleClass="no-decor" render="editGrid, firstName, secondName" execute="@this"
                                          oncomplete="#{rich:component('editPane')}.show()" resetValues="true"
                                          actionListener="#{authorAction.resetValues()}">
                             <h:graphicImage value="/images/edit.gif" alt="edit"/>
-                            <a4j:param value="#{author.id}" assignTo="#{authorAction.currentAuthorIndex}"/>
+                            <a4j:param value="#{author.id}" assignTo="#{authorAction.currentAuthorId}"/>
                             <f:setPropertyActionListener target="#{authorAction.currentAuthor}" value="#{author}"/>
                         </a4j:commandLink>
                         <a4j:commandLink styleClass="no-decor" execute="@this" render="table, confirmPane"
                                          oncomplete="#{rich:component('confirmPane')}.show()">
                             <h:graphicImage value="/images/delete.gif" alt="delete"/>
-                            <a4j:param value="#{author.id}" assignTo="#{authorAction.currentAuthorIndex}"/>
+                            <a4j:param value="#{author.id}" assignTo="#{authorAction.currentAuthorId}"/>
                             <f:setPropertyActionListener target="#{authorAction.currentAuthor}" value="#{author}"/>
                         </a4j:commandLink>
                     </rich:column>
@@ -168,17 +169,17 @@
                 <rich:popupPanel header="Add new Author" id="createPane" domElementAttachment="parent" width="400"
                                  height="150" onmaskclick="#{rich:component('createPane')}.hide()">
                     <rich:messages globalOnly="true"/>
-                    <h:panelGrid columns="3">
+                    <h:panelGrid columns="3" id="createGrid">
                         <h:outputText value="First name:"/>
-                        <h:inputText value="#{authorAction.newAuthor.firstName}" id="afirstName" label="firstName">
+                        <h:inputText value="#{authorAction.newAuthor.firstName}" id="addFirstName" label="firstName">
                             <rich:validator/>
                         </h:inputText>
-                        <rich:message for="afirstName"/>
+                        <rich:message for="addFirstName"/>
                         <h:outputText value="Second name:"/>
-                        <h:inputText value="#{authorAction.newAuthor.secondName}" id="asecondName" label="secondName">
+                        <h:inputText value="#{authorAction.newAuthor.secondName}" id="addSecondName" label="secondName">
                             <rich:validator/>
                         </h:inputText>
-                        <rich:message for="asecondName"/>
+                        <rich:message for="addSecondName"/>
                     </h:panelGrid>
                     <a4j:commandButton value="Save" action="#{authorAction.save}"
                                        render="message, table, noItems, col1, col2, col3, col4, col5, col6"

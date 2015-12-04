@@ -27,11 +27,11 @@ public class MainSortingBean implements Serializable {
         sortPriorities = new ArrayList<>();
 
         //Default Sorting Parameters
-        this.sortPriorities.add(AVERAGE_RATING_SORT);
-        this.sortPriorities.add(CREATE_DATE_SORT);
+        sortPriorities.add(AVERAGE_RATING_SORT);
+        sortPriorities.add(CREATE_DATE_SORT);
 
-        this.sortsOrders.put(AVERAGE_RATING_SORT, SortOrder.descending);
-        this.sortsOrders.put(CREATE_DATE_SORT, SortOrder.descending);
+        sortsOrders.put(AVERAGE_RATING_SORT, SortOrder.descending);
+        sortsOrders.put(CREATE_DATE_SORT, SortOrder.descending);
 
     }
 
@@ -46,7 +46,7 @@ public class MainSortingBean implements Serializable {
                 sortPriorities.add(property);
             }
 
-            if (currentPropertySortOrder == null || currentPropertySortOrder.equals(SortOrder.descending)) {
+            if (currentPropertySortOrder == null || currentPropertySortOrder == SortOrder.descending) {
                 sortsOrders.put(property, SortOrder.ascending);
             } else {
                 sortsOrders.put(property, SortOrder.descending);

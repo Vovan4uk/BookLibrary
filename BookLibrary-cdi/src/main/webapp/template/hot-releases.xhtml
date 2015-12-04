@@ -16,7 +16,7 @@
                     </h:link>
                     <br/>
                     <h:outputText
-                            value="#{hotRelease.averageRating} (#{reviewManagerImpl.countBookReviews(hotRelease)})"
+                            value="#{hotRelease.averageRating} (#{hotRelease.reviews.size()})"
                             styleClass="book_rating"/><br/>
                     <h:outputText value="#{hotRelease.publishedDate}" styleClass="book_published_date"/><br/>
                     <h:outputText value="#{hotRelease.publisher}" styleClass="book_publisher"/><br/>

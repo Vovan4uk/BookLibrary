@@ -10,8 +10,8 @@
         </layout>
     </appender>
 
-    <logger name="ua.softserve.booklibrary">
-        <level value="DEBUG"/>
+    <logger name="ua.softserve.booklibrary" additivity="false">
+        <level value="ERROR"/>
         <appender-ref ref="ConsoleAppender"/>
     </logger>
 

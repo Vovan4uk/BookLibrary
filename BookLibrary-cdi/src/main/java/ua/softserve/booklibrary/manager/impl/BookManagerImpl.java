@@ -5,6 +5,7 @@ import org.slf4j.LoggerFactory;
 import ua.softserve.booklibrary.dao.facade.BookFacade;
 import ua.softserve.booklibrary.dao.home.BookHome;
 import ua.softserve.booklibrary.entity.Book;
+import ua.softserve.booklibrary.exception.AlreadyExistException;
 import ua.softserve.booklibrary.manager.BookManager;
 
 import javax.ejb.EJB;
@@ -27,7 +28,7 @@ public class BookManagerImpl implements BookManager {
     private BookFacade bookFacade;
 
     @Override
-    public Book save(Book entity) {
+    public Book save(Book entity) throws AlreadyExistException {
         LOG.debug("Save new Book ", entity);
         return bookHome.save(entity);
     }
