@@ -30,7 +30,7 @@ public class AuthorManagerImpl implements AuthorManager {
     @Override
     @TransactionAttribute(TransactionAttributeType.REQUIRES_NEW)
     public Author save(Author author) throws AlreadyExistException {
-        if (isAlreadyExist(author)) {
+        if (authorFacade.isAuthorExist(author)) {
             String errorMessage = "Save unsuccessful. Author is already exist";
             LOGGER.error(errorMessage);
             throw new AlreadyExistException(errorMessage);
@@ -41,24 +41,13 @@ public class AuthorManagerImpl implements AuthorManager {
 
     @Override
     public Author update(Author author) throws AlreadyExistException {
-        LOGGER.debug("Update for author {}", author);
-        if (author.getId() == null) {
-            String errorMessage = "Save unsuccessful. Author is already exist";
+        if (authorFacade.isAuthorExist(author)) {
+            String errorMessage = "Update unsuccessful. Author is already exist";
             LOGGER.error(errorMessage);
             throw new AlreadyExistException(errorMessage);
         }
+        LOGGER.debug("Update Author {}", author);
         return authorHome.update(author);
-    }
-
-    private boolean isAlreadyExist(Author author) {
-        boolean result;
-        if (author.getSecondName().isEmpty()) {
-            LOGGER.debug("Save new Author {}", author);
-            result = (authorFacade.findByFirstName(author.getFirstName()) != null);
-        } else {
-            result = (authorFacade.findBySecondAndFirstName(author.getSecondName(), author.getFirstName()) != null);
-        }
-        return result;
     }
 
     @Override

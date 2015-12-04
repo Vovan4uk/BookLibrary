@@ -24,9 +24,11 @@ import java.util.TreeSet;
 @Table(name = "AUTHOR", uniqueConstraints = @UniqueConstraint(columnNames = {"SECOND_NAME", "FIRST_NAME"}))
 @NamedQueries({
         @NamedQuery(name = "Author.findAuthorsByRating", query = "SELECT a FROM Author a WHERE averageRating >= :minRating AND averageRating < :maxRating "),
-        @NamedQuery(name = "Author.findBySecondAndFirstName", query = "SELECT a FROM Author a WHERE secondName = :secondName AND firstName = :firstName "),
-        @NamedQuery(name = "Author.findByFirstName", query = "SELECT a FROM Author a WHERE secondName IS NULL AND firstName = :firstName "),
-        @NamedQuery(name = "Author.findAuthorsWithoutRating", query = "SELECT a FROM Author a WHERE averageRating IS NULL")
+        @NamedQuery(name = "Author.findAuthorsWithoutRating", query = "SELECT a FROM Author a WHERE averageRating IS NULL"),
+        @NamedQuery(name = "Author.isAuthorsExistByFirstName", query = "SELECT CASE WHEN (COUNT(a)>0) THEN TRUE ELSE FALSE END FROM Author a WHERE firstName = :firstName AND secondName IS NULL"),
+        @NamedQuery(name = "Author.isAuthorsExistByFirstAndSecondName", query = "SELECT CASE WHEN (COUNT(a)>0) THEN TRUE ELSE FALSE END FROM Author a WHERE firstName = :firstName AND secondName = :secondName"),
+        @NamedQuery(name = "Author.isAuthorsExistByFirstAndSecondNameWithId", query = "SELECT CASE WHEN (COUNT(a)>0) THEN TRUE ELSE FALSE END FROM Author a WHERE firstName = :firstName AND secondName = :secondName AND id != :id"),
+        @NamedQuery(name = "Author.isAuthorsExistByFirstNameWithId", query = "SELECT CASE WHEN (COUNT(a)>0) THEN TRUE ELSE FALSE END FROM Author a WHERE firstName = :firstName  AND secondName IS NULL AND id != :id")
 })
 
 public class Author extends Entity {

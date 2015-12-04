@@ -12,5 +12,4 @@ public class AuthorHomeImpl extends GenericHomeImpl<Author> implements AuthorHom
     public AuthorHomeImpl() {
         super(Author.class);
     }
-
 }

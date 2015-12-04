@@ -39,31 +39,39 @@ public class AuthorFacadeImpl extends GenericFacadeImpl<Author> implements Autho
     }
 
     @Override
-    public Author findBySecondAndFirstName(String secondName, String firstName) {
-        Author author = null;
-        LOGGER.debug("Find authors by second name '{}' and first name '{}'", secondName, firstName);
-        List<Author> authors = em.createNamedQuery("Author.findBySecondAndFirstName", Author.class)
-                .setParameter("secondName", secondName)
-                .setParameter("firstName", firstName)
-                .getResultList();
-        if (!authors.isEmpty()) {
-            author = authors.get(0);
+    public boolean isAuthorExist(Author author) {
+        if (author.getId() != null) {
+            return isCurrentAuthorExist(author);
+        } else {
+            return isNewAuthorExist(author);
         }
-        LOGGER.debug("Result: {}", author);
-        return author;
     }
 
-    @Override
-    public Author findByFirstName(String firstName) {
-        Author author = null;
-        LOGGER.debug("Find authors by first name '{}'", firstName);
-        List<Author> authors = em.createNamedQuery("Author.findByFirstName", Author.class)
-                .setParameter("firstName", firstName)
-                .getResultList();
-        if (!authors.isEmpty()) {
-            author = authors.get(0);
+    private boolean isNewAuthorExist(Author author) {
+        if (author.getSecondName().isEmpty()) {
+            return em.createNamedQuery("Author.isAuthorsExistByFirstName", Boolean.class)
+                    .setParameter("firstName", author.getFirstName())
+                    .getSingleResult();
+        } else {
+            return em.createNamedQuery("Author.isAuthorsExistByFirstAndSecondName", Boolean.class)
+                    .setParameter("firstName", author.getFirstName())
+                    .setParameter("secondName", author.getSecondName())
+                    .getSingleResult();
         }
-        LOGGER.debug("Result: {}", author);
-        return author;
+    }
+
+    private boolean isCurrentAuthorExist(Author author) {
+        if (author.getSecondName().isEmpty()) {
+            return em.createNamedQuery("Author.isAuthorsExistByFirstNameWithId", Boolean.class)
+                    .setParameter("firstName", author.getFirstName())
+                    .setParameter("id", author.getId())
+                    .getSingleResult();
+        } else {
+            return em.createNamedQuery("Author.isAuthorsExistByFirstAndSecondNameWithId", Boolean.class)
+                    .setParameter("firstName", author.getFirstName())
+                    .setParameter("secondName", author.getSecondName())
+                    .setParameter("id", author.getId())
+                    .getSingleResult();
+        }
     }
 }

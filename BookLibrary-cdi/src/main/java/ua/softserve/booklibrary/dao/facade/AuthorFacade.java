@@ -11,7 +11,6 @@ public interface AuthorFacade extends GenericFacade<Author> {
 
     List<Author> findAuthorsWithoutRating();
 
-    Author findBySecondAndFirstName(String secondName, String firstName);
+    boolean isAuthorExist(Author author);
 
-    Author findByFirstName(String firstName);
 }

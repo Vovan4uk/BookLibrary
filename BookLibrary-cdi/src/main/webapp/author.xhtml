@@ -59,12 +59,9 @@
                 </rich:popupPanel>
 
 
-                <!--
-                                <a4j:commandButton value="Cancel" onclick="#{rich:component('editPane')}.hide(); return false;"/>
-                -->
                 <br/>
                 <h:outputText value="#{authorAction.currentAuthor.averageRating}">
-                    <f:convertNumber pattern=".0"/>
+                    <f:convertNumber pattern="0.#"/>
                 </h:outputText>
                 <br/>
 
