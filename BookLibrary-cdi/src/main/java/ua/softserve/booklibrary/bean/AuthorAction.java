@@ -40,7 +40,10 @@ public class AuthorAction implements Serializable {
 
     public void loadData() {
         try {
-            currentAuthor = authorManager.findByPk(Long.parseLong(getId()));
+            if (currentAuthor == null) {
+                currentAuthor = authorManager.findByPk(Long.parseLong(getId()));
+                currentAuthorIndex = currentAuthor.getId();
+            }
         } catch (NumberFormatException e) {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Author id is not valid", e.getMessage()));
             currentAuthor = null;
