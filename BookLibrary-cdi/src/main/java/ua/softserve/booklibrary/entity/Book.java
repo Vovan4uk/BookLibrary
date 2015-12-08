@@ -4,6 +4,7 @@ import org.hibernate.annotations.Formula;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
+import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -24,7 +25,7 @@ import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 
-@javax.persistence.Entity
+@Entity
 @Table(name = "BOOK")
 @NamedQueries({
         @NamedQuery(name = "Book.findHotReleases", query = "SELECT b FROM Book b ORDER BY createDate desc "),
@@ -34,7 +35,7 @@ import java.util.Set;
         @NamedQuery(name = "Book.findBestBooksByAuthorId", query = "SELECT DISTINCT b FROM Book b JOIN b.authors a WHERE b.averageRating IS NOT NULL AND a.id = :id ORDER BY b.averageRating DESC"),
         @NamedQuery(name = "Book.findBooksByAuthorId", query = "SELECT DISTINCT b FROM Book b JOIN b.authors a WHERE a.id = :id")
 })
-public class Book extends Entity {
+public class Book extends LibraryEntity {
     private static final long serialVersionUID = 9073502830659864431L;
     @Id
     @SequenceGenerator(name = "BOOK_ID_GENERATOR", sequenceName = "BOOK_S", allocationSize = 1)

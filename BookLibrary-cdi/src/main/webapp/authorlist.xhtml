@@ -8,8 +8,8 @@
 
     <ui:define name="title">Authors page #{authorAction.title}</ui:define>
     <ui:define name="body">
-        <h:form id="form">
-            <rich:panel header="Authors page #{authorAction.title}" id="mainPane">
+        <rich:panel header="Authors page #{authorAction.title}" id="mainPane">
+            <h:form id="form">
 
                 <h:panelGrid columns="2" columnClasses="message_col, button_col" width="100%">
                     <rich:messages globalOnly="true"/>
@@ -21,7 +21,7 @@
                             <a4j:param value="#{param['byrating']}" name="byrating"/>
                         </a4j:commandLink>
 
-                        <a4j:commandLink styleClass="no-decor" execute="@this" render="table"
+                        <a4j:commandLink styleClass="no-decor" execute="@this" render="table, confirmPane"
                                          oncomplete="#{rich:component('confirmPane')}.show()">
                             <h:graphicImage value="/images/delete.png" alt="Delete selected"/>
                             <a4j:param value="#{param['byrating']}" name="byrating"/>
@@ -39,6 +39,15 @@
                                 id="table" iterationStatusVar="it" sortMode="single"
                                 sortPriority="#{mainSortingBean.sortPriorities}"
                                 rowClasses="odd-row, even-row">
+                    <rich:column style="width:20px;">
+                        <a4j:commandLink styleClass="no-decor" render="editGrid, firstName, secondName" execute="@this"
+                                         oncomplete="#{rich:component('editPane')}.show()" resetValues="true"
+                                         actionListener="#{authorAction.resetValues()}">
+                            <h:graphicImage value="/images/edit.gif" alt="edit"/>
+                            <a4j:param value="#{author.id}" assignTo="#{authorAction.currentAuthorId}"/>
+                            <f:setPropertyActionListener target="#{authorAction.currentAuthor}" value="#{author}"/>
+                        </a4j:commandLink>
+                    </rich:column>
                     <rich:column sortBy="#{author.firstName}" sortOrder="#{mainSortingBean.sortsOrders['firstName']}"
                                  styleClass="col_author_name" headerClass="col_author_name" id="col1">
                         <f:facet name="header">
@@ -98,48 +107,68 @@
                         </f:facet>
                         <h:outputText value="#{author.createDate}"/>
                     </rich:column>
-                    <rich:column styleClass="col_author_action" headerClass="col_author_action" id="col6">
-                        <a4j:commandLink styleClass="no-decor" render="editGrid, firstName, secondName" execute="@this"
-                                         oncomplete="#{rich:component('editPane')}.show()" resetValues="true"
-                                         actionListener="#{authorAction.resetValues()}">
-                            <h:graphicImage value="/images/edit.gif" alt="edit"/>
-                            <a4j:param value="#{author.id}" assignTo="#{authorAction.currentAuthorId}"/>
-                            <f:setPropertyActionListener target="#{authorAction.currentAuthor}" value="#{author}"/>
-                        </a4j:commandLink>
-                        <a4j:commandLink styleClass="no-decor" execute="@this" render="table, confirmPane"
-                                         oncomplete="#{rich:component('confirmPane')}.show()">
-                            <h:graphicImage value="/images/delete.gif" alt="delete"/>
-                            <a4j:param value="#{author.id}" assignTo="#{authorAction.currentAuthorId}"/>
-                            <f:setPropertyActionListener target="#{authorAction.currentAuthor}" value="#{author}"/>
-                        </a4j:commandLink>
+                    <rich:column style="width: 20px;">
+                        <f:facet name="header">
+                            <h:selectBooleanCheckbox
+                                    onclick="
+                                    form = document.getElementById('form');
+
+                            for(var i = 0; i != form.elements.length; i++) {
+                                if(form.elements[i].id.indexOf(':selectItemCheck') &gt;= 0) {
+                                    form.elements[i].checked = this.checked;
+                                }
+                            }">
+                                <f:ajax event="change" execute="@form" render="@form"/>
+                            </h:selectBooleanCheckbox>
+                        </f:facet>
+                        <h:selectBooleanCheckbox
+                                value="#{authorAction.checkMap[author]}" id="selectItemCheck">
+                            <f:ajax event="change" execute="@form" render="@form"/>
+                        </h:selectBooleanCheckbox>
+                        <!--
+                                                <br/>
+                                                <h:outputText value="+ #{authorAction.selected}"
+                                                              style="margin-bottom : 24px;display : block" />
+                        -->
                     </rich:column>
 
                     <f:facet name="footer" id="pagination">
                         <rich:dataScroller renderIfSinglePage="false"/>
                     </f:facet>
                 </rich:dataTable>
+            </h:form>
 
-
-                <a4j:jsFunction name="remove" action="#{authorAction.remove}"
+            <h:form id="form2">
+                <a4j:jsFunction name="remove" action="#{authorAction.removeAll}"
                                 render="message, table, noItems, col1, col2, col3, col4, col5, col6" execute="@this"
                                 oncomplete="#{rich:component('confirmPane')}.hide();">
                 </a4j:jsFunction>
 
 
                 <rich:popupPanel id="confirmPane" autosized="true" header="Confirm delete"
-                                 onmaskclick="#{rich:component('confirmPane')}.hide()">
-
-                    <h:outputText
-                            value="Are you sure you want to delete #{authorAction.currentAuthor.secondName} #{authorAction.currentAuthor.firstName}"/>
-                    <h:outputText value=" with his books: " rendered="#{0 ne authorAction.currentAuthor.books.size()}">
-                    </h:outputText>
-                    <a4j:repeat value="#{authorAction.currentAuthor.books}" var="book" id="repeat3">
-                        <br/><h:outputText value="#{book.name} "/>
-                    </a4j:repeat>
-                    <h:outputText value="?"/><br/>
-                    <a4j:commandButton value="Delete" onclick="remove(); return false;">
-                    </a4j:commandButton>
-                    <a4j:commandButton value="Cancel" onclick="#{rich:component('confirmPane')}.hide(); return false;"/>
+                                 onmaskclick="#{rich:component('confirmPane')}.hide()" style="width: 400px;">
+                    <h:panelGroup rendered="#{not empty authorAction.confirmList}">
+                        <h:outputText
+                                value="Caution! (Please note that, together with the authors of the book will be deleted)"/>
+                        <br/><br/>
+                        <h:outputText
+                                value="Are you sure you want to delete:"/>
+                        <br/>
+                        <rich:list value="#{authorAction.confirmList}" var="selectedAuthor">
+                            <h:outputText value="#{selectedAuthor.secondName} #{selectedAuthor.firstName}"/>
+                            <rich:list value="#{selectedAuthor.books}" var="selectedBook">
+                                <h:outputText value="#{selectedBook.name}"/><br/>
+                            </rich:list><br/><br/>
+                        </rich:list>
+                        <a4j:commandButton value="Delete" onclick="remove(); return false;">
+                        </a4j:commandButton>
+                        <a4j:commandButton value="Cancel"
+                                           onclick="#{rich:component('confirmPane')}.hide(); return false;"/>
+                    </h:panelGroup>
+                    <h:panelGroup rendered="#{empty authorAction.confirmList}">
+                        <h:outputText
+                                value="Nothing to delete"/><br/><br/>
+                    </h:panelGroup>
                 </rich:popupPanel>
 
                 <rich:popupPanel header="Edit Author" id="editPane" domElementAttachment="parent" width="400"
@@ -189,7 +218,7 @@
                     <a4j:commandButton value="Cancel" onclick="#{rich:component('createPane')}.hide(); return false;"/>
                 </rich:popupPanel>
 
-            </rich:panel>
-        </h:form>
+            </h:form>
+        </rich:panel>
     </ui:define>
 </ui:composition>

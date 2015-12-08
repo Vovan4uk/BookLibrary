@@ -9,7 +9,7 @@ import java.io.Serializable;
 import java.util.Date;
 
 @MappedSuperclass
-public abstract class Entity implements Serializable {
+public abstract class LibraryEntity implements Serializable {
 
     private static final long serialVersionUID = 4236384240741049123L;
 
@@ -32,7 +32,7 @@ public abstract class Entity implements Serializable {
 
     @Override
     public String toString() {
-        return "Entity{" +
+        return "LibraryEntity{" +
                 "createDate=" + createDate +
                 '}';
     }

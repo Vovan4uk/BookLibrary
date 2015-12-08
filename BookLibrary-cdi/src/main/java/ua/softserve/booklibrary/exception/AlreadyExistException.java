@@ -9,7 +9,7 @@ public class AlreadyExistException extends Exception {
     }
 
     public AlreadyExistException() {
-        super("Entity is already exist");
+        super("LibraryEntity is already exist");
     }
 
 }

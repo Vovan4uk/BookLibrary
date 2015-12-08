@@ -3,7 +3,7 @@ package ua.softserve.booklibrary.dao.facade.impl;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import ua.softserve.booklibrary.dao.facade.GenericFacade;
-import ua.softserve.booklibrary.entity.Entity;
+import ua.softserve.booklibrary.entity.LibraryEntity;
 
 import javax.ejb.TransactionAttribute;
 import javax.ejb.TransactionAttributeType;
@@ -12,7 +12,7 @@ import javax.persistence.PersistenceContext;
 import java.util.List;
 
 @TransactionAttribute(TransactionAttributeType.SUPPORTS)
-public abstract class GenericFacadeImpl<T extends Entity> implements GenericFacade<T> {
+public abstract class GenericFacadeImpl<T extends LibraryEntity> implements GenericFacade<T> {
 
     @PersistenceContext(unitName = "OracleDS")
     protected EntityManager em;

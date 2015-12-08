@@ -4,6 +4,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import ua.softserve.booklibrary.dao.facade.AuthorFacade;
 import ua.softserve.booklibrary.dao.home.AuthorHome;
+import ua.softserve.booklibrary.dao.home.BookHome;
 import ua.softserve.booklibrary.entity.Author;
 import ua.softserve.booklibrary.entity.Book;
 import ua.softserve.booklibrary.exception.AlreadyExistException;
@@ -14,7 +15,9 @@ import javax.ejb.Stateless;
 import javax.ejb.TransactionAttribute;
 import javax.ejb.TransactionAttributeType;
 import javax.inject.Named;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Named
 @Stateless
@@ -26,6 +29,8 @@ public class AuthorManagerImpl implements AuthorManager {
     private AuthorHome authorHome;
     @EJB
     private AuthorFacade authorFacade;
+    @EJB
+    private BookHome bookHome;
 
     @Override
     @TransactionAttribute(TransactionAttributeType.REQUIRES_NEW)
@@ -57,8 +62,16 @@ public class AuthorManagerImpl implements AuthorManager {
     }
 
     @Override
-    public void removeAll(List<Author> entities) {
+    public void removeAll(List<Author> authors) {
+        Set<Book> books = new HashSet<>();
+        for (Author author : authors) {
+            books.addAll(author.getBooks());
+        }
+        LOGGER.debug("Remove list Books: {}", books);
+        bookHome.removeAll(books);
 
+        LOGGER.debug("Remove list Authors: {}", authors);
+        authorHome.removeAll(new HashSet<>(authors));
     }
 
     @Override

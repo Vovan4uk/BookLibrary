@@ -16,7 +16,10 @@ import javax.faces.view.ViewScoped;
 import javax.inject.Named;
 import javax.persistence.EntityNotFoundException;
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Named
 @ViewScoped
@@ -36,6 +39,9 @@ public class AuthorAction implements Serializable {
     private String byRating;
     private String title;
     private String id;
+
+    private Map<Author, Boolean> checkMap = new HashMap<>();
+
 
     public void loadData() {
         try {
@@ -81,6 +87,17 @@ public class AuthorAction implements Serializable {
     public void remove() {
         try {
             authorManager.removeByPk(currentAuthorId);
+        } catch (EntityNotFoundException | IllegalArgumentException e) {
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, e.getMessage(), e.getMessage()));
+        } catch (EJBException e) {
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Remove unsuccessful", e.getMessage()));
+        }
+        initAuthors();
+    }
+
+    public void removeAll() {
+        try {
+            authorManager.removeAll(getConfirmList());
         } catch (EntityNotFoundException | IllegalArgumentException e) {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, e.getMessage(), e.getMessage()));
         } catch (EJBException e) {
@@ -147,12 +164,52 @@ public class AuthorAction implements Serializable {
         return authors;
     }
 
-    private void initAuthors() {
-        authors = authorManager.findAll(getByRating());
-    }
-
     public void setAuthors(List<Author> authors) {
         this.authors = authors;
+    }
+
+    private void initAuthors() {
+        authors = authorManager.findAll(getByRating());
+        initCheckMap();
+    }
+
+    private void initCheckMap() {
+        for (Author author : authors) {
+            checkMap.put(author, Boolean.FALSE);
+        }
+    }
+
+    public String getSelected() {
+        String result = "";
+        for (Map.Entry<Author, Boolean> entry : checkMap.entrySet()) {
+            if (entry.getValue()) {
+                result = result + ", " + entry.getKey().getId();
+            }
+        }
+        if (result.length() == 0) {
+            return "";
+        } else {
+            return result.substring(2);
+        }
+    }
+
+    public List<Author> getConfirmList() {
+        List<Author> authors = new ArrayList<>();
+        for (Map.Entry<Author, Boolean> entry : checkMap.entrySet()) {
+            if (entry.getValue()) {
+                authors.add(entry.getKey());
+            }
+        }
+        System.err.println("================" + authors.size());
+        return authors;
+    }
+
+    public Map<Author, Boolean> getCheckMap() {
+        return checkMap;
+    }
+
+    public void setCheckMap(Map<Author, Boolean> checkMap) {
+        this.checkMap = checkMap;
     }
 
     public Author getNewAuthor() {
@@ -182,18 +239,18 @@ public class AuthorAction implements Serializable {
     public void resetValues() {
         if (!JsfVersion.getCurrent().isCompliantWith(JsfVersion.JSF_2_2)) {
             FacesContext fc = FacesContext.getCurrentInstance();
-            UIComponent comp = fc.getViewRoot().findComponent("form:editGrid");
+            UIComponent comp = fc.getViewRoot().findComponent("form2:editGrid");
 
-            ((EditableValueHolder) comp.findComponent("form:firstName")).resetValue();
-            ((EditableValueHolder) comp.findComponent("form:secondName")).resetValue();
+            ((EditableValueHolder) comp.findComponent("form2:firstName")).resetValue();
+            ((EditableValueHolder) comp.findComponent("form2:secondName")).resetValue();
         }
     }
 
     public void resetAddValues() {
         FacesContext fc = FacesContext.getCurrentInstance();
-        UIComponent comp = fc.getViewRoot().findComponent("form:createGrid");
+        UIComponent comp = fc.getViewRoot().findComponent("form2:createGrid");
 
-        ((EditableValueHolder) comp.findComponent("form:addFirstName")).resetValue();
-        ((EditableValueHolder) comp.findComponent("form:addSecondName")).resetValue();
+        ((EditableValueHolder) comp.findComponent("form2:addFirstName")).resetValue();
+        ((EditableValueHolder) comp.findComponent("form2:addSecondName")).resetValue();
     }
 }

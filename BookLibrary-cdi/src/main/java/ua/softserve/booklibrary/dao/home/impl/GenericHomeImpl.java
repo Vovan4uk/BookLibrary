@@ -3,15 +3,16 @@ package ua.softserve.booklibrary.dao.home.impl;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import ua.softserve.booklibrary.dao.home.GenericHome;
-import ua.softserve.booklibrary.entity.Entity;
+import ua.softserve.booklibrary.entity.LibraryEntity;
 import ua.softserve.booklibrary.exception.AlreadyExistException;
 
 import javax.persistence.EntityExistsException;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityNotFoundException;
 import javax.persistence.PersistenceContext;
+import java.util.Set;
 
-public abstract class GenericHomeImpl<T extends Entity> implements GenericHome<T> {
+public abstract class GenericHomeImpl<T extends LibraryEntity> implements GenericHome<T> {
 
     @PersistenceContext(unitName = "OracleDS")
     protected EntityManager em;
@@ -63,9 +64,23 @@ public abstract class GenericHomeImpl<T extends Entity> implements GenericHome<T
             em.remove(em.getReference(entityClass, id));
             LOGGER.debug("Remove '{}' object with primary key '{}'", entityClass.getCanonicalName(), id);
         } catch (EntityNotFoundException e) {
-            String errorMessage = "Remove unsuccessful. '" + entityClass.getCanonicalName() + "' object with primary key '" + id + "' don't exist";
+            String errorMessage = "Remove unsuccessful. '"
+                    + entityClass.getCanonicalName() + "' object with primary key '" + id + "' don't exist";
             LOGGER.error(errorMessage);
             throw new EntityNotFoundException(errorMessage);
         }
+    }
+
+    @Override
+    public void removeAll(Set<T> entities) {
+        if (entities.isEmpty()) {
+            String errorMessage = "List '" + entityClass.getCanonicalName() + "' is empty";
+            LOGGER.error(errorMessage);
+            throw new IllegalArgumentException(errorMessage);
+        }
+        em.createQuery("DELETE FROM " + entityClass.getName() + " e WHERE e IN (:entities)")
+                .setParameter("entities", entities)
+                .executeUpdate();
+        LOGGER.debug("Remove '{}' objects successful", entityClass.getCanonicalName());
     }
 }

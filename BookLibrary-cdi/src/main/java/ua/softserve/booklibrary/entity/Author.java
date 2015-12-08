@@ -4,6 +4,7 @@ import org.hibernate.annotations.Formula;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
+import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -20,7 +21,7 @@ import javax.validation.constraints.Size;
 import java.util.Set;
 import java.util.TreeSet;
 
-@javax.persistence.Entity
+@Entity
 @Table(name = "AUTHOR", uniqueConstraints = @UniqueConstraint(columnNames = {"SECOND_NAME", "FIRST_NAME"}))
 @NamedQueries({
         @NamedQuery(name = "Author.findAuthorsByRating", query = "SELECT a FROM Author a WHERE averageRating >= :minRating AND averageRating < :maxRating "),
@@ -31,7 +32,7 @@ import java.util.TreeSet;
         @NamedQuery(name = "Author.isAuthorsExistByFirstNameWithId", query = "SELECT CASE WHEN (COUNT(a)>0) THEN TRUE ELSE FALSE END FROM Author a WHERE firstName = :firstName  AND secondName IS NULL AND id != :id")
 })
 
-public class Author extends Entity {
+public class Author extends LibraryEntity {
     private static final long serialVersionUID = 5544814440011028323L;
     @Id
     @SequenceGenerator(name = "AUTHOR_ID_GENERATOR", sequenceName = "AUTHOR_S", allocationSize = 1)
