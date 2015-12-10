@@ -69,7 +69,9 @@ public class AuthorManagerImpl implements AuthorManager {
             books.addAll(author.getBooks());
         }
         LOGGER.debug("Remove list Books: {}", books);
-        bookHome.removeAll(books);
+        if (!books.isEmpty()) {
+            bookHome.removeAll(books);
+        }
 
         LOGGER.debug("Remove list Authors: {}", authors);
         authorHome.removeAll(new HashSet<>(authors));

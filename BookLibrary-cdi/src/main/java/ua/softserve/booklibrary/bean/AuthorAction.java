@@ -5,6 +5,7 @@ import ua.softserve.booklibrary.entity.Author;
 import ua.softserve.booklibrary.exception.AlreadyExistException;
 import ua.softserve.booklibrary.manager.AuthorManager;
 import ua.softserve.booklibrary.manager.ReviewManager;
+import ua.softserve.booklibrary.rest.client.AuthorServiceClient;
 
 import javax.ejb.EJB;
 import javax.ejb.EJBException;
@@ -15,8 +16,6 @@ import javax.faces.context.FacesContext;
 import javax.faces.view.ViewScoped;
 import javax.inject.Named;
 import javax.persistence.EntityNotFoundException;
-import javax.ws.rs.client.ClientBuilder;
-import javax.ws.rs.client.WebTarget;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -28,10 +27,13 @@ import java.util.Map;
 public class AuthorAction implements Serializable {
 
     private static final long serialVersionUID = 3795838153393063077L;
+
     @EJB
     private AuthorManager authorManager;
     @EJB
     private ReviewManager reviewManager;
+    @EJB
+    private AuthorServiceClient authorServiceClient;
 
     private List<Author> authors;
     private Author newAuthor = new Author();
@@ -44,16 +46,10 @@ public class AuthorAction implements Serializable {
 
     private Map<Author, Boolean> checkMap = new HashMap<>();
 
-    private WebTarget webTarget = ClientBuilder.newClient().target("http://localhost:8080/BookLibrary-cdi/rest/author");
-
-    private Author findAuthorByPkThroughTheService(Long id) {
-        return webTarget.path("getauthor").path(id.toString()).request().get(Author.class);
-    }
-
     public void loadData() {
         try {
             if (currentAuthor == null) {
-                currentAuthor = findAuthorByPkThroughTheService(Long.parseLong(getId()));
+                currentAuthor = authorServiceClient.findAuthorByPkThroughTheService(Long.parseLong(getId()));
                 currentAuthorId = currentAuthor.getId();
             }
         } catch (NumberFormatException e) {
@@ -70,9 +66,12 @@ public class AuthorAction implements Serializable {
 
     public void save() {
         try {
+            authorServiceClient.saveAuthorThroughTheService(newAuthor);
+/*
             authorManager.save(newAuthor);
         } catch (AlreadyExistException e) {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, e.getMessage(), e.getMessage()));
+*/
         } catch (EJBException e) {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Save unsuccessful", e.getMessage()));
         }

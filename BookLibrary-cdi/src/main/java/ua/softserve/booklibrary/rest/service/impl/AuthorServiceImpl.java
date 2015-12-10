@@ -8,7 +8,9 @@ import ua.softserve.booklibrary.rest.service.AuthorService;
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import javax.ws.rs.core.Context;
+import javax.ws.rs.core.Response;
 import javax.ws.rs.core.UriInfo;
+import java.net.URI;
 
 @Stateless
 public class AuthorServiceImpl implements AuthorService {
@@ -20,12 +22,16 @@ public class AuthorServiceImpl implements AuthorService {
     private AuthorManager authorManager;
 
     @Override
-    public void saveNewAuthor(Author author) {
+    public Response saveAuthor(Author author) {
         try {
             authorManager.save(author);
+            return Response.status(200).build();
+
+
         } catch (AlreadyExistException e) {
             System.err.println("------------Exception Service Level------------");
         }
+        return null;
     }
 
     @Override
