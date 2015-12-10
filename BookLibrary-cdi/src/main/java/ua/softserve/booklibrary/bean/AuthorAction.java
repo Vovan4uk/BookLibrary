@@ -4,7 +4,6 @@ import org.richfaces.JsfVersion;
 import ua.softserve.booklibrary.entity.Author;
 import ua.softserve.booklibrary.exception.AlreadyExistException;
 import ua.softserve.booklibrary.manager.AuthorManager;
-import ua.softserve.booklibrary.manager.ReviewManager;
 import ua.softserve.booklibrary.rest.client.AuthorClientService;
 
 import javax.ejb.EJB;
@@ -30,8 +29,6 @@ public class AuthorAction implements Serializable {
 
     @EJB
     private AuthorManager authorManager;
-    @EJB
-    private ReviewManager reviewManager;
     @EJB
     private AuthorClientService authorClientService;
 
@@ -78,7 +75,7 @@ public class AuthorAction implements Serializable {
 
     public void update() {
         try {
-            authorManager.update(currentAuthor);
+            authorClientService.updateAuthor(currentAuthor);
         } catch (AlreadyExistException | EntityNotFoundException e) {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, e.getMessage(), e.getMessage()));
         } catch (EJBException e) {
@@ -89,7 +86,7 @@ public class AuthorAction implements Serializable {
 
     public void remove() {
         try {
-            authorManager.removeByPk(currentAuthorId);
+            authorClientService.removeAuthor(currentAuthorId);
         } catch (EntityNotFoundException | IllegalArgumentException e) {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, e.getMessage(), e.getMessage()));
         } catch (EJBException e) {
@@ -177,9 +174,6 @@ public class AuthorAction implements Serializable {
         } else {
             authors = authorClientService.findAuthorsByRating(getByRating());
         }
-/*
-        authors = authorManager.findAll(getByRating());
-*/
         initCheckMap();
     }
 

@@ -10,9 +10,13 @@ import java.util.List;
 public interface AuthorClientService {
     Author findAuthorByPk(Long id);
 
-    List<Author> findAuthorsByRating(String id);
+    List<Author> findAuthorsByRating(String rating);
 
     List<Author> findAllAuthors();
 
     void saveAuthor(Author author) throws AlreadyExistException;
+
+    void updateAuthor(Author author) throws AlreadyExistException;
+
+    void removeAuthor(Long id);
 }

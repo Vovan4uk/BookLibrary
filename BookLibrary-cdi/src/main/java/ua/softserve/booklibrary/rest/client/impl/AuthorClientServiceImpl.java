@@ -32,10 +32,10 @@ public class AuthorClientServiceImpl implements AuthorClientService {
     }
 
     @Override
-    public List<Author> findAuthorsByRating(String id) {
+    public List<Author> findAuthorsByRating(String rating) {
         Response response = client.target(target)
                 .path("getbyrating")
-                .path(id)
+                .path(rating)
                 .request()
                 .get();
         return response.readEntity((new GenericType<List<Author>>() {
@@ -61,6 +61,29 @@ public class AuthorClientServiceImpl implements AuthorClientService {
         if (response.getStatus() == 422) {
             throw new AlreadyExistException(response.readEntity(String.class));
         }
+        response.close();
+    }
+
+    @Override
+
+    public void updateAuthor(Author author) throws AlreadyExistException {
+        Response response = client.target(target)
+                .path("update")
+                .request()
+                .put(Entity.entity(author, MediaType.APPLICATION_JSON));
+        if (response.getStatus() == 422) {
+            throw new AlreadyExistException(response.readEntity(String.class));
+        }
+        response.close();
+    }
+
+    @Override
+    public void removeAuthor(Long id) {
+        Response response = client.target(target)
+                .path("delete")
+                .path(id.toString())
+                .request()
+                .delete();
         response.close();
     }
 }

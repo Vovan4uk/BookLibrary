@@ -22,24 +22,14 @@ public class AuthorServiceImpl implements AuthorService {
     private AuthorManager authorManager;
 
     @Override
-    public Response saveAuthor(Author author) {
-        try {
-            authorManager.save(author);
-            return Response.status(200).build();
-        } catch (AlreadyExistException e) {
-            return Response.status(422).entity(e.getMessage()).build();
-        }
-    }
-
-    @Override
     public Response getAuthor(Long id) {
         Author author = authorManager.findByPk(id);
         return Response.accepted(author).build();
     }
 
     @Override
-    public Response getAuthorsByRating(String id) {
-        List<Author> authors = authorManager.findAll(id);
+    public Response getAuthorsByRating(String rating) {
+        List<Author> authors = authorManager.findAll(rating);
         return Response.accepted(authors).build();
     }
 
@@ -50,12 +40,28 @@ public class AuthorServiceImpl implements AuthorService {
     }
 
     @Override
-    public Response removeAuthor(Long id) {
-        return null;
+    public Response saveAuthor(Author author) {
+        try {
+            authorManager.save(author);
+            return Response.status(200).build();
+        } catch (AlreadyExistException e) {
+            return Response.status(422).entity(e.getMessage()).build();
+        }
     }
 
     @Override
-    public Response updateAuthor(Long id) {
-        return null;
+    public Response updateAuthor(Author author) {
+        try {
+            authorManager.update(author);
+            return Response.status(200).build();
+        } catch (AlreadyExistException e) {
+            return Response.status(422).entity(e.getMessage()).build();
+        }
+    }
+
+    @Override
+    public Response removeAuthor(Long id) {
+        authorManager.removeByPk(id);
+        return Response.status(200).build();
     }
 }

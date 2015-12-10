@@ -12,6 +12,7 @@ import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+import java.util.List;
 
 @Path("/author")
 public interface AuthorService {
@@ -22,9 +23,9 @@ public interface AuthorService {
     Response getAuthor(@PathParam("id") Long id);
 
     @GET
-    @Path("getbyrating/{id}")
+    @Path("getbyrating/{rating}")
     @Produces({MediaType.APPLICATION_JSON})
-    Response getAuthorsByRating(@PathParam("id") String id);
+    Response getAuthorsByRating(@PathParam("rating") String id);
 
     @GET
     @Path("getall")
@@ -37,12 +38,14 @@ public interface AuthorService {
     @Produces({MediaType.APPLICATION_FORM_URLENCODED})
     Response saveAuthor(Author author);
 
+    @PUT
+    @Path("update")
+    @Consumes({MediaType.APPLICATION_JSON})
+    @Produces({MediaType.APPLICATION_FORM_URLENCODED})
+    Response updateAuthor(Author author);
+
     @DELETE
     @Path("delete/{id}")
     Response removeAuthor(@PathParam("id") Long id);
-
-    @PUT
-    @Path("update/{id}")
-    Response updateAuthor(@PathParam("id") Long id);
 
 }
