@@ -10,7 +10,7 @@ import javax.ejb.Stateless;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.UriInfo;
-import java.net.URI;
+import java.util.List;
 
 @Stateless
 public class AuthorServiceImpl implements AuthorService {
@@ -26,16 +26,36 @@ public class AuthorServiceImpl implements AuthorService {
         try {
             authorManager.save(author);
             return Response.status(200).build();
-
-
         } catch (AlreadyExistException e) {
-            System.err.println("------------Exception Service Level------------");
+            return Response.status(422).entity(e.getMessage()).build();
         }
+    }
+
+    @Override
+    public Response getAuthor(Long id) {
+        Author author = authorManager.findByPk(id);
+        return Response.accepted(author).build();
+    }
+
+    @Override
+    public Response getAuthorsByRating(String id) {
+        List<Author> authors = authorManager.findAll(id);
+        return Response.accepted(authors).build();
+    }
+
+    @Override
+    public Response getAllAuthors() {
+        List<Author> authors = authorManager.findAll();
+        return Response.accepted(authors).build();
+    }
+
+    @Override
+    public Response removeAuthor(Long id) {
         return null;
     }
 
     @Override
-    public Author getCustomerInfo(Long customerId) {
-        return authorManager.findByPk(customerId);
+    public Response updateAuthor(Long id) {
+        return null;
     }
 }

@@ -5,7 +5,7 @@ import ua.softserve.booklibrary.entity.Author;
 import ua.softserve.booklibrary.exception.AlreadyExistException;
 import ua.softserve.booklibrary.manager.AuthorManager;
 import ua.softserve.booklibrary.manager.ReviewManager;
-import ua.softserve.booklibrary.rest.client.AuthorServiceClient;
+import ua.softserve.booklibrary.rest.client.AuthorClientService;
 
 import javax.ejb.EJB;
 import javax.ejb.EJBException;
@@ -33,7 +33,7 @@ public class AuthorAction implements Serializable {
     @EJB
     private ReviewManager reviewManager;
     @EJB
-    private AuthorServiceClient authorServiceClient;
+    private AuthorClientService authorClientService;
 
     private List<Author> authors;
     private Author newAuthor = new Author();
@@ -49,7 +49,7 @@ public class AuthorAction implements Serializable {
     public void loadData() {
         try {
             if (currentAuthor == null) {
-                currentAuthor = authorServiceClient.findAuthorByPkThroughTheService(Long.parseLong(getId()));
+                currentAuthor = authorClientService.findAuthorByPk(Long.parseLong(getId()));
                 currentAuthorId = currentAuthor.getId();
             }
         } catch (NumberFormatException e) {
@@ -66,12 +66,9 @@ public class AuthorAction implements Serializable {
 
     public void save() {
         try {
-            authorServiceClient.saveAuthorThroughTheService(newAuthor);
-/*
-            authorManager.save(newAuthor);
+            authorClientService.saveAuthor(newAuthor);
         } catch (AlreadyExistException e) {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, e.getMessage(), e.getMessage()));
-*/
         } catch (EJBException e) {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Save unsuccessful", e.getMessage()));
         }
@@ -175,7 +172,14 @@ public class AuthorAction implements Serializable {
     }
 
     private void initAuthors() {
+        if (getByRating() == null) {
+            authors = authorClientService.findAllAuthors();
+        } else {
+            authors = authorClientService.findAuthorsByRating(getByRating());
+        }
+/*
         authors = authorManager.findAll(getByRating());
+*/
         initCheckMap();
     }
 
