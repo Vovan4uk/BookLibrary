@@ -105,19 +105,18 @@
                         <f:facet name="header">
                             <h:outputText value="Create date"/>
                         </f:facet>
-                        <h:outputText value="#{author.createDate}"/>
+                        <h:outputText value="#{author.createDate}" converter="javax.faces.DateTime"/>
                     </rich:column>
                     <rich:column style="width: 20px;">
                         <f:facet name="header">
                             <h:selectBooleanCheckbox
                                     onclick="
                                     form = document.getElementById('form');
-
-                            for(var i = 0; i != form.elements.length; i++) {
-                                if(form.elements[i].id.indexOf(':selectItemCheck') &gt;= 0) {
-                                    form.elements[i].checked = this.checked;
-                                }
-                            }">
+                                    for(var i = 0; i != form.elements.length; i++) {
+                                        if(form.elements[i].id.indexOf(':selectItemCheck') &gt;= 0) {
+                                            form.elements[i].checked = this.checked;
+                                        }
+                                    }">
                                 <f:ajax event="change" execute="@form" render="@form"/>
                             </h:selectBooleanCheckbox>
                         </f:facet>
@@ -125,11 +124,6 @@
                                 value="#{authorAction.checkMap[author]}" id="selectItemCheck">
                             <f:ajax event="change" execute="@form" render="@form"/>
                         </h:selectBooleanCheckbox>
-                        <!--
-                                                <br/>
-                                                <h:outputText value="+ #{authorAction.selected}"
-                                                              style="margin-bottom : 24px;display : block" />
-                        -->
                     </rich:column>
 
                     <f:facet name="footer" id="pagination">

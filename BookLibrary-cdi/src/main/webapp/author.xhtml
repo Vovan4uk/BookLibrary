@@ -67,7 +67,7 @@
 
                 <h:outputText
                         value="(#{authorAction.currentAuthor.books.size()} books)"/><br/>
-                <h:outputText value="#{authorAction.currentAuthor.createDate}"/>
+                <h:outputText value="#{authorAction.currentAuthor.createDate}" converter="javax.faces.DateTime"/>
                 <br/><br/>
 
                 <rich:dataTable style="width: 100%;">
@@ -108,7 +108,7 @@
                             <f:facet name="header">
                                 <h:outputText value="Book published date"/>
                             </f:facet>
-                            <h:outputText value="#{book.publishedDate}"/>
+                            <h:outputText value="#{book.publishedDate}" converter="javax.faces.DateTime"/>
                         </rich:column>
                         <rich:column styleClass="col_author_book_average_rating"
                                      headerClass="col_author_book_average_rating">
@@ -125,7 +125,7 @@
                             <f:facet name="header">
                                 <h:outputText value="Book create date"/>
                             </f:facet>
-                            <h:outputText value="#{book.createDate}"/>
+                            <h:outputText value="#{book.createDate}" converter="javax.faces.DateTime"/>
                         </rich:column>
                         <f:facet name="footer" id="pagination">
                             <rich:dataScroller renderIfSinglePage="false"/>
