@@ -14,9 +14,12 @@ import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
+import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
 
 @Entity
 @Table(name = "REVIEW")
+@XmlRootElement
 public class Review extends LibraryEntity {
     private static final long serialVersionUID = -8631161684971086224L;
     @Id
@@ -43,6 +46,7 @@ public class Review extends LibraryEntity {
 
     @ManyToOne
     @JoinColumn(name = "BOOK_ID")
+    @XmlTransient
     private Book book;
 
     public Long getId() {
@@ -77,6 +81,7 @@ public class Review extends LibraryEntity {
         this.rating = rating;
     }
 
+    @XmlTransient
     public Book getBook() {
         return book;
     }

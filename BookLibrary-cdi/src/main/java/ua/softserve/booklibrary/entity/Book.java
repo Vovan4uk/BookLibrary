@@ -21,6 +21,8 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
+import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
@@ -35,6 +37,7 @@ import java.util.Set;
         @NamedQuery(name = "Book.findBestBooksByAuthorId", query = "SELECT DISTINCT b FROM Book b JOIN b.authors a WHERE b.averageRating IS NOT NULL AND a.id = :id ORDER BY b.averageRating DESC"),
         @NamedQuery(name = "Book.findBooksByAuthorId", query = "SELECT DISTINCT b FROM Book b JOIN b.authors a WHERE a.id = :id")
 })
+@XmlRootElement
 public class Book extends LibraryEntity {
     private static final long serialVersionUID = 9073502830659864431L;
     @Id
@@ -121,6 +124,7 @@ public class Book extends LibraryEntity {
         this.reviews = reviews;
     }
 
+    @XmlTransient
     public Set<Author> getAuthors() {
         return authors;
     }

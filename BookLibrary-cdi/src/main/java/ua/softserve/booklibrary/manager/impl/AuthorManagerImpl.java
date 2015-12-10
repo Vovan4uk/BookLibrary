@@ -7,6 +7,7 @@ import ua.softserve.booklibrary.dao.home.AuthorHome;
 import ua.softserve.booklibrary.dao.home.BookHome;
 import ua.softserve.booklibrary.entity.Author;
 import ua.softserve.booklibrary.entity.Book;
+import ua.softserve.booklibrary.entity.Review;
 import ua.softserve.booklibrary.exception.AlreadyExistException;
 import ua.softserve.booklibrary.manager.AuthorManager;
 
@@ -82,11 +83,13 @@ public class AuthorManagerImpl implements AuthorManager {
 
     @Override
     public List<Author> findAll() {
-        return null;
+        LOGGER.debug("Find all authors");
+        return initAuthorList(authorFacade.findAll());
     }
 
     @Override
     public List<Author> findAll(String byRating) {
+        LOGGER.debug("Find authors by rating");
         return initAuthorList(getAuthors(byRating));
     }
 
@@ -99,25 +102,29 @@ public class AuthorManagerImpl implements AuthorManager {
             } else if (rating > 0 && rating <= 5) {
                 resultList = findAuthorsByRating(rating);
             } else {
+                LOGGER.error("Rating {} doesn't illegal", rating);
                 throw new IllegalArgumentException();
             }
         } catch (IllegalArgumentException e) {
-            resultList = authorFacade.findAll();
+            resultList = findAll();
         }
         return resultList;
     }
 
     @Override
     public List<Author> findAuthorsByRating(Integer minRating) {
+        LOGGER.debug("Find authors with rating {}", minRating);
         return initAuthorList(authorFacade.findAuthorsByRating(minRating));
     }
 
     @Override
     public List<Author> findAuthorsWithoutRating() {
+        LOGGER.debug("Find authors without rating");
         return initAuthorList(authorFacade.findAuthorsWithoutRating());
     }
 
     private List<Author> initAuthorList(List<Author> authors) {
+        LOGGER.debug("Initialize author list (Books is lazy init)");
         for (Author author : authors) {
             author.getBooks().size();
         }
@@ -125,6 +132,7 @@ public class AuthorManagerImpl implements AuthorManager {
     }
 
     private Author initBookList(Author author) {
+        LOGGER.debug("Initialize book list (Reviews is lazy init)");
         for (Book book : author.getBooks()) {
             book.getReviews().size();
         }

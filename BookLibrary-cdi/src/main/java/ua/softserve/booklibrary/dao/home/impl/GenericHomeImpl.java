@@ -81,6 +81,7 @@ public abstract class GenericHomeImpl<T extends LibraryEntity> implements Generi
         em.createQuery("DELETE FROM " + entityClass.getName() + " e WHERE e IN (:entities)")
                 .setParameter("entities", entities)
                 .executeUpdate();
+        em.flush();
         LOGGER.debug("Remove '{}' objects successful", entityClass.getCanonicalName());
     }
 }

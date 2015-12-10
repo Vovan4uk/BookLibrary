@@ -49,10 +49,12 @@ public class AuthorFacadeImpl extends GenericFacadeImpl<Author> implements Autho
 
     private boolean isNewAuthorExist(Author author) {
         if (author.getSecondName().isEmpty()) {
+            LOGGER.debug("Find new author by 'firstName' {}", author.getFirstName());
             return em.createNamedQuery("Author.isAuthorsExistByFirstName", Boolean.class)
                     .setParameter("firstName", author.getFirstName())
                     .getSingleResult();
         } else {
+            LOGGER.debug("Find new author by 'firstName' {} and 'secondName' {}", author.getFirstName(), author.getSecondName());
             return em.createNamedQuery("Author.isAuthorsExistByFirstAndSecondName", Boolean.class)
                     .setParameter("firstName", author.getFirstName())
                     .setParameter("secondName", author.getSecondName())
@@ -62,11 +64,13 @@ public class AuthorFacadeImpl extends GenericFacadeImpl<Author> implements Autho
 
     private boolean isCurrentAuthorExist(Author author) {
         if (author.getSecondName().isEmpty()) {
+            LOGGER.debug("Find current author by 'firstName' {} and 'id' {}", author.getFirstName(), author.getId());
             return em.createNamedQuery("Author.isAuthorsExistByFirstNameWithId", Boolean.class)
                     .setParameter("firstName", author.getFirstName())
                     .setParameter("id", author.getId())
                     .getSingleResult();
         } else {
+            LOGGER.debug("Find current author by 'firstName' {} and 'secondName' {} and 'id' {}", author.getFirstName(), author.getSecondName(), author.getId());
             return em.createNamedQuery("Author.isAuthorsExistByFirstAndSecondNameWithId", Boolean.class)
                     .setParameter("firstName", author.getFirstName())
                     .setParameter("secondName", author.getSecondName())

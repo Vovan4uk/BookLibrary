@@ -48,7 +48,7 @@ public class ReviewManagerImpl implements ReviewManager {
 
     @Override
     public Review findByPk(Long id) {
-        return null;
+        return reviewFacade.findByPk(id);
     }
 
     @Override

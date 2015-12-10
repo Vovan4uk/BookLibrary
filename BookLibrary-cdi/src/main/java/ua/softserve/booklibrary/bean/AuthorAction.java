@@ -15,6 +15,8 @@ import javax.faces.context.FacesContext;
 import javax.faces.view.ViewScoped;
 import javax.inject.Named;
 import javax.persistence.EntityNotFoundException;
+import javax.ws.rs.client.ClientBuilder;
+import javax.ws.rs.client.WebTarget;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -42,11 +44,16 @@ public class AuthorAction implements Serializable {
 
     private Map<Author, Boolean> checkMap = new HashMap<>();
 
+    private WebTarget webTarget = ClientBuilder.newClient().target("http://localhost:8080/BookLibrary-cdi/rest/author");
+
+    private Author findAuthorByPkThroughTheService(Long id) {
+        return webTarget.path("getauthor").path(id.toString()).request().get(Author.class);
+    }
 
     public void loadData() {
         try {
             if (currentAuthor == null) {
-                currentAuthor = authorManager.findByPk(Long.parseLong(getId()));
+                currentAuthor = findAuthorByPkThroughTheService(Long.parseLong(getId()));
                 currentAuthorId = currentAuthor.getId();
             }
         } catch (NumberFormatException e) {
@@ -125,7 +132,7 @@ public class AuthorAction implements Serializable {
                     title = "by rating " + rating;
                 }
             } catch (NumberFormatException e) {
-                //Maybe some error message
+                title = "";
             }
         }
         return title;
@@ -200,7 +207,6 @@ public class AuthorAction implements Serializable {
                 authors.add(entry.getKey());
             }
         }
-        System.err.println("================" + authors.size());
         return authors;
     }
 
