@@ -65,7 +65,7 @@ public class Book extends LibraryEntity {
     @Column(name = "PUBLISHER")
     private String publisher;
 
-    @OneToMany(mappedBy = "book", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "book", cascade = CascadeType.ALL, fetch = FetchType.EAGER)   // todo: why fetch = FetchType.EAGER ?
     private Set<Review> reviews = new HashSet<>();
 
     @Formula("(SELECT AVG(r.RATING) FROM REVIEW r WHERE r.BOOK_ID = ID)")
@@ -143,6 +143,7 @@ public class Book extends LibraryEntity {
         this.averageRating = averageRating;
     }
 
+    // todo: is this method really need?
     @PostLoad
     private void onLoad() {
         if (averageRating == null) {
@@ -152,6 +153,7 @@ public class Book extends LibraryEntity {
 
     @Override
     public String toString() {
+        // todo: lost result from parent method
         return "Book{" +
                 "id=" + id +
                 ", name='" + name + '\'' +

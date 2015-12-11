@@ -18,8 +18,8 @@ import java.util.List;
 @Stateless
 public class AuthorClientServiceImpl implements AuthorClientService {
 
-    private String target = "http://localhost:8080/BookLibrary-cdi/rest/author";
-    private Client client = ClientBuilder.newClient();
+    private String target = "http://localhost:8080/BookLibrary-cdi/rest/author";    // todo: final
+    private Client client = ClientBuilder.newClient();  // todo: final
 
     @Override
     public Author findAuthorByPk(Long id) {

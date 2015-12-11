@@ -92,6 +92,7 @@ public class Review extends LibraryEntity {
 
     @Override
     public String toString() {
+        // todo: lost result from parent method
         return "Review{" +
                 "id=" + id +
                 ", commenterName='" + commenterName + '\'' +

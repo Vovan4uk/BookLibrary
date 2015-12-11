@@ -27,9 +27,13 @@ import java.util.TreeSet;
 @NamedQueries({
         @NamedQuery(name = "Author.findAuthorsByRating", query = "SELECT a FROM Author a WHERE averageRating >= :minRating AND averageRating < :maxRating "),
         @NamedQuery(name = "Author.findAuthorsWithoutRating", query = "SELECT a FROM Author a WHERE averageRating IS NULL"),
+        // todo: Use EXISTS instead CASE
         @NamedQuery(name = "Author.isAuthorsExistByFirstName", query = "SELECT CASE WHEN (COUNT(a)>0) THEN TRUE ELSE FALSE END FROM Author a WHERE firstName = :firstName AND secondName IS NULL"),
+        // todo: Use EXISTS instead CASE
         @NamedQuery(name = "Author.isAuthorsExistByFirstAndSecondName", query = "SELECT CASE WHEN (COUNT(a)>0) THEN TRUE ELSE FALSE END FROM Author a WHERE firstName = :firstName AND secondName = :secondName"),
+        // todo: Use EXISTS instead CASE
         @NamedQuery(name = "Author.isAuthorsExistByFirstAndSecondNameWithId", query = "SELECT CASE WHEN (COUNT(a)>0) THEN TRUE ELSE FALSE END FROM Author a WHERE firstName = :firstName AND secondName = :secondName AND id != :id"),
+        // todo: Use EXISTS instead CASE
         @NamedQuery(name = "Author.isAuthorsExistByFirstNameWithId", query = "SELECT CASE WHEN (COUNT(a)>0) THEN TRUE ELSE FALSE END FROM Author a WHERE firstName = :firstName  AND secondName IS NULL AND id != :id")
 })
 @XmlRootElement
@@ -102,6 +106,7 @@ public class Author extends LibraryEntity {
         this.averageRating = averageRating;
     }
 
+    // todo: is this method really need?
     @PostLoad
     private void onLoad() {
         if (averageRating == null) {
@@ -111,6 +116,7 @@ public class Author extends LibraryEntity {
 
     @Override
     public String toString() {
+        // todo: lost result from parent method
         return "Author{" +
                 "id=" + id +
                 ", firstName='" + firstName + '\'' +

@@ -15,8 +15,8 @@ import java.util.Map;
 @ViewScoped
 public class MainSortingBean implements Serializable {
     private static final long serialVersionUID = -7944021928506372310L;
-    private Map<String, SortOrder> sortsOrders;
-    private List<String> sortPriorities;
+    private Map<String, SortOrder> sortsOrders; //todo: final
+    private List<String> sortPriorities;    //todo: final
 
     private static final String SORT_PROPERTY_PARAMETER = "sortProperty";
     private static final String AVERAGE_RATING_SORT = "averageRating";
@@ -42,7 +42,7 @@ public class MainSortingBean implements Serializable {
         if (property != null) {
             SortOrder currentPropertySortOrder = sortsOrders.get(property);
             reset();
-            if (!sortPriorities.contains(property)) {
+            if (!sortPriorities.contains(property)) {   //todo: ????
                 sortPriorities.add(property);
             }
 

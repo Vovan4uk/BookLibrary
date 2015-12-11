@@ -28,9 +28,9 @@ public class AuthorAction implements Serializable {
     private static final long serialVersionUID = 3795838153393063077L;
 
     @EJB
-    private AuthorManager authorManager;
+    private AuthorManager authorManager;    //todo: transient
     @EJB
-    private AuthorClientService authorClientService;
+    private AuthorClientService authorClientService;    //todo: transient
 
     private List<Author> authors;
     private Author newAuthor = new Author();
@@ -111,7 +111,7 @@ public class AuthorAction implements Serializable {
     }
 
     public Integer getCountAuthorsWithoutRating() {
-        return authorManager.findAuthorsWithoutRating().size();
+        return authorManager.findAuthorsWithoutRating().size(); // todo: it's wrong !!
     }
 
     public String getTitle() {
@@ -183,7 +183,7 @@ public class AuthorAction implements Serializable {
         }
     }
 
-    public String getSelected() {
+    public String getSelected() {   // todo: refactoring!
         String result = "";
         for (Map.Entry<Author, Boolean> entry : checkMap.entrySet()) {
             if (entry.getValue()) {

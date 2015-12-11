@@ -51,13 +51,13 @@ public class AuthorFacadeImpl extends GenericFacadeImpl<Author> implements Autho
         if (author.getSecondName().isEmpty()) {
             LOGGER.debug("Find new author by 'firstName' {}", author.getFirstName());
             return em.createNamedQuery("Author.isAuthorsExistByFirstName", Boolean.class)
-                    .setParameter("firstName", author.getFirstName())
+                    .setParameter("firstName", author.getFirstName())   // todo: author.getFirstName() == null ?
                     .getSingleResult();
         } else {
             LOGGER.debug("Find new author by 'firstName' {} and 'secondName' {}", author.getFirstName(), author.getSecondName());
             return em.createNamedQuery("Author.isAuthorsExistByFirstAndSecondName", Boolean.class)
-                    .setParameter("firstName", author.getFirstName())
-                    .setParameter("secondName", author.getSecondName())
+                    .setParameter("firstName", author.getFirstName())   // todo: author.getFirstName() == null ?
+                    .setParameter("secondName", author.getSecondName()) // todo: author.getSecondName() == null ?
                     .getSingleResult();
         }
     }
@@ -66,15 +66,15 @@ public class AuthorFacadeImpl extends GenericFacadeImpl<Author> implements Autho
         if (author.getSecondName().isEmpty()) {
             LOGGER.debug("Find current author by 'firstName' {} and 'id' {}", author.getFirstName(), author.getId());
             return em.createNamedQuery("Author.isAuthorsExistByFirstNameWithId", Boolean.class)
-                    .setParameter("firstName", author.getFirstName())
-                    .setParameter("id", author.getId())
+                    .setParameter("firstName", author.getFirstName())   // todo: author.getFirstName() == null ?
+                    .setParameter("id", author.getId())                 // todo: author.getId() == null ?
                     .getSingleResult();
         } else {
             LOGGER.debug("Find current author by 'firstName' {} and 'secondName' {} and 'id' {}", author.getFirstName(), author.getSecondName(), author.getId());
             return em.createNamedQuery("Author.isAuthorsExistByFirstAndSecondNameWithId", Boolean.class)
-                    .setParameter("firstName", author.getFirstName())
-                    .setParameter("secondName", author.getSecondName())
-                    .setParameter("id", author.getId())
+                    .setParameter("firstName", author.getFirstName())       // todo: author.getFirstName() == null ?
+                    .setParameter("secondName", author.getSecondName())     // todo: author.getSecondName() == null ?
+                    .setParameter("id", author.getId())                     // todo: author.getId() == null ?
                     .getSingleResult();
         }
     }

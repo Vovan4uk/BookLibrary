@@ -19,7 +19,7 @@ public interface AuthorService {
 
     @GET
     @Path("get/{id}")
-    @Produces({MediaType.APPLICATION_JSON})
+    @Produces({MediaType.APPLICATION_JSON}) // todo: move to class level
     Response getAuthor(@PathParam("id") Long id);
 
     @GET
@@ -34,7 +34,7 @@ public interface AuthorService {
 
     @POST
     @Path("save")
-    @Consumes({MediaType.APPLICATION_JSON})
+    @Consumes({MediaType.APPLICATION_JSON}) // todo: move to class level
     @Produces({MediaType.APPLICATION_FORM_URLENCODED})
     Response saveAuthor(Author author);
 

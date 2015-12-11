@@ -17,7 +17,7 @@ public class BooksFilteringBean implements Serializable {
     @EJB
     private AuthorManager authorManager;
 
-    public boolean getFilterAuthorImpl(Object current) {
+    public boolean getFilterAuthorImpl(Object current) {    // todo: refactoring!
         Book currentBook = (Book) current;
         if ("".equals(authorFilter)) {
             return true;

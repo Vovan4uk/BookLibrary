@@ -28,7 +28,7 @@ public abstract class GenericFacadeImpl<T extends LibraryEntity> implements Gene
     @Override
     public T findByPk(Long id) {
         if (id == null) {
-            String errorMessage = "Object cannot be find by null primary key";
+            String errorMessage = "Object cannot be find by null primary key"; // todo: add class name to message
             LOGGER.error(errorMessage);
             throw new IllegalArgumentException(errorMessage);
         }

@@ -39,17 +39,17 @@ public class BookManagerImpl implements BookManager {
     }
 
     @Override
-    public void removeByPk(Long id) {
+    public void removeByPk(Long id) {   //todo: ?
 
     }
 
     @Override
-    public void removeAll(List<Book> entities) {
+    public void removeAll(List<Book> entities) {    //todo: ?
 
     }
 
     @Override
-    public Book findByPk(Long id) {
+    public Book findByPk(Long id) { //todo: really need to init all Authors and Reviews?
         Book book = bookFacade.findByPk(id);
         book.getAuthors().size();
         book.getReviews().size();
@@ -86,7 +86,7 @@ public class BookManagerImpl implements BookManager {
         return resultList;
     }
 
-    private List<Book> initBookList(List<Book> books) {
+    private List<Book> initBookList(List<Book> books) { //todo: really need to init all Authors and Reviews?
         for (Book book : books) {
             book.getAuthors().size();
             book.getReviews().size();

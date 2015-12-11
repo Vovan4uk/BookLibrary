@@ -34,10 +34,10 @@ public class AuthorManagerImpl implements AuthorManager {
     private BookHome bookHome;
 
     @Override
-    @TransactionAttribute(TransactionAttributeType.REQUIRES_NEW)
+    @TransactionAttribute(TransactionAttributeType.REQUIRES_NEW)    // todo: why REQUIRES_NEW ?
     public Author save(Author author) throws AlreadyExistException {
         if (authorFacade.isAuthorExist(author)) {
-            String errorMessage = "Save unsuccessful. Author is already exist";
+            String errorMessage = "Save unsuccessful. Author is already exist"; // todo; need more info about author
             LOGGER.error(errorMessage);
             throw new AlreadyExistException(errorMessage);
         }
@@ -48,7 +48,7 @@ public class AuthorManagerImpl implements AuthorManager {
     @Override
     public Author update(Author author) throws AlreadyExistException {
         if (authorFacade.isAuthorExist(author)) {
-            String errorMessage = "Update unsuccessful. Author is already exist";
+            String errorMessage = "Update unsuccessful. Author is already exist";   // todo; need more info about author
             LOGGER.error(errorMessage);
             throw new AlreadyExistException(errorMessage);
         }
@@ -74,7 +74,7 @@ public class AuthorManagerImpl implements AuthorManager {
         }
 
         LOGGER.debug("Remove list Authors: {}", authors);
-        authorHome.removeAll(new HashSet<>(authors));
+        authorHome.removeAll(new HashSet<>(authors));   // todo: really need to create Set ?
     }
 
     @Override
@@ -125,7 +125,7 @@ public class AuthorManagerImpl implements AuthorManager {
         return initAuthorList(authorFacade.findAuthorsWithoutRating());
     }
 
-    private List<Author> initAuthorList(List<Author> authors) {
+    private List<Author> initAuthorList(List<Author> authors) { //todo: really need to init all books?
         LOGGER.debug("Initialize author list (Books is lazy init)");
         for (Author author : authors) {
             author.getBooks().size();
@@ -133,7 +133,7 @@ public class AuthorManagerImpl implements AuthorManager {
         return authors;
     }
 
-    private Author initBookList(Author author) {
+    private Author initBookList(Author author) {    //todo: really need to init all reviews?
         LOGGER.debug("Initialize book list (Reviews is lazy init)");
         for (Book book : author.getBooks()) {
             book.getReviews().size();

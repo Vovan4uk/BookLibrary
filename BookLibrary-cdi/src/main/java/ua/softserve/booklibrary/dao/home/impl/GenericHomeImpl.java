@@ -12,6 +12,7 @@ import javax.persistence.EntityNotFoundException;
 import javax.persistence.PersistenceContext;
 import java.util.Set;
 
+//todo: @TransactionAttribute ?
 public abstract class GenericHomeImpl<T extends LibraryEntity> implements GenericHome<T> {
 
     @PersistenceContext(unitName = "OracleDS")
@@ -29,9 +30,9 @@ public abstract class GenericHomeImpl<T extends LibraryEntity> implements Generi
     public T save(T entity) throws AlreadyExistException {
         LOGGER.debug("Save '{}' object", entityClass.getCanonicalName());
         try {
-            em.persist(entity);
+            em.persist(entity); // todo: NPE
             LOGGER.debug("Saved object: {}", entity);
-        } catch (EntityExistsException e) {
+        } catch (EntityExistsException e) { // todo: why catch only this exception?
             String errorMessage = "Save unsuccessful. '" + entity + "' is already exist";
             LOGGER.error(errorMessage);
             throw new AlreadyExistException(errorMessage);
@@ -43,7 +44,7 @@ public abstract class GenericHomeImpl<T extends LibraryEntity> implements Generi
     public T update(T entity) {
         LOGGER.debug("Update '{}' object", entityClass.getCanonicalName());
         try {
-            em.merge(entity);
+            em.merge(entity); // todo: NPE (2 cases: entity and entity.id)
             LOGGER.debug("Updated object: {}", entity);
         } catch (IllegalArgumentException e) {
             String errorMessage = "Update unsuccessful. '" + entity + "' do not exist";
@@ -61,7 +62,7 @@ public abstract class GenericHomeImpl<T extends LibraryEntity> implements Generi
             throw new IllegalArgumentException(errorMessage);
         }
         try {
-            em.remove(em.getReference(entityClass, id));
+            em.remove(em.getReference(entityClass, id));    // todo: NPE?
             LOGGER.debug("Remove '{}' object with primary key '{}'", entityClass.getCanonicalName(), id);
         } catch (EntityNotFoundException e) {
             String errorMessage = "Remove unsuccessful. '"
