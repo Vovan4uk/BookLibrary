@@ -1,5 +1,6 @@
 package ua.softserve.booklibrary.dao.facade;
 
+import ua.softserve.booklibrary.entity.Author;
 import ua.softserve.booklibrary.entity.Book;
 
 import javax.ejb.Local;
@@ -18,4 +19,6 @@ public interface BookFacade extends GenericFacade<Book> {
     List<Book> findBestBooksByAuthorId(Long id, Integer count);
 
     List<Book> findBooksByAuthorId(Long id);
+
+    List<Book> findBooksByAuthors(List<Author> authors);
 }

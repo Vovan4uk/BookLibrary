@@ -5,6 +5,7 @@ import org.hibernate.annotations.Formula;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -25,103 +26,131 @@ import java.util.TreeSet;
 @Entity
 @Table(name = "AUTHOR", uniqueConstraints = @UniqueConstraint(columnNames = {"SECOND_NAME", "FIRST_NAME"}))
 @NamedQueries({
-        @NamedQuery(name = "Author.findAuthorsByRating", query = "SELECT a FROM Author a WHERE averageRating >= :minRating AND averageRating < :maxRating "),
-        @NamedQuery(name = "Author.findAuthorsWithoutRating", query = "SELECT a FROM Author a WHERE averageRating IS NULL"),
-        // todo: Use EXISTS instead CASE
-        @NamedQuery(name = "Author.isAuthorsExistByFirstName", query = "SELECT CASE WHEN (COUNT(a)>0) THEN TRUE ELSE FALSE END FROM Author a WHERE firstName = :firstName AND secondName IS NULL"),
-        // todo: Use EXISTS instead CASE
-        @NamedQuery(name = "Author.isAuthorsExistByFirstAndSecondName", query = "SELECT CASE WHEN (COUNT(a)>0) THEN TRUE ELSE FALSE END FROM Author a WHERE firstName = :firstName AND secondName = :secondName"),
-        // todo: Use EXISTS instead CASE
-        @NamedQuery(name = "Author.isAuthorsExistByFirstAndSecondNameWithId", query = "SELECT CASE WHEN (COUNT(a)>0) THEN TRUE ELSE FALSE END FROM Author a WHERE firstName = :firstName AND secondName = :secondName AND id != :id"),
-        // todo: Use EXISTS instead CASE
-        @NamedQuery(name = "Author.isAuthorsExistByFirstNameWithId", query = "SELECT CASE WHEN (COUNT(a)>0) THEN TRUE ELSE FALSE END FROM Author a WHERE firstName = :firstName  AND secondName IS NULL AND id != :id")
+		@NamedQuery(name = "Author.findAuthorsByRating", query = "SELECT a FROM Author a WHERE averageRating >= :minRating AND averageRating < :maxRating "),
+		@NamedQuery(name = "Author.findAuthorsWithoutRating", query = "SELECT a FROM Author a WHERE averageRating IS NULL"),
+		@NamedQuery(name = "Author.countAuthorsByRating", query = "SELECT COUNT(a) FROM Author a WHERE averageRating >= :minRating AND averageRating < :maxRating "),
+		@NamedQuery(name = "Author.countAuthorsWithoutRating", query = "SELECT COUNT(a) FROM Author a WHERE averageRating IS NULL"),
+
+		// todo: Use EXISTS instead CASE - fixed(removed 'group by' operation, but kept 'case-true-false')
+		@NamedQuery(name = "Author.isAuthorsExistByFirstName", query = "SELECT CASE WHEN " +
+				"EXISTS (SELECT a FROM Author WHERE firstName = :firstName AND secondName IS NULL) " +
+				"THEN TRUE ELSE FALSE END FROM Author a"),
+
+		// todo: Use EXISTS instead CASE - fixed(removed 'group by' operation, but kept 'case-true-false')
+		@NamedQuery(name = "Author.isAuthorsExistByFirstAndSecondName", query = "SELECT CASE WHEN " +
+				"EXISTS (SELECT a FROM Author WHERE firstName = :firstName AND secondName = :secondName) " +
+				"THEN TRUE ELSE FALSE END FROM Author a"),
+
+		// todo: Use EXISTS instead CASE - fixed(removed 'group by' operation, but kept 'case-true-false')
+		@NamedQuery(name = "Author.isAuthorsExistByFirstAndSecondNameWithId", query = "SELECT CASE WHEN " +
+				"EXISTS (SELECT a FROM Author WHERE firstName = :firstName AND secondName = :secondName AND id != :id) " +
+				"THEN TRUE ELSE FALSE END FROM Author a"),
+
+		// todo: Use EXISTS instead CASE - fixed(removed 'group by' operation, but kept 'case-true-false')
+		@NamedQuery(name = "Author.isAuthorsExistByFirstNameWithId", query = "SELECT CASE WHEN " +
+				"EXISTS (SELECT a FROM Author WHERE firstName = :firstName AND secondName IS NULL AND id != :id) " +
+				"THEN TRUE ELSE FALSE END FROM Author a"),
 })
 @XmlRootElement
 public class Author extends LibraryEntity {
-    private static final long serialVersionUID = 5544814440011028323L;
-    @Id
-    @SequenceGenerator(name = "AUTHOR_ID_GENERATOR", sequenceName = "AUTHOR_S", allocationSize = 1)
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "AUTHOR_ID_GENERATOR")
-    @Column(name = "ID", nullable = false)
-    private Long id;
+	private static final long serialVersionUID = 5544814440011028323L;
+	@Id
+	@SequenceGenerator(name = "AUTHOR_ID_GENERATOR", sequenceName = "AUTHOR_S", allocationSize = 1)
+	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "AUTHOR_ID_GENERATOR")
+	@Column(name = "ID", nullable = false)
+	private Long id;
 
-    @NotNull
-    @Size(min = 1, max = 255)
-    @Column(name = "FIRST_NAME", nullable = false)
-    private String firstName;
+	@NotNull
+	@Size(min = 1, max = 255)
+	@Column(name = "FIRST_NAME", nullable = false)
+	private String firstName;
 
-    @Size(max = 255)
-    @Column(name = "SECOND_NAME")
-    private String secondName;
+	@Size(max = 255)
+	@Column(name = "SECOND_NAME")
+	private String secondName;
 
-    /*
-        Maybe fix later
-        javax.servlet.ServletException: org.hibernate.exception.SQLGrammarException: could not extract ResultSet
-        @Formula("(SELECT AVG(r.RATING) FROM (SELECT ba.BOOK_ID FROM BOOK_AUTHOR ba WHERE ba.AUTHOR_ID = 1) bb LEFT JOIN REVIEW r ON r.BOOK_ID = bb.BOOK_ID)")
-    */
-    @Formula("(SELECT AVG(r.RATING) FROM Review r, BOOK_AUTHOR ba WHERE r.BOOK_ID = ba.BOOK_ID AND ba.AUTHOR_ID = ID)")
-    private Double averageRating;
+	@Formula("(SELECT AVG(r.RATING) FROM Review r, BOOK_AUTHOR ba WHERE r.BOOK_ID = ba.BOOK_ID AND ba.AUTHOR_ID = ID)")
+	private Double averageRating;
 
-    @ManyToMany(mappedBy = "authors", cascade = CascadeType.ALL)
-    @OrderBy("name DESC")
-    private Set<Book> books = new TreeSet<>();
+	@Formula("(SELECT COUNT(ba.BOOK_ID) FROM BOOK_AUTHOR ba WHERE ba.AUTHOR_ID = ID)")
+	private Integer countBooks;
 
-    public Long getId() {
-        return id;
-    }
 
-    public void setId(Long id) {
-        this.id = id;
-    }
+	@ManyToMany(mappedBy = "authors", cascade = CascadeType.ALL)
+	@OrderBy("name DESC")
+	private Set<Book> books = new TreeSet<>();
 
-    public String getFirstName() {
-        return firstName;
-    }
+	public Long getId() {
+		return id;
+	}
 
-    public void setFirstName(String firstName) {
-        this.firstName = firstName;
-    }
+	public void setId(Long id) {
+		this.id = id;
+	}
 
-    public String getSecondName() {
-        return secondName;
-    }
+	public String getFirstName() {
+		return firstName;
+	}
 
-    public void setSecondName(String secondName) {
-        this.secondName = secondName;
-    }
+	public void setFirstName(String firstName) {
+		this.firstName = firstName;
+	}
 
-    public Set<Book> getBooks() {
-        return books;
-    }
+	public String getSecondName() {
+		return secondName;
+	}
 
-    public void setBooks(Set<Book> books) {
-        this.books = books;
-    }
+	public void setSecondName(String secondName) {
+		this.secondName = secondName;
+	}
 
-    public Double getAverageRating() {
-        return averageRating;
-    }
+	public Set<Book> getBooks() {
+		return books;
+	}
 
-    public void setAverageRating(Double averageRating) {
-        this.averageRating = averageRating;
-    }
+	public void setBooks(Set<Book> books) {
+		this.books = books;
+	}
 
-    // todo: is this method really need?
-    @PostLoad
-    private void onLoad() {
-        if (averageRating == null) {
-            averageRating = 0D;
-        }
-    }
+	public Double getAverageRating() {
+		return averageRating;
+	}
 
-    @Override
-    public String toString() {
-        // todo: lost result from parent method
-        return "Author{" +
-                "id=" + id +
-                ", firstName='" + firstName + '\'' +
-                ", secondName='" + secondName + '\'' +
-                ", averageRating=" + averageRating +
-                '}';
-    }
+	public void setAverageRating(Double averageRating) {
+		this.averageRating = averageRating;
+	}
+
+	public Integer getCountBooks() {
+		return countBooks;
+	}
+
+	public void setCountBooks(Integer countBooks) {
+		this.countBooks = countBooks;
+	}
+
+	// todo: is this method really need? - fixed
+
+	/**
+	 * After '@Formula' calculate, if last return 'null',
+	 * set default averageRating to '0'.
+	 * Then, we shouldn't validate this param by 'null'.
+	 */
+	@PostLoad
+	private void onLoad() {
+		if (averageRating == null) {
+			averageRating = 0D;
+		}
+	}
+
+	@Override
+	public String toString() {
+		// todo: lost result from parent method - fixed
+		return "Author{" +
+				"id=" + id +
+				", firstName='" + firstName + '\'' +
+				", secondName='" + secondName + '\'' +
+				", averageRating=" + averageRating +
+				", createDate=" + super.getCreateDate() +
+				'}';
+	}
 }

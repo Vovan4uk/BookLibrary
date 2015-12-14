@@ -1,7 +1,6 @@
 package ua.softserve.booklibrary.rest.client;
 
 import ua.softserve.booklibrary.entity.Author;
-import ua.softserve.booklibrary.exception.AlreadyExistException;
 
 import javax.ejb.Local;
 import java.util.List;
@@ -14,9 +13,9 @@ public interface AuthorClientService {
 
     List<Author> findAllAuthors();
 
-    void saveAuthor(Author author) throws AlreadyExistException;
+    void saveAuthor(Author author);
 
-    void updateAuthor(Author author) throws AlreadyExistException;
+    void updateAuthor(Author author);
 
     void removeAuthor(Long id);
 }

@@ -136,7 +136,7 @@
                                                action="#{mainSortingBean.reset('averageRating')}" render="table"/>
                     </f:facet>
 
-                    <h:outputText value="#{book.averageRating} (#{book.reviews.size()})"/>
+                    <h:outputText value="#{book.averageRating} (#{book.countReviews})"/>
                 </rich:column>
                 <rich:column sortBy="#{book.createDate}" styleClass="col_book_create_date"
                              headerClass="col_book_create_date">

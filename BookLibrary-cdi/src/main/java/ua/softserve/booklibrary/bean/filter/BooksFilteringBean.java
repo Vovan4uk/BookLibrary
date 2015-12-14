@@ -1,5 +1,6 @@
 package ua.softserve.booklibrary.bean.filter;
 
+import org.apache.commons.lang3.StringUtils;
 import ua.softserve.booklibrary.entity.Author;
 import ua.softserve.booklibrary.entity.Book;
 import ua.softserve.booklibrary.manager.AuthorManager;
@@ -12,29 +13,30 @@ import java.io.Serializable;
 @ManagedBean
 @ViewScoped
 public class BooksFilteringBean implements Serializable {
-    private static final long serialVersionUID = -3725901188975943276L;
-    private String authorFilter = "";
-    @EJB
-    private AuthorManager authorManager;
+	private static final long serialVersionUID = -3725901188975943276L;
+	private String authorFilter = "";
+	private Boolean result;
 
-    public boolean getFilterAuthorImpl(Object current) {    // todo: refactoring!
-        Book currentBook = (Book) current;
-        if ("".equals(authorFilter)) {
-            return true;
-        }
-        for (Author author : currentBook.getAuthors()) {
-            if ((author.getFirstName() + " " + author.getSecondName()).toLowerCase().contains(authorFilter.toLowerCase())) {
-                return true;
-            }
-        }
-        return false;
-    }
+	@EJB
+	private AuthorManager authorManager;
 
-    public String getAuthorFilter() {
-        return authorFilter;
-    }
+	public boolean getFilterAuthorImpl(Object current) {    // todo: refactoring! - fixed
+		Book currentBook = (Book) current;
+		if (StringUtils.isEmpty(authorFilter)) {
+			result = true;
+		} else {
+			for (Author author : currentBook.getAuthors()) {
+				result = StringUtils.containsIgnoreCase((author.getFirstName() + " " + author.getSecondName()), authorFilter);
+			}
+		}
+		return result;
+	}
 
-    public void setAuthorFilter(String authorFilter) {
-        this.authorFilter = authorFilter;
-    }
+	public String getAuthorFilter() {
+		return authorFilter;
+	}
+
+	public void setAuthorFilter(String authorFilter) {
+		this.authorFilter = authorFilter;
+	}
 }

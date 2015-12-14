@@ -5,7 +5,6 @@ import org.slf4j.LoggerFactory;
 import ua.softserve.booklibrary.dao.facade.ReviewFacade;
 import ua.softserve.booklibrary.dao.home.ReviewHome;
 import ua.softserve.booklibrary.entity.Review;
-import ua.softserve.booklibrary.exception.AlreadyExistException;
 import ua.softserve.booklibrary.manager.ReviewManager;
 
 import javax.ejb.EJB;
@@ -26,7 +25,7 @@ public class ReviewManagerImpl implements ReviewManager {
     private ReviewFacade reviewFacade;
 
     @Override
-    public Review save(Review review) throws AlreadyExistException {
+    public Review save(Review review) {
         LOGGER.debug("Save new Review {}", review);
         return reviewHome.save(review);
     }

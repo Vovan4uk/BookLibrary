@@ -1,16 +1,15 @@
 package ua.softserve.booklibrary.manager;
 
 import ua.softserve.booklibrary.entity.LibraryEntity;
-import ua.softserve.booklibrary.exception.AlreadyExistException;
 
 import javax.ejb.Remote;
 import java.util.List;
 
 @Remote
 public interface GenericManager<T extends LibraryEntity> {
-    T save(T entity) throws AlreadyExistException;
+    T save(T entity);
 
-    T update(T entity) throws AlreadyExistException;
+    T update(T entity);
 
     void removeByPk(Long id);
 

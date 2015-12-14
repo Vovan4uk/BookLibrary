@@ -1,16 +1,15 @@
 package ua.softserve.booklibrary.dao.home;
 
 import ua.softserve.booklibrary.entity.LibraryEntity;
-import ua.softserve.booklibrary.exception.AlreadyExistException;
 
-import java.util.Set;
+import java.util.Collection;
 
 public interface GenericHome<T extends LibraryEntity> {
-    T save(T entity) throws AlreadyExistException;
+    T save(T entity);
 
     T update(T entity);
 
     void removeByPk(Long id);
 
-    void removeAll(Set<T> entities);
+    void removeAll(Collection<T> entities);
 }

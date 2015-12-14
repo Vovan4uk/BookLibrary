@@ -7,9 +7,13 @@ import java.util.List;
 
 @Local
 public interface AuthorManager extends GenericManager<Author> {
-    List<Author> findAuthorsByRating(Integer minRating);
+	List<Author> findAuthorsByRating(Integer minRating);
 
-    List<Author> findAuthorsWithoutRating();
+	List<Author> findAuthorsWithoutRating();
 
-    List<Author> findAll(String byRating);
+	Integer countAuthorsByRating(Integer minRating);
+
+	Integer countAuthorsWithoutRating();
+
+	List<Author> findAll(String byRating);
 }

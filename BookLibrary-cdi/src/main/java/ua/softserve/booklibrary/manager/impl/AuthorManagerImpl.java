@@ -1,14 +1,15 @@
 package ua.softserve.booklibrary.manager.impl;
 
+import org.apache.commons.lang3.math.NumberUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import ua.softserve.booklibrary.dao.facade.AuthorFacade;
+import ua.softserve.booklibrary.dao.facade.BookFacade;
 import ua.softserve.booklibrary.dao.home.AuthorHome;
 import ua.softserve.booklibrary.dao.home.BookHome;
 import ua.softserve.booklibrary.entity.Author;
 import ua.softserve.booklibrary.entity.Book;
-import ua.softserve.booklibrary.entity.Review;
-import ua.softserve.booklibrary.exception.AlreadyExistException;
+import ua.softserve.booklibrary.exception.LibraryException;
 import ua.softserve.booklibrary.manager.AuthorManager;
 
 import javax.ejb.EJB;
@@ -16,128 +17,123 @@ import javax.ejb.Stateless;
 import javax.ejb.TransactionAttribute;
 import javax.ejb.TransactionAttributeType;
 import javax.inject.Named;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 @Named
 @Stateless
 public class AuthorManagerImpl implements AuthorManager {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(AuthorManager.class);
+	private static final Logger LOGGER = LoggerFactory.getLogger(AuthorManager.class);
 
-    @EJB
-    private AuthorHome authorHome;
-    @EJB
-    private AuthorFacade authorFacade;
-    @EJB
-    private BookHome bookHome;
+	@EJB
+	private AuthorHome authorHome;
+	@EJB
+	private AuthorFacade authorFacade;
+	@EJB
+	private BookHome bookHome;
+	@EJB
+	private BookFacade bookFacade;
 
-    @Override
-    @TransactionAttribute(TransactionAttributeType.REQUIRES_NEW)    // todo: why REQUIRES_NEW ?
-    public Author save(Author author) throws AlreadyExistException {
-        if (authorFacade.isAuthorExist(author)) {
-            String errorMessage = "Save unsuccessful. Author is already exist"; // todo; need more info about author
-            LOGGER.error(errorMessage);
-            throw new AlreadyExistException(errorMessage);
-        }
-        LOGGER.debug("Save new Author {}", author);
-        return authorHome.save(author);
-    }
+	@Override
+	@TransactionAttribute(TransactionAttributeType.REQUIRES_NEW)    // todo: why REQUIRES_NEW ?
+	public Author save(Author author) {
+		if (authorFacade.isAuthorExist(author)) {
+			String errorMessage = "Save unsuccessful. Author '" + author + "' is already exist"; // todo; need more info about author - fixed
+			LOGGER.error(errorMessage);
+			throw new LibraryException(errorMessage);
+		}
+		LOGGER.debug("Save new Author {}", author);
+		return authorHome.save(author);
+	}
 
-    @Override
-    public Author update(Author author) throws AlreadyExistException {
-        if (authorFacade.isAuthorExist(author)) {
-            String errorMessage = "Update unsuccessful. Author is already exist";   // todo; need more info about author
-            LOGGER.error(errorMessage);
-            throw new AlreadyExistException(errorMessage);
-        }
-        LOGGER.debug("Update Author {}", author);
-        return authorHome.update(author);
-    }
+	@Override
+	public Author update(Author author) {
+		if (authorFacade.isAuthorExist(author)) {
+			String errorMessage = "Update unsuccessful. Author '" + author + "' is already exist";   // todo; need more info about author - fixed
+			LOGGER.error(errorMessage);
+			throw new LibraryException(errorMessage);
+		}
+		LOGGER.debug("Update Author {}", author);
+		return authorHome.update(author);
+	}
 
-    @Override
-    public void removeByPk(Long id) {
-        LOGGER.debug("Remove Author by primary key: {}", id);
-        authorHome.removeByPk(id);
-    }
+	@Override
+	public void removeByPk(Long id) {
+		LOGGER.debug("Remove Author by primary key: {}", id);
+		authorHome.removeByPk(id);
+	}
 
-    @Override
-    public void removeAll(List<Author> authors) {
-        Set<Book> books = new HashSet<>();
-        for (Author author : authors) {
-            books.addAll(author.getBooks());
-        }
-        LOGGER.debug("Remove list Books: {}", books);
-        if (!books.isEmpty()) {
-            bookHome.removeAll(books);
-        }
+	@Override
+	public void removeAll(List<Author> authors) {
+		List<Book> books = bookFacade.findBooksByAuthors(authors);
+		LOGGER.debug("Remove list Books: {}", books);
+		if (!books.isEmpty()) {
+			bookHome.removeAll(books);
+		}
+		LOGGER.debug("Remove list Authors: {}", authors);
+		authorHome.removeAll(authors);   // todo: really need to create Set ? - fixed
+	}
 
-        LOGGER.debug("Remove list Authors: {}", authors);
-        authorHome.removeAll(new HashSet<>(authors));   // todo: really need to create Set ?
-    }
+	@Override
+	public Author findByPk(Long id) {
+		LOGGER.debug("Find author by primary key: {}", id);
+		return initAuthor(authorFacade.findByPk(id));
+	}
 
-    @Override
-    public Author findByPk(Long id) {
-        LOGGER.debug("Find author by primary key: {}", id);
-        return initBookList(authorFacade.findByPk(id));
-    }
+	@Override
+	public List<Author> findAll() {
+		LOGGER.debug("Find all authors");
+		return authorFacade.findAll();
+	}
 
-    @Override
-    public List<Author> findAll() {
-        LOGGER.debug("Find all authors");
-        return initAuthorList(authorFacade.findAll());
-    }
+	@Override
+	public List<Author> findAll(String byRating) {
+		LOGGER.debug("Find authors by rating");
+		return getAuthors(byRating);
+	}
 
-    @Override
-    public List<Author> findAll(String byRating) {
-        LOGGER.debug("Find authors by rating");
-        return initAuthorList(getAuthors(byRating));
-    }
+	private List<Author> getAuthors(String byRating) {
+		List<Author> resultList;
+		Integer rating = NumberUtils.toInt(byRating);
+		if (rating == 0) {
+			resultList = findAuthorsWithoutRating();
+		} else if (rating > 0 && rating <= 5) {
+			resultList = findAuthorsByRating(rating);
+		} else {
+			resultList = findAll();
+		}
+		return resultList;
+	}
 
-    private List<Author> getAuthors(String byRating) {
-        List<Author> resultList;
-        try {
-            Integer rating = Integer.parseInt(byRating);
-            if (rating == 0) {
-                resultList = findAuthorsWithoutRating();
-            } else if (rating > 0 && rating <= 5) {
-                resultList = findAuthorsByRating(rating);
-            } else {
-                LOGGER.error("Rating {} doesn't illegal", rating);
-                throw new IllegalArgumentException();
-            }
-        } catch (IllegalArgumentException e) {
-            resultList = findAll();
-        }
-        return resultList;
-    }
+	@Override
+	public List<Author> findAuthorsByRating(Integer minRating) {
+		LOGGER.debug("Find authors with rating {}", minRating);
+		return authorFacade.findAuthorsByRating(minRating);
+	}
 
-    @Override
-    public List<Author> findAuthorsByRating(Integer minRating) {
-        LOGGER.debug("Find authors with rating {}", minRating);
-        return initAuthorList(authorFacade.findAuthorsByRating(minRating));
-    }
+	@Override
+	public List<Author> findAuthorsWithoutRating() {
+		LOGGER.debug("Find authors without rating");
+		return authorFacade.findAuthorsWithoutRating();
+	}
 
-    @Override
-    public List<Author> findAuthorsWithoutRating() {
-        LOGGER.debug("Find authors without rating");
-        return initAuthorList(authorFacade.findAuthorsWithoutRating());
-    }
+	@Override
+	public Integer countAuthorsByRating(Integer minRating) {
+		LOGGER.debug("count authors with rating {}", minRating);
+		return authorFacade.countAuthorsByRating(minRating);
+	}
 
-    private List<Author> initAuthorList(List<Author> authors) { //todo: really need to init all books?
-        LOGGER.debug("Initialize author list (Books is lazy init)");
-        for (Author author : authors) {
-            author.getBooks().size();
-        }
-        return authors;
-    }
+	@Override
+	public Integer countAuthorsWithoutRating() {
+		LOGGER.debug("Count authors without rating");
+		return authorFacade.countAuthorsWithoutRating();
+	}
 
-    private Author initBookList(Author author) {    //todo: really need to init all reviews?
-        LOGGER.debug("Initialize book list (Reviews is lazy init)");
-        for (Book book : author.getBooks()) {
-            book.getReviews().size();
-        }
-        return author;
-    }
+	//todo: really need to init all books? - fixed (delete method)
+
+	private Author initAuthor(Author author) {    //todo: really need to init all reviews? - fixed (init only books for authorDetails page)
+		LOGGER.debug("Initialize book list (Books is lazy init)");
+		author.getBooks().size();
+		return author;
+	}
 }

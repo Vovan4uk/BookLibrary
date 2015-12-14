@@ -4,6 +4,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import ua.softserve.booklibrary.dao.facade.GenericFacade;
 import ua.softserve.booklibrary.entity.LibraryEntity;
+import ua.softserve.booklibrary.exception.LibraryException;
 
 import javax.ejb.TransactionAttribute;
 import javax.ejb.TransactionAttributeType;
@@ -28,9 +29,9 @@ public abstract class GenericFacadeImpl<T extends LibraryEntity> implements Gene
     @Override
     public T findByPk(Long id) {
         if (id == null) {
-            String errorMessage = "Object cannot be find by null primary key"; // todo: add class name to message
+            String errorMessage = "Object '" + entityClass.getCanonicalName() + "' cannot be find by null primary key"; // todo: add class name to message - fixed
             LOGGER.error(errorMessage);
-            throw new IllegalArgumentException(errorMessage);
+            throw new LibraryException(errorMessage);
         }
         LOGGER.debug("Find '{}' object with primary key '{}'", entityClass.getCanonicalName(), id);
         T entity = em.find(entityClass, id);

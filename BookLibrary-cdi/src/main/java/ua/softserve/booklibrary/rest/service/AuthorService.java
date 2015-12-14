@@ -12,40 +12,34 @@ import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
-import java.util.List;
 
 @Path("/author")
+@Produces({MediaType.APPLICATION_JSON}) // todo: move to class level - fixed
+@Consumes({MediaType.APPLICATION_JSON}) // todo: move to class level - fixed
 public interface AuthorService {
 
     @GET
-    @Path("get/{id}")
-    @Produces({MediaType.APPLICATION_JSON}) // todo: move to class level
+    @Path("{id}")
     Response getAuthor(@PathParam("id") Long id);
 
     @GET
-    @Path("getbyrating/{rating}")
-    @Produces({MediaType.APPLICATION_JSON})
+    @Path("byRating/{rating}")
     Response getAuthorsByRating(@PathParam("rating") String id);
 
     @GET
-    @Path("getall")
-    @Produces({MediaType.APPLICATION_JSON})
+    @Path("all")
     Response getAllAuthors();
 
     @POST
-    @Path("save")
-    @Consumes({MediaType.APPLICATION_JSON}) // todo: move to class level
     @Produces({MediaType.APPLICATION_FORM_URLENCODED})
     Response saveAuthor(Author author);
 
     @PUT
-    @Path("update")
-    @Consumes({MediaType.APPLICATION_JSON})
     @Produces({MediaType.APPLICATION_FORM_URLENCODED})
     Response updateAuthor(Author author);
 
     @DELETE
-    @Path("delete/{id}")
+    @Path("{id}")
     Response removeAuthor(@PathParam("id") Long id);
 
 }

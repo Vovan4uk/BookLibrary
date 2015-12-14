@@ -1,7 +1,7 @@
 package ua.softserve.booklibrary.rest.client.impl;
 
 import ua.softserve.booklibrary.entity.Author;
-import ua.softserve.booklibrary.exception.AlreadyExistException;
+import ua.softserve.booklibrary.exception.LibraryException;
 import ua.softserve.booklibrary.rest.client.AuthorClientService;
 
 import javax.ejb.Stateless;
@@ -18,72 +18,67 @@ import java.util.List;
 @Stateless
 public class AuthorClientServiceImpl implements AuthorClientService {
 
-    private String target = "http://localhost:8080/BookLibrary-cdi/rest/author";    // todo: final
-    private Client client = ClientBuilder.newClient();  // todo: final
+	private final String target = "http://localhost:8080/BookLibrary-cdi/rest/author";    // todo: final - fixed
+	private final Client client = ClientBuilder.newClient();  // todo: final - fixed
 
-    @Override
-    public Author findAuthorByPk(Long id) {
-        Response response = client.target(target)
-                .path("get")
-                .path(id.toString())
-                .request()
-                .get();
-        return response.readEntity(Author.class);
-    }
+	@Override
+	public Author findAuthorByPk(Long id) {
+		Response response = client.target(target)
+				.path(id.toString())
+				.request()
+				.get();
+		return response.readEntity(Author.class);
+	}
 
-    @Override
-    public List<Author> findAuthorsByRating(String rating) {
-        Response response = client.target(target)
-                .path("getbyrating")
-                .path(rating)
-                .request()
-                .get();
-        return response.readEntity((new GenericType<List<Author>>() {
-        }));
-    }
+	@Override
+	public List<Author> findAuthorsByRating(String rating) {
+		Response response = client.target(target)
+				.path("byRating")
+				.path(rating)
+				.request()
+				.get();
+		return response.readEntity((new GenericType<List<Author>>() {
+		}));
+	}
 
-    @Override
-    public List<Author> findAllAuthors() {
-        Response response = client.target(target)
-                .path("getall")
-                .request()
-                .get();
-        return response.readEntity((new GenericType<List<Author>>() {
-        }));
-    }
+	@Override
+	public List<Author> findAllAuthors() {
+		Response response = client.target(target)
+				.path("all")
+				.request()
+				.get();
+		return response.readEntity((new GenericType<List<Author>>() {
+		}));
+	}
 
-    @Override
-    public void saveAuthor(Author author) throws AlreadyExistException {
-        Response response = client.target(target)
-                .path("save")
-                .request()
-                .post(Entity.entity(author, MediaType.APPLICATION_JSON));
-        if (response.getStatus() == 422) {
-            throw new AlreadyExistException(response.readEntity(String.class));
-        }
-        response.close();
-    }
+	@Override
+	public void saveAuthor(Author author) {
+		Response response = client.target(target)
+				.request()
+				.post(Entity.entity(author, MediaType.APPLICATION_JSON));
+		if (response.getStatus() == 422) {
+			throw new LibraryException(response.readEntity(String.class));
+		}
+		response.close();
+	}
 
-    @Override
+	@Override
+	public void updateAuthor(Author author) {
+		Response response = client.target(target)
+				.request()
+				.put(Entity.entity(author, MediaType.APPLICATION_JSON));
+		if (response.getStatus() == 422) {
+			throw new LibraryException(response.readEntity(String.class));
+		}
+		response.close();
+	}
 
-    public void updateAuthor(Author author) throws AlreadyExistException {
-        Response response = client.target(target)
-                .path("update")
-                .request()
-                .put(Entity.entity(author, MediaType.APPLICATION_JSON));
-        if (response.getStatus() == 422) {
-            throw new AlreadyExistException(response.readEntity(String.class));
-        }
-        response.close();
-    }
-
-    @Override
-    public void removeAuthor(Long id) {
-        Response response = client.target(target)
-                .path("delete")
-                .path(id.toString())
-                .request()
-                .delete();
-        response.close();
-    }
+	@Override
+	public void removeAuthor(Long id) {
+		Response response = client.target(target)
+				.path(id.toString())
+				.request()
+				.delete();
+		response.close();
+	}
 }

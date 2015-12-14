@@ -7,10 +7,14 @@ import java.util.List;
 
 @Local
 public interface AuthorFacade extends GenericFacade<Author> {
-    List<Author> findAuthorsByRating(Integer minRating);
+	List<Author> findAuthorsByRating(Integer minRating);
 
-    List<Author> findAuthorsWithoutRating();
+	List<Author> findAuthorsWithoutRating();
 
-    boolean isAuthorExist(Author author);
+	Integer countAuthorsByRating(Integer minRating);
+
+	Integer countAuthorsWithoutRating();
+
+	boolean isAuthorExist(Author author);
 
 }

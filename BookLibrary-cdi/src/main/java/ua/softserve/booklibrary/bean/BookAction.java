@@ -1,7 +1,7 @@
 package ua.softserve.booklibrary.bean;
 
 import ua.softserve.booklibrary.entity.Book;
-import ua.softserve.booklibrary.exception.AlreadyExistException;
+import ua.softserve.booklibrary.exception.LibraryException;
 import ua.softserve.booklibrary.manager.BookManager;
 
 import javax.ejb.EJB;
@@ -29,7 +29,7 @@ public class BookAction implements Serializable {
     public void save() {
         try {
             bookManager.save(book);
-        } catch (AlreadyExistException e) {
+        } catch (LibraryException e) {
 
         }
     }

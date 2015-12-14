@@ -22,7 +22,6 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
-import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 import java.util.Date;
@@ -32,135 +31,157 @@ import java.util.Set;
 @Entity
 @Table(name = "BOOK")
 @NamedQueries({
-        @NamedQuery(name = "Book.findHotReleases", query = "SELECT b FROM Book b ORDER BY createDate desc "),
-        @NamedQuery(name = "Book.findBooksByRating", query = "SELECT b FROM Book b WHERE averageRating >= :minRating AND averageRating < :maxRating "),
-        @NamedQuery(name = "Book.findBooksWithoutRating", query = "SELECT b FROM Book b WHERE averageRating IS NULL"),
-        @NamedQuery(name = "Book.findLatestBooksByAuthorId", query = "SELECT DISTINCT b FROM Book b JOIN b.authors a WHERE a.id = :id ORDER BY b.publishedDate DESC"),
-        @NamedQuery(name = "Book.findBestBooksByAuthorId", query = "SELECT DISTINCT b FROM Book b JOIN b.authors a WHERE b.averageRating IS NOT NULL AND a.id = :id ORDER BY b.averageRating DESC"),
-        @NamedQuery(name = "Book.findBooksByAuthorId", query = "SELECT DISTINCT b FROM Book b JOIN b.authors a WHERE a.id = :id")
+		@NamedQuery(name = "Book.findHotReleases", query = "SELECT b FROM Book b ORDER BY createDate desc "),
+		@NamedQuery(name = "Book.findBooksByRating", query = "SELECT b FROM Book b WHERE averageRating >= :minRating AND averageRating < :maxRating "),
+		@NamedQuery(name = "Book.findBooksWithoutRating", query = "SELECT b FROM Book b WHERE averageRating IS NULL"),
+		@NamedQuery(name = "Book.findLatestBooksByAuthorId", query = "SELECT DISTINCT b FROM Book b JOIN b.authors a WHERE a.id = :id ORDER BY b.publishedDate DESC"),
+		@NamedQuery(name = "Book.findBestBooksByAuthorId", query = "SELECT DISTINCT b FROM Book b JOIN b.authors a WHERE b.averageRating IS NOT NULL AND a.id = :id ORDER BY b.averageRating DESC"),
+		@NamedQuery(name = "Book.findBooksByAuthorId", query = "SELECT DISTINCT b FROM Book b JOIN b.authors a WHERE a.id = :id"),
+		@NamedQuery(name = "Book.findBooksByAuthors", query = "SELECT DISTINCT b FROM Book b JOIN b.authors a WHERE a.id IN :ids")
 })
 @XmlRootElement
 public class Book extends LibraryEntity {
-    private static final long serialVersionUID = 9073502830659864431L;
-    @Id
-    @SequenceGenerator(name = "BOOK_ID_GENERATOR", sequenceName = "BOOK_S", allocationSize = 1)
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "BOOK_ID_GENERATOR")
-    @Column(name = "ID", nullable = false)
-    private Long id;
+	private static final long serialVersionUID = 9073502830659864431L;
+	@Id
+	@SequenceGenerator(name = "BOOK_ID_GENERATOR", sequenceName = "BOOK_S", allocationSize = 1)
+	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "BOOK_ID_GENERATOR")
+	@Column(name = "ID", nullable = false)
+	private Long id;
 
-    @NotNull
-    @Size(min = 2, max = 255)
-    @Column(name = "NAME", nullable = false)
-    private String name;
+	@NotNull
+	@Size(min = 2, max = 255)
+	@Column(name = "NAME", nullable = false)
+	private String name;
 
-    @Temporal(TemporalType.DATE)
-    @Column(name = "PUBLISHED_DATE")
-    private Date publishedDate;
+	@Temporal(TemporalType.DATE)
+	@Column(name = "PUBLISHED_DATE")
+	private Date publishedDate;
 
-    @Size(max = 255)
-    @Column(name = "ISBN", unique = true)
-    private String isbn;
+	@Size(max = 255)
+	@Column(name = "ISBN", unique = true)
+	private String isbn;
 
-    @Size(max = 255)
-    @Column(name = "PUBLISHER")
-    private String publisher;
+	@Size(max = 255)
+	@Column(name = "PUBLISHER")
+	private String publisher;
 
-    @OneToMany(mappedBy = "book", cascade = CascadeType.ALL, fetch = FetchType.EAGER)   // todo: why fetch = FetchType.EAGER ?
-    private Set<Review> reviews = new HashSet<>();
+	// todo: why fetch = FetchType.EAGER ? - fixed
+	@OneToMany(mappedBy = "book", cascade = CascadeType.ALL)
+	private Set<Review> reviews = new HashSet<>();
 
-    @Formula("(SELECT AVG(r.RATING) FROM REVIEW r WHERE r.BOOK_ID = ID)")
-    private Double averageRating;
+	@Formula("(SELECT AVG(r.RATING) FROM REVIEW r WHERE r.BOOK_ID = ID)")
+	private Double averageRating;
 
-    @ManyToMany
-    @JoinTable(
-            name = "BOOK_AUTHOR",
-            joinColumns = @JoinColumn(name = "BOOK_ID"),
-            inverseJoinColumns = @JoinColumn(name = "AUTHOR_ID"))
-    private Set<Author> authors = new HashSet<>();
+	@Formula("(SELECT COUNT(r.RATING) FROM REVIEW r WHERE r.BOOK_ID = ID)")
+	private Integer countReviews;
 
-    public Long getId() {
-        return id;
-    }
+	@ManyToMany
+	@JoinTable(
+			name = "BOOK_AUTHOR",
+			joinColumns = @JoinColumn(name = "BOOK_ID"),
+			inverseJoinColumns = @JoinColumn(name = "AUTHOR_ID"))
+	private Set<Author> authors = new HashSet<>();
 
-    public void setId(Long id) {
-        this.id = id;
-    }
+	public Long getId() {
+		return id;
+	}
 
-    public String getName() {
-        return name;
-    }
+	public void setId(Long id) {
+		this.id = id;
+	}
 
-    public void setName(String name) {
-        this.name = name;
-    }
+	public String getName() {
+		return name;
+	}
 
-    public Date getPublishedDate() {
-        return publishedDate;
-    }
+	public void setName(String name) {
+		this.name = name;
+	}
 
-    public void setPublishedDate(Date publishedDate) {
-        this.publishedDate = publishedDate;
-    }
+	public Date getPublishedDate() {
+		return publishedDate;
+	}
 
-    public String getIsbn() {
-        return isbn;
-    }
+	public void setPublishedDate(Date publishedDate) {
+		this.publishedDate = publishedDate;
+	}
 
-    public void setIsbn(String isbn) {
-        this.isbn = isbn;
-    }
+	public String getIsbn() {
+		return isbn;
+	}
 
-    public String getPublisher() {
-        return publisher;
-    }
+	public void setIsbn(String isbn) {
+		this.isbn = isbn;
+	}
 
-    public void setPublisher(String publisher) {
-        this.publisher = publisher;
-    }
+	public String getPublisher() {
+		return publisher;
+	}
 
-    public Set<Review> getReviews() {
-        return reviews;
-    }
+	public void setPublisher(String publisher) {
+		this.publisher = publisher;
+	}
 
-    public void setReviews(Set<Review> reviews) {
-        this.reviews = reviews;
-    }
+	@XmlTransient
+	public Set<Review> getReviews() {
+		return reviews;
+	}
 
-    @XmlTransient
-    public Set<Author> getAuthors() {
-        return authors;
-    }
+	public void setReviews(Set<Review> reviews) {
+		this.reviews = reviews;
+	}
 
-    public void setAuthors(Set<Author> authors) {
-        this.authors = authors;
-    }
+	@XmlTransient
+	public Set<Author> getAuthors() {
+		return authors;
+	}
 
-    public Double getAverageRating() {
-        return averageRating;
-    }
+	public void setAuthors(Set<Author> authors) {
+		this.authors = authors;
+	}
 
-    public void setAverageRating(Double averageRating) {
-        this.averageRating = averageRating;
-    }
+	public Double getAverageRating() {
+		return averageRating;
+	}
 
-    // todo: is this method really need?
-    @PostLoad
-    private void onLoad() {
-        if (averageRating == null) {
-            averageRating = 0D;
-        }
-    }
+	public void setAverageRating(Double averageRating) {
+		this.averageRating = averageRating;
+	}
 
-    @Override
-    public String toString() {
-        // todo: lost result from parent method
-        return "Book{" +
-                "id=" + id +
-                ", name='" + name + '\'' +
-                ", publishedDate=" + publishedDate +
-                ", isbn='" + isbn + '\'' +
-                ", publisher='" + publisher + '\'' +
-                ", averageRating=" + averageRating +
-                '}';
-    }
+	public Integer getCountReviews() {
+		return countReviews;
+	}
+
+	public void setCountReviews(Integer countReviews) {
+		this.countReviews = countReviews;
+	}
+
+	// todo: is this method really need? - fixed
+
+	/**
+	 * After '@Formula' has been calculated,
+	 * and the last one returned 'null',
+	 * set default averageRating to '0'.
+	 * Then, we shouldn't validate this param by 'null' on UI.
+	 */
+	@PostLoad
+	private void onLoad() {
+		if (averageRating == null) {
+			averageRating = 0D;
+		}
+	}
+
+	@Override
+	public String toString() {
+		// todo: lost result from parent method - fixed
+		return "Book{" +
+				"id=" + id +
+				", name='" + name + '\'' +
+				", publishedDate=" + publishedDate +
+				", isbn='" + isbn + '\'' +
+				", publisher='" + publisher + '\'' +
+				", averageRating=" + averageRating +
+				", createDate=" + super.getCreateDate() +
+				'}';
+	}
 }
