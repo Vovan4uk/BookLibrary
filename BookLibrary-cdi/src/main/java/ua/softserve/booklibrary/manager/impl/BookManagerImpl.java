@@ -1,11 +1,12 @@
 package ua.softserve.booklibrary.manager.impl;
 
+import org.apache.commons.lang3.math.NumberUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import ua.softserve.booklibrary.dao.facade.AuthorFacade;
 import ua.softserve.booklibrary.dao.facade.BookFacade;
+import ua.softserve.booklibrary.dao.facade.ReviewFacade;
 import ua.softserve.booklibrary.dao.home.BookHome;
-import ua.softserve.booklibrary.entity.Author;
 import ua.softserve.booklibrary.entity.Book;
 import ua.softserve.booklibrary.exception.LibraryException;
 import ua.softserve.booklibrary.manager.BookManager;
@@ -14,14 +15,8 @@ import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import javax.ejb.TransactionAttribute;
 import javax.ejb.TransactionAttributeType;
-import javax.faces.context.FacesContext;
 import javax.inject.Named;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.IllegalFormatException;
 import java.util.List;
-import java.util.Set;
 
 @Named
 @Stateless
@@ -38,7 +33,6 @@ public class BookManagerImpl implements BookManager {
 	private AuthorFacade authorFacade;
 
 	@Override
-	@TransactionAttribute(TransactionAttributeType.REQUIRED)
 	public Book save(Book book) {
 		if (bookFacade.isBookExist(book)) {
 			String errorMessage = "Save unsuccessful. Book '" + book + "' is already exist or ISBN doesn't unique";
@@ -46,21 +40,10 @@ public class BookManagerImpl implements BookManager {
 			throw new LibraryException(errorMessage);
 		}
 		LOGGER.debug("Save new Book {}", book);
-		getReferenceForAuthors(book);
 		return bookHome.save(book);
 	}
 
-	private void getReferenceForAuthors(Book book) {
-		Set<Author> authors = new HashSet<>();
-		List<Author> oldAuthors = new ArrayList<>(book.getAuthors());
-		for (Author author : oldAuthors) {
-			authors.add(authorFacade.findByPk(author.getId()));
-		}
-		book.setAuthors(authors);
-	}
-
 	@Override
-	@TransactionAttribute(TransactionAttributeType.REQUIRED)
 	public Book update(Book book) {
 		if (bookFacade.isBookExist(book)) {
 			String errorMessage = "Update unsuccessful. Book '" + book + "' is already exist or ISBN doesn't unique";
@@ -72,71 +55,54 @@ public class BookManagerImpl implements BookManager {
 	}
 
 	@Override
-	@TransactionAttribute(TransactionAttributeType.REQUIRED)
 	public void removeByPk(Long id) {   //todo: - fixed
 		LOGGER.debug("Remove Book by primary key: {}", id);
 		bookHome.removeByPk(id);
 	}
 
 	@Override
-	@TransactionAttribute(TransactionAttributeType.REQUIRED)
 	public void removeAll(List<Book> books) {    //todo: ? - fixed
 		LOGGER.debug("Remove list Books: {}", books);
 		bookHome.removeAll(books);
 	}
 
 	@Override
-	@TransactionAttribute(TransactionAttributeType.REQUIRED)
 	public Book findByPk(Long id) { //todo: really need to init all Authors and Reviews? - fixed (we use this object only in 'Book Details Page', so we need to init all data)
+		LOGGER.debug("Find and initialize book by id {}", id);
 		Book book = bookFacade.findByPk(id);
 		book.getAuthors().size();
 		book.getReviews().size();
+		LOGGER.debug("Result: {}", book);
 		return book;
 	}
 
 	@Override
 	public List<Book> findAll() {
-		String byRating = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap().get("byrating");
-		List<Book> resultList;
-		if (byRating != null && !byRating.isEmpty()) {
-			resultList = getBooksByRating();
-		} else {
-			resultList = bookFacade.findAll();
-		}
-		return initBookList(resultList);
+		LOGGER.debug("Find all books");
+		return initAuthorList(bookFacade.findAll());
 	}
 
 	@Override
 	public List<Book> findAll(String byRating) {
-		List<Book> resultList;
-		if (byRating != null && !byRating.isEmpty()) {
-			resultList = getBooksByRating();
-		} else {
-			resultList = bookFacade.findAll();
-		}
-		return initBookList(resultList);
+		LOGGER.debug("Find books by rating");
+		return initAuthorList(getBooks(byRating));
 	}
 
-
-	private List<Book> getBooksByRating() {
-		String byRating = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap().get("byrating");
+	private List<Book> getBooks(String byRating) {
 		List<Book> resultList;
-		try {
-			Integer rating = Integer.parseInt(byRating);
-			if (rating == 0) {
-				resultList = findBooksWithoutRating();
-			} else if (rating > 0 && rating <= 5) {
-				resultList = findBooksByRating(rating);
-			} else {
-				throw new IllegalArgumentException();
-			}
-		} catch (IllegalFormatException e) {
-			resultList = bookFacade.findAll();
+		Integer rating = NumberUtils.toInt(byRating);
+		if (rating == 0) {
+			resultList = findBooksWithoutRating();
+		} else if (rating > 0 && rating <= 5) {
+			resultList = findBooksByRating(rating);
+		} else {
+			resultList = findAll();
 		}
 		return resultList;
 	}
 
-	private List<Book> initBookList(List<Book> books) { //todo: really need to init all Authors and Reviews? - fixed (delete init reviews, but not authors. we use author list(id, first name, second name) in all pages. and we need init author list for 'filtering by Author' in Book List Page)
+	private List<Book> initAuthorList(List<Book> books) { //todo: really need to init all Authors and Reviews? - fixed (delete init reviews, but not authors. we use author list(id, first name, second name) in all pages. and we need init author list for 'filtering by Author' in Book List Page)
+		LOGGER.debug("Initialize list books {}", books);
 		for (Book book : books) {
 			book.getAuthors().size();
 		}
@@ -145,32 +111,49 @@ public class BookManagerImpl implements BookManager {
 
 	@Override
 	public List<Book> findHotReleases() {
-		return initBookList(bookFacade.findHotReleases());
+		LOGGER.debug("Find HotReleases");
+		return initAuthorList(bookFacade.findHotReleases());
 	}
 
 	@Override
 	public List<Book> findBooksByRating(Integer minRating) {
-		return initBookList(bookFacade.findBooksByRating(minRating));
+		LOGGER.debug("Find books with rating {}", minRating);
+		return bookFacade.findBooksByRating(minRating);
 	}
 
 	@Override
 	public List<Book> findBooksWithoutRating() {
-		return initBookList(bookFacade.findBooksWithoutRating());
+		LOGGER.debug("Find books without rating");
+		return bookFacade.findBooksWithoutRating();
+	}
+
+	@Override
+	public Integer countBooksByRating(Integer minRating) {
+		LOGGER.debug("Count authors with rating {}", minRating);
+		return bookFacade.countBooksByRating(minRating);
+	}
+
+	@Override
+	public Integer countBooksWithoutRating() {
+		LOGGER.debug("Count authors without rating");
+		return bookFacade.countBooksWithoutRating();
 	}
 
 	@Override
 	public List<Book> findLatestBooksByAuthorId(Long id, Integer count) {
+		LOGGER.debug("Find {} latest books  by author id {}", count, id);
 		return bookFacade.findLatestBooksByAuthorId(id, count);
 	}
 
 	@Override
 	public List<Book> findBestBooksByAuthorId(Long id, Integer count) {
+		LOGGER.debug("Find {} best books  by author id {}", count, id);
 		return bookFacade.findBestBooksByAuthorId(id, count);
 	}
 
 	@Override
 	public List<Book> findBooksByAuthorId(Long id) {
-		return initBookList(bookFacade.findBooksByAuthorId(id));
+		LOGGER.debug("Find books  by author id {}", id);
+		return initAuthorList(bookFacade.findBooksByAuthorId(id));
 	}
-
 }

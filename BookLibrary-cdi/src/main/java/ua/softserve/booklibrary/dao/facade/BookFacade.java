@@ -14,6 +14,10 @@ public interface BookFacade extends GenericFacade<Book> {
 
 	List<Book> findBooksWithoutRating();
 
+	Integer countBooksByRating(Integer minRating);
+
+	Integer countBooksWithoutRating();
+
 	List<Book> findLatestBooksByAuthorId(Long id, Integer count);
 
 	List<Book> findBestBooksByAuthorId(Long id, Integer count);

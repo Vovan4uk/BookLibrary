@@ -15,7 +15,7 @@
                 <h:panelGrid columns="2" columnClasses="message_col, button_col" width="100%">
                     <rich:messages globalOnly="true"/>
                     <h:panelGroup>
-                        <a4j:commandLink styleClass="no-decor" execute="@this" render="table, createPane"
+                        <a4j:commandLink styleClass="no-decor" execute="@this" render="table, createPane, addAuthors"
                                          oncomplete="#{rich:component('createPane')}.show()" resetValues="true"
                                          actionListener="#{bookAction.resetAddValues()}">
                             <h:graphicImage value="/images/new.png" alt="add new"/>
@@ -43,7 +43,7 @@
                                 sortPriority="#{mainSortingBean.sortPriorities}"
                                 rowClasses="odd-row, even-row">
                     <rich:column style="width:20px;">
-                        <a4j:commandLink styleClass="no-decor" render="editGrid" execute="@this"
+                        <a4j:commandLink styleClass="no-decor" render="editGrid, authors" execute="@this"
                                          oncomplete="#{rich:component('editPane')}.show()" resetValues="true"
                                          actionListener="#{bookAction.resetValues()}">
                             <h:graphicImage value="/images/edit.gif" alt="edit"/>
@@ -165,8 +165,8 @@
                     </h:panelGroup>
                 </rich:popupPanel>
 
-                <rich:popupPanel header="Edit Book" id="editPane" domElementAttachment="parent" width="400"
-                                 height="150" onmaskclick="#{rich:component('editPane')}.hide()">
+                <rich:popupPanel header="Edit Book" id="editPane" domElementAttachment="parent" width="800"
+                                 height="350" onmaskclick="#{rich:component('editPane')}.hide()">
                     <rich:messages globalOnly="true"/>
                     <h:panelGrid columns="3" id="editGrid">
                         <h:outputText value="Name"/>
@@ -175,7 +175,31 @@
                         </h:inputText>
                         <rich:message id="nameMsg" for="name"/>
 
+                        <h:outputText value="Publisher"/>
+                        <h:inputText value="#{bookAction.currentBook.publisher}" id="publisher" label="publisher">
+                            <rich:validator/>
+                        </h:inputText>
+                        <rich:message id="publisherMsg" for="publisher"/>
+
+                        <h:outputText value="Published Date"/>
+                        <rich:calendar id="publishedDate" datePattern="yyyy-MM-dd"
+                                       value="#{bookAction.currentBook.publishedDate}">
+                            <rich:validator/>
+                        </rich:calendar>
+                        <rich:message for="publishedDate" id="publisherDateMsg"/>
+                        <h:outputText value="ISBN"/>
+                        <h:inputText value="#{bookAction.currentBook.isbn}" id="isbn" label="isbn">
+                            <rich:validator/>
+                        </h:inputText>
+                        <rich:message for="isbn" id="isbnMsg"/>
                     </h:panelGrid>
+                    <rich:pickList id="authors" value="#{bookAction.selectedAuthorIds}"
+                                   sourceCaption="Available authors" targetCaption="Selected authors" listWidth="165px"
+                                   listHeight="100px" style="color:#000;">
+                        <f:selectItems value="#{bookAction.authors}" var="author" itemValue="#{author.id}"
+                                       itemLabel="#{author.firstName} #{author.secondName}"/>
+                    </rich:pickList>
+                    <br/>
                     <a4j:commandButton value="Update" action="#{bookAction.update}" render="table"
                                        execute="message, editPane"
                                        oncomplete="if (#{facesContext.maximumSeverity.ordinal==0 or facesContext.maximumSeverity==null}) {#{rich:component('editPane')}.hide();}">
@@ -215,7 +239,7 @@
                                    sourceCaption="Available authors" targetCaption="Selected authors" listWidth="165px"
                                    listHeight="100px" style="color:#000;">
                         <f:selectItems value="#{bookAction.authors}" var="author" itemValue="#{author.id}"
-                                       itemLabel="#{author.secondName} #{author.firstName}"/>
+                                       itemLabel="#{author.firstName} #{author.secondName}"/>
                     </rich:pickList>
                     <br/>
 

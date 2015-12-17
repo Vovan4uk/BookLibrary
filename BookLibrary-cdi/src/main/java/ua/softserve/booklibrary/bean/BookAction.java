@@ -4,9 +4,11 @@ import org.apache.commons.lang3.math.NumberUtils;
 import org.richfaces.JsfVersion;
 import ua.softserve.booklibrary.entity.Author;
 import ua.softserve.booklibrary.entity.Book;
+import ua.softserve.booklibrary.entity.Review;
 import ua.softserve.booklibrary.exception.LibraryException;
 import ua.softserve.booklibrary.manager.AuthorManager;
 import ua.softserve.booklibrary.manager.BookManager;
+import ua.softserve.booklibrary.manager.ReviewManager;
 
 import javax.ejb.EJB;
 import javax.faces.application.FacesMessage;
@@ -30,6 +32,8 @@ public class BookAction implements Serializable {
 	private static final long serialVersionUID = 6489108625203081136L;
 
 	@EJB
+	private transient ReviewManager reviewManager;
+	@EJB
 	private transient BookManager bookManager;
 	@EJB
 	private transient AuthorManager authorManager;
@@ -37,9 +41,12 @@ public class BookAction implements Serializable {
 	private List<Book> hotReleases;
 	private List<Book> books;
 	private Book newBook = new Book();
+	private Review newReview = new Review();
 	private Book currentBook;
+	private Review currentReview;
 
 	private Long currentBookId;
+	private Long currentReviewId;
 	private String byRating;
 	private String title;
 	private String id;
@@ -54,6 +61,7 @@ public class BookAction implements Serializable {
 			if (currentBook == null) {
 				currentBook = bookManager.findByPk(NumberUtils.toLong(getId()));
 				currentBookId = currentBook.getId();
+				initSelectedAuthorIds();
 			}
 		} catch (LibraryException e) {
 			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, e.getMessage(), e.getMessage()));
@@ -73,6 +81,18 @@ public class BookAction implements Serializable {
 		initBooks();
 	}
 
+	public void saveReview() {
+		try {
+			newReview.setRating(5);
+			newReview.setBook(currentBook);
+			reviewManager.save(newReview);
+		} catch (LibraryException e) {
+			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, e.getMessage(), e.getMessage()));
+		}
+		newReview = new Review();
+		currentBook = bookManager.findByPk(NumberUtils.toLong(getId()));
+	}
+
 	private Set<Author> getSelectedAuthors() {
 		Set<Author> authors = new HashSet<>();
 		for (Long id : selectedAuthorIds) {
@@ -85,6 +105,7 @@ public class BookAction implements Serializable {
 
 	public void update() {
 		try {
+			currentBook.setAuthors(getSelectedAuthors());
 			bookManager.update(currentBook);
 		} catch (LibraryException e) {
 			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, e.getMessage(), e.getMessage()));
@@ -92,6 +113,19 @@ public class BookAction implements Serializable {
 		selectedAuthorIds.clear();
 		initBooks();
 	}
+
+
+	public void updateReview() {
+		try {
+			currentReview.setRating(5);
+			currentReview.setBook(currentBook);
+			reviewManager.update(currentReview);
+		} catch (LibraryException e) {
+			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, e.getMessage(), e.getMessage()));
+		}
+	}
+
+
 
 	public void remove() {
 		try {
@@ -111,12 +145,21 @@ public class BookAction implements Serializable {
 		initBooks();
 	}
 
+	public void removeReview() {
+		try {
+			reviewManager.removeByPk(currentReview.getId());
+		} catch (LibraryException e) {
+			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, e.getMessage(), e.getMessage()));
+		}
+		currentBook = bookManager.findByPk(NumberUtils.toLong(getId()));
+	}
+
 	public Integer getCountBooksByRating(Integer minRating) {
-		return bookManager.findBooksByRating(minRating).size();
+		return bookManager.countBooksByRating(minRating);
 	}
 
 	public Integer getCountBooksWithoutRating() {
-		return bookManager.findBooksWithoutRating().size();
+		return bookManager.countBooksWithoutRating();
 	}
 
 	public String getTitle() {
@@ -228,6 +271,14 @@ public class BookAction implements Serializable {
 		this.newBook = newBook;
 	}
 
+	public Review getNewReview() {
+		return newReview;
+	}
+
+	public void setNewReview(Review newReview) {
+		this.newReview = newReview;
+	}
+
 	public void setCurrentBookId(Long currentBookId) {
 		this.currentBookId = currentBookId;
 	}
@@ -238,10 +289,36 @@ public class BookAction implements Serializable {
 
 	public void setCurrentBook(Book currentBook) {
 		this.currentBook = currentBook;
+		initSelectedAuthorIds();
 	}
 
 	public Book getCurrentBook() {
 		return currentBook;
+	}
+
+	public void setCurrentReviewId(Long currentReviewId) {
+		this.currentReviewId = currentReviewId;
+	}
+
+	public Long getCurrentReviewId() {
+		return currentReviewId;
+	}
+
+	public void setCurrentReview(Review currentReview) {
+		this.currentReview = currentReview;
+	}
+
+	public Review getCurrentReview() {
+		return currentReview;
+	}
+
+	private void initSelectedAuthorIds() {
+		selectedAuthorIds.clear();
+		if (!currentBook.getAuthors().isEmpty()) {
+			for (Author author : currentBook.getAuthors()) {
+				selectedAuthorIds.add(author.getId());
+			}
+		}
 	}
 
 	public List<Book> getHotReleases() {
@@ -268,13 +345,16 @@ public class BookAction implements Serializable {
 			FacesContext fc = FacesContext.getCurrentInstance();
 			UIComponent comp = fc.getViewRoot().findComponent("form2:editGrid");
 
-			((EditableValueHolder) comp.findComponent("form2:firstName")).resetValue();
-			((EditableValueHolder) comp.findComponent("form2:secondName")).resetValue();
+			((EditableValueHolder) comp.findComponent("form2:name")).resetValue();
+			((EditableValueHolder) comp.findComponent("form2:publisher")).resetValue();
+			((EditableValueHolder) comp.findComponent("form2:publishedDate")).resetValue();
+			((EditableValueHolder) comp.findComponent("form2:isbn")).resetValue();
+			((EditableValueHolder) comp.findComponent("form2:authors")).resetValue();
 		}
 	}
 
 	public void resetAddValues() {
-//		selectedAuthorIds.clear();
+		selectedAuthorIds.clear();
 		FacesContext fc = FacesContext.getCurrentInstance();
 		UIComponent comp = fc.getViewRoot().findComponent("form2:createGrid");
 		((EditableValueHolder) comp.findComponent("form2:addName")).resetValue();
@@ -282,6 +362,9 @@ public class BookAction implements Serializable {
 		((EditableValueHolder) comp.findComponent("form2:addPublishedDate")).resetValue();
 		((EditableValueHolder) comp.findComponent("form2:addIsbn")).resetValue();
 		((EditableValueHolder) comp.findComponent("form2:addAuthors")).resetValue();
+	}
+
+	public void resetAddReview() {
 	}
 
 }

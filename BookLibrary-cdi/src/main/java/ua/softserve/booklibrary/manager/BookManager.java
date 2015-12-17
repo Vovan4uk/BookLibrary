@@ -19,4 +19,9 @@ public interface BookManager extends GenericManager<Book> {
 
 	List<Book> findAll(String byRating);
 
+	Integer countBooksByRating(Integer minRating);
+
+	Integer countBooksWithoutRating();
+
+
 }

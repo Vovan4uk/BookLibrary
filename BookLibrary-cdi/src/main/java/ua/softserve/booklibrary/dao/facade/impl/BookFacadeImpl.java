@@ -27,42 +27,80 @@ public class BookFacadeImpl extends GenericFacadeImpl<Book> implements BookFacad
 
 	@Override
 	public List<Book> findHotReleases() {
-		return em.createNamedQuery("Book.findHotReleases", Book.class).setMaxResults(5).getResultList();
+		LOGGER.debug("Find HotReleases");
+		List<Book> hotReleases = em.createNamedQuery("Book.findHotReleases", Book.class).setMaxResults(5).getResultList();
+		LOGGER.debug("Result: {}", hotReleases);
+		return hotReleases;
 	}
 
 	@Override
 	public List<Book> findBooksByRating(Integer minRating) {
 		Integer maxRating = minRating + 1;
-		return em.createNamedQuery("Book.findBooksByRating", Book.class).setParameter("minRating", minRating.doubleValue()).setParameter("maxRating", maxRating.doubleValue()).getResultList();
+		LOGGER.debug("Find books by rating between ({} and {})", minRating, maxRating);
+		List<Book> result = em.createNamedQuery("Book.findBooksByRating", Book.class).setParameter("minRating", minRating.doubleValue()).setParameter("maxRating", maxRating.doubleValue()).getResultList();
+		LOGGER.debug("Result: {}", result);
+		return result;
 	}
 
 	@Override
 	public List<Book> findBooksWithoutRating() {
-		return em.createNamedQuery("Book.findBooksWithoutRating", Book.class).getResultList();
+		LOGGER.debug("Find books without rating");
+		List<Book> result = em.createNamedQuery("Book.findBooksWithoutRating", Book.class).getResultList();
+		LOGGER.debug("Result: {}", result);
+		return result;
+	}
+
+	@Override
+	public Integer countBooksByRating(Integer minRating) {
+		Integer maxRating = minRating + 1;
+		LOGGER.debug("Count books by rating between ({} and {})", minRating, maxRating);
+		Integer result = em.createNamedQuery("Book.countBooksByRating", Number.class).setParameter("minRating", minRating.doubleValue()).setParameter("maxRating", maxRating.doubleValue()).getSingleResult().intValue();
+		LOGGER.debug("Result: {}", result);
+		return result;
+	}
+
+	@Override
+	public Integer countBooksWithoutRating() {
+		LOGGER.debug("Count books without rating");
+		Integer result = em.createNamedQuery("Book.countBooksWithoutRating", Number.class).getSingleResult().intValue();
+		LOGGER.debug("Result: {}", result);
+		return result;
 	}
 
 	@Override
 	public List<Book> findLatestBooksByAuthorId(Long id, Integer count) {
-		return em.createNamedQuery("Book.findLatestBooksByAuthorId", Book.class).setParameter("id", id).setMaxResults(count).getResultList();
+		LOGGER.debug("Find {} latest books  by author id {}", count, id);
+		List<Book> result = em.createNamedQuery("Book.findLatestBooksByAuthorId", Book.class).setParameter("id", id).setMaxResults(count).getResultList();
+		LOGGER.debug("Result: {}", result);
+		return result;
 	}
 
 	@Override
 	public List<Book> findBestBooksByAuthorId(Long id, Integer count) {
-		return em.createNamedQuery("Book.findBestBooksByAuthorId", Book.class).setParameter("id", id).setMaxResults(count).getResultList();
+		LOGGER.debug("Find {} best books  by author id {}", count, id);
+		List<Book> result = em.createNamedQuery("Book.findBestBooksByAuthorId", Book.class).setParameter("id", id).setMaxResults(count).getResultList();
+		LOGGER.debug("Result: {}", result);
+		return result;
 	}
 
 	@Override
 	public List<Book> findBooksByAuthorId(Long id) {
-		return em.createNamedQuery("Book.findBooksByAuthorId", Book.class).setParameter("id", id).getResultList();
+		LOGGER.debug("Find books  by author id {}", id);
+		List<Book> result = em.createNamedQuery("Book.findBooksByAuthorId", Book.class).setParameter("id", id).getResultList();
+		LOGGER.debug("Result: {}", result);
+		return result;
 	}
 
 	@Override
 	public List<Book> findBooksByAuthors(List<Author> authors) {
+		LOGGER.debug("Find books  by authors {}", authors);
 		List<Long> ids = new ArrayList<>();
 		for (Author author : authors) {
 			ids.add(author.getId());
 		}
-		return em.createNamedQuery("Book.findBooksByAuthors", Book.class).setParameter("ids", ids).getResultList();
+		List<Book> result = em.createNamedQuery("Book.findBooksByAuthors", Book.class).setParameter("ids", ids).getResultList();
+		LOGGER.debug("Result: {}", result);
+		return result;
 	}
 
 	@Override

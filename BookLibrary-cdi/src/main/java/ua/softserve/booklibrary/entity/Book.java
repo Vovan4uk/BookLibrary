@@ -15,6 +15,7 @@ import javax.persistence.ManyToMany;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
+import javax.persistence.OrderBy;
 import javax.persistence.PostLoad;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
@@ -39,7 +40,9 @@ import java.util.Set;
 		@NamedQuery(name = "Book.findBooksByAuthorId", query = "SELECT DISTINCT b FROM Book b JOIN b.authors a WHERE a.id = :id"),
 		@NamedQuery(name = "Book.findBooksByAuthors", query = "SELECT DISTINCT b FROM Book b JOIN b.authors a WHERE a.id IN :ids"),
 		@NamedQuery(name = "Book.isBookExistByIsbn", query = "SELECT CASE WHEN EXISTS (SELECT b FROM Book WHERE isbn = :isbn) THEN TRUE ELSE FALSE END FROM Book b"),
-		@NamedQuery(name = "Book.isBookExistByIsbnWithId", query = "SELECT CASE WHEN EXISTS (SELECT b FROM Book WHERE isbn = :isbn AND id != :id) THEN TRUE ELSE FALSE END FROM Book b")
+		@NamedQuery(name = "Book.isBookExistByIsbnWithId", query = "SELECT CASE WHEN EXISTS (SELECT b FROM Book WHERE isbn = :isbn AND id != :id) THEN TRUE ELSE FALSE END FROM Book b"),
+		@NamedQuery(name = "Book.countBooksByRating", query = "SELECT COUNT(b) FROM Book b WHERE averageRating >= :minRating AND averageRating < :maxRating "),
+		@NamedQuery(name = "Book.countBooksWithoutRating", query = "SELECT COUNT(b) FROM Book b WHERE averageRating IS NULL")
 })
 @XmlRootElement
 public class Book extends LibraryEntity {
@@ -69,6 +72,7 @@ public class Book extends LibraryEntity {
 
 	// todo: why fetch = FetchType.EAGER ? - fixed
 	@OneToMany(mappedBy = "book", cascade = CascadeType.ALL)
+	@OrderBy("createDate DESC")
 	private Set<Review> reviews = new HashSet<>();
 
 	@Formula("(SELECT AVG(r.RATING) FROM REVIEW r WHERE r.BOOK_ID = ID)")
@@ -85,6 +89,7 @@ public class Book extends LibraryEntity {
 			name = "BOOK_AUTHOR",
 			joinColumns = @JoinColumn(name = "BOOK_ID"),
 			inverseJoinColumns = @JoinColumn(name = "AUTHOR_ID"))
+	@OrderBy("firstName DESC")
 	private Set<Author> authors = new HashSet<>();
 
 	public Long getId() {

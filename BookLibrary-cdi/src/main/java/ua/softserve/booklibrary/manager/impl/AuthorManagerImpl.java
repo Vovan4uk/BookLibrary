@@ -125,7 +125,7 @@ public class AuthorManagerImpl implements AuthorManager {
 
 	@Override
 	public Integer countAuthorsByRating(Integer minRating) {
-		LOGGER.debug("count authors with rating {}", minRating);
+		LOGGER.debug("Count authors with rating {}", minRating);
 		return authorFacade.countAuthorsByRating(minRating);
 	}
 

@@ -75,12 +75,12 @@ public class AuthorFacadeImpl extends GenericFacadeImpl<Author> implements Autho
 		if (StringUtils.isEmpty(author.getSecondName())) {
 			LOGGER.debug("Find new author by 'firstName' {}", author.getFirstName());
 			return em.createNamedQuery("Author.isAuthorsExistByFirstName", Boolean.class)
-					.setParameter("firstName", author.getFirstName())   // todo: author.getFirstName() == null ? - fixed ('if' and throw exception in current method)
+					.setParameter("firstName", author.getFirstName())   // todo: author.getFirstName() == null ? - fixed ('if' and throw exception in parent method)
 					.getSingleResult();
 		} else {
 			LOGGER.debug("Find new author by 'firstName' {} and 'secondName' {}", author.getFirstName(), author.getSecondName());
 			return em.createNamedQuery("Author.isAuthorsExistByFirstAndSecondName", Boolean.class)
-					.setParameter("firstName", author.getFirstName())   // todo: author.getFirstName() == null ? - fixed ('if' and throw exception in current method)
+					.setParameter("firstName", author.getFirstName())   // todo: author.getFirstName() == null ? - fixed ('if' and throw exception in parent method)
 					.setParameter("secondName", author.getSecondName()) // todo: author.getSecondName() == null ? - fixed ('if' in current method)
 					.getSingleResult();
 		}
@@ -90,13 +90,13 @@ public class AuthorFacadeImpl extends GenericFacadeImpl<Author> implements Autho
 		if (StringUtils.isEmpty(author.getSecondName())) {
 			LOGGER.debug("Find current author by 'firstName' {} and 'id' {}", author.getFirstName(), author.getId());
 			return em.createNamedQuery("Author.isAuthorsExistByFirstNameWithId", Boolean.class)
-					.setParameter("firstName", author.getFirstName())   // todo: author.getFirstName() == null ? - fixed ('if' and throw exception in current method)
+					.setParameter("firstName", author.getFirstName())   // todo: author.getFirstName() == null ? - fixed ('if' and throw exception in parent method)
 					.setParameter("id", author.getId())                 // todo: author.getId() == null ? - fixed ('if' in parent method)
 					.getSingleResult();
 		} else {
 			LOGGER.debug("Find current author by 'firstName' {} and 'secondName' {} and 'id' {}", author.getFirstName(), author.getSecondName(), author.getId());
 			return em.createNamedQuery("Author.isAuthorsExistByFirstAndSecondNameWithId", Boolean.class)
-					.setParameter("firstName", author.getFirstName())       // todo: author.getFirstName() == null ? - fixed ('if' and throw exception in current method)
+					.setParameter("firstName", author.getFirstName())       // todo: author.getFirstName() == null ? - fixed ('if' and throw exception in parent method)
 					.setParameter("secondName", author.getSecondName())     // todo: author.getSecondName() == null ? - fixed ('if' in current method)
 					.setParameter("id", author.getId())                     // todo: author.getId() == null ? - fixed ('if' in parent method)
 					.getSingleResult();
