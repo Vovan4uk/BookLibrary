@@ -13,6 +13,7 @@ import javax.faces.component.EditableValueHolder;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.view.ViewScoped;
+import javax.inject.Inject;
 import javax.inject.Named;
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -27,9 +28,9 @@ public class AuthorAction implements Serializable {
 	private static final long serialVersionUID = 3795838153393063077L;
 
 	@EJB
-	private AuthorManager authorManager;    //todo: transient
-	@EJB
-	private AuthorClientService authorClientService;    //todo: transient
+	private transient AuthorManager authorManager;    //todo: transient - fixed
+	@Inject
+	private transient AuthorClientService authorClientService;    //todo: transient - fixed
 
 	private List<Author> authors;
 	private Author newAuthor = new Author();
@@ -157,6 +158,7 @@ public class AuthorAction implements Serializable {
 	}
 
 	private void initCheckMap() {
+		checkMap.clear();
 		for (Author author : authors) {
 			checkMap.put(author, Boolean.FALSE);
 		}

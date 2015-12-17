@@ -6,172 +6,231 @@
                 xmlns:rich="http://richfaces.org/rich"
                 xmlns:a4j="http://richfaces.org/a4j">
 
-    <ui:define name="title">Books Page</ui:define>
+    <ui:define name="title">Books Page #{bookAction.title}</ui:define>
     <ui:define name="body">
 
-        <h:form>
-        <rich:panel header="Books page">
-            <rich:dataTable value="#{bookAction.books}" var="book" style="width:100%;" rows="10" id="table"
-                            sortPriority="#{mainSortingBean.sortPriorities}" selectionMode="none">
-                <rich:column sortBy="#{book.name}" styleClass="col_book_name" headerClass="col_book_name">
+        <rich:panel header="Books page #{bookAction.title}" id="mainPane">
+            <h:form id="form">
+
+                <h:panelGrid columns="2" columnClasses="message_col, button_col" width="100%">
+                    <rich:messages globalOnly="true"/>
+                    <h:panelGroup>
+                        <a4j:commandLink styleClass="no-decor" execute="@this" render="table, createPane"
+                                         oncomplete="#{rich:component('createPane')}.show()" resetValues="true"
+                                         actionListener="#{bookAction.resetAddValues()}">
+                            <h:graphicImage value="/images/new.png" alt="add new"/>
+                            <a4j:param value="#{param['byrating']}" name="byrating"/>
+                        </a4j:commandLink>
+
+                        <a4j:commandLink styleClass="no-decor" execute="@this" render="table, confirmPane"
+                                         oncomplete="#{rich:component('confirmPane')}.show()">
+                            <h:graphicImage value="/images/delete.png" alt="Delete selected"/>
+                            <a4j:param value="#{param['byrating']}" name="byrating"/>
+                        </a4j:commandLink>
+                    </h:panelGroup>
+                </h:panelGrid>
+
+
+                <rich:dataTable style="width: 100%;" id="noItems">
                     <f:facet name="header">
-                            <a4j:commandButton execute="@this" value="&lt;" render="table"
-                                               action="#{mainSortingBean.sort}"
-                                               rendered="#{mainSortingBean.sortsOrders['name']=='descending'}">
-                                <f:param name="sortProperty" value="name"/>
-                            </a4j:commandButton>
-                            <a4j:commandButton execute="@this" value="&gt;" render="table"
-                                               action="#{mainSortingBean.sort}"
-                                               rendered="#{mainSortingBean.sortsOrders['name']=='ascending'}">
-                                <f:param name="sortProperty" value="name"/>
-                            </a4j:commandButton>
-                            <a4j:commandButton execute="@this" value="=" render="table"
-                                               action="#{mainSortingBean.sort}"
-                                               rendered="#{mainSortingBean.sortsOrders['name']==null}">
-                                <f:param name="sortProperty" value="name"/>
-                            </a4j:commandButton>
-                        <a4j:commandButton execute="@this" value="Book name" render="table"
-                                           action="#{mainSortingBean.sort}">
-                                <f:param name="sortProperty" value="name"/>
-                            </a4j:commandButton>
-                            <a4j:commandButton execute="@this" value="X"
-                                               action="#{mainSortingBean.reset('name')}" render="table"/>
+                        <h:outputText value="No Books Items Found" rendered="#{empty bookAction.books}"/>
                     </f:facet>
-                    <h:link value="#{book.name}" outcome="/book.xhtml">
-                        <f:param name="id" value="#{book.id}"/>
-                    </h:link>
-                </rich:column>
-                <rich:column filterExpression="#{booksFilteringBean.getFilterAuthorImpl(book)}" filterType="custom"
-                             styleClass="col_book_authors" headerClass="col_book_authors">
-                    <f:facet name="header">
-                        <h:outputText value="Authors"/><br/>
-                        <h:inputText value="#{booksFilteringBean.authorFilter}" id="input">
-                            <a4j:ajax event="change" render="table footer" execute="@this"/>
+                </rich:dataTable>
+
+
+                <rich:dataTable value="#{bookAction.books}" var="book" style="width:100%;" rows="10"
+                                id="table" iterationStatusVar="it" sortMode="single"
+                                sortPriority="#{mainSortingBean.sortPriorities}"
+                                rowClasses="odd-row, even-row">
+                    <rich:column style="width:20px;">
+                        <a4j:commandLink styleClass="no-decor" render="editGrid" execute="@this"
+                                         oncomplete="#{rich:component('editPane')}.show()" resetValues="true"
+                                         actionListener="#{bookAction.resetValues()}">
+                            <h:graphicImage value="/images/edit.gif" alt="edit"/>
+                            <a4j:param value="#{book.id}" assignTo="#{bookAction.currentBookId}"/>
+                            <f:setPropertyActionListener target="#{bookAction.currentBook}" value="#{book}"/>
+                        </a4j:commandLink>
+                    </rich:column>
+
+                    <rich:column sortBy="#{book.name}" sortOrder="#{mainSortingBean.sortsOrders['name']}"
+                                 styleClass="col_book_name" headerClass="col_book_name">
+                        <f:facet name="header">
+                            <h:outputText value="Book name"/>
+                        </f:facet>
+                        <h:link value="#{book.name}" outcome="/book.xhtml">
+                            <f:param name="id" value="#{book.id}"/>
+                        </h:link>
+                    </rich:column>
+
+                    <rich:column filterExpression="#{booksFilteringBean.getFilterAuthorImpl(book)}" filterType="custom"
+                                 styleClass="col_book_authors" headerClass="col_book_authors">
+                        <f:facet name="header">
+                            <h:outputText value="Authors"/><br/>
+                            <h:inputText value="#{booksFilteringBean.authorFilter}" id="input">
+                                <a4j:ajax event="change" render="table footer" execute="@this"/>
+                            </h:inputText>
+                        </f:facet>
+                        <a4j:repeat value="#{book.authors}" var="author" id="repeat">
+                            <h:link value="#{author.firstName} #{author.secondName}" outcome="/author.xhtml">
+                                <f:param name="id" value="#{author.id}"/>
+                            </h:link><br/>
+                        </a4j:repeat>
+                    </rich:column>
+
+                    <rich:column sortBy="#{book.publisher}" sortOrder="#{mainSortingBean.sortsOrders['publisher']}"
+                                 styleClass="col_book_publisher" headerClass="col_book_publisher">
+                        <f:facet name="header">
+                            <h:outputText value="Publisher"/>
+                        </f:facet>
+                        <h:outputText value="#{book.publisher}"/>
+                    </rich:column>
+                    <rich:column sortBy="#{book.publishedDate}"
+                                 sortOrder="#{mainSortingBean.sortsOrders['publishedDate']}"
+                                 styleClass="col_book_published_date"
+                                 headerClass="col_book_published_date">
+                        <f:facet name="header">
+                            <h:outputText value="Published Date"/>
+                        </f:facet>
+                        <h:outputText value="#{book.publishedDate}"/>
+                    </rich:column>
+                    <rich:column sortBy="#{book.averageRating}"
+                                 sortOrder="#{mainSortingBean.sortsOrders['averageRating']}"
+                                 styleClass="col_book_average_rating" headerClass="col_book_average_rating">
+                        <f:facet name="header">
+                            <h:outputText value="Average rating"/>
+                        </f:facet>
+
+                        <h:outputText value="#{book.averageRating} (#{book.countReviews} reviews)"/>
+                    </rich:column>
+                    <rich:column sortBy="#{book.createDate}" sortOrder="#{mainSortingBean.sortsOrders['createDate']}"
+                                 styleClass="col_book_create_date" headerClass="col_book_create_date">
+                        <f:facet name="header">
+                            <h:outputText value="Create date"/>
+                        </f:facet>
+                        <h:outputText value="#{book.createDate}"/>
+                    </rich:column>
+                    <rich:column style="width: 20px;">
+                        <f:facet name="header">
+                            <h:selectBooleanCheckbox
+                                    onclick="
+                                    form = document.getElementById('form');
+                                    for(var i = 0; i != form.elements.length; i++) {
+                                        if(form.elements[i].id.indexOf(':selectItemCheck') &gt;= 0) {
+                                            form.elements[i].checked = this.checked;
+                                        }
+                                    }">
+                                <f:ajax event="change" execute="@form" render="@form"/>
+                            </h:selectBooleanCheckbox>
+                        </f:facet>
+                        <h:selectBooleanCheckbox
+                                value="#{bookAction.checkMap[book]}" id="selectItemCheck">
+                            <f:ajax event="change" execute="@form" render="@form"/>
+                        </h:selectBooleanCheckbox>
+                    </rich:column>
+
+                    <f:facet name="footer" id="pagination">
+                        <rich:dataScroller renderIfSinglePage="false"/>
+                    </f:facet>
+                </rich:dataTable>
+            </h:form>
+
+
+            <h:form id="form2">
+                <a4j:jsFunction name="remove" action="#{bookAction.removeAll}"
+                                render="message, table, noItems, col1, col2, col3, col4, col5, col6" execute="@this"
+                                oncomplete="#{rich:component('confirmPane')}.hide();">
+                </a4j:jsFunction>
+
+
+                <rich:popupPanel id="confirmPane" autosized="true" header="Confirm delete"
+                                 onmaskclick="#{rich:component('confirmPane')}.hide()" style="width: 400px;">
+                    <h:panelGroup rendered="#{not empty bookAction.confirmList}">
+                        <h:outputText
+                                value="Are you sure you want to delete:"/>
+                        <br/>
+                        <rich:list value="#{bookAction.confirmList}" var="selectedBook">
+                            <h:link value="#{selectedBook.name}" outcome="/book.xhtml">
+                                <f:param name="id" value="#{selectedBook.id}"/>
+                            </h:link>
+                            <h:outputText value=" (#{selectedBook.countReviews} reviews will be deleted)"/>
+                        </rich:list>
+                        <a4j:commandButton value="Delete" onclick="remove(); return false;">
+                        </a4j:commandButton>
+                        <a4j:commandButton value="Cancel"
+                                           onclick="#{rich:component('confirmPane')}.hide(); return false;"/>
+                    </h:panelGroup>
+                    <h:panelGroup rendered="#{empty bookAction.confirmList}">
+                        <h:outputText
+                                value="Nothing to delete"/><br/><br/>
+                    </h:panelGroup>
+                </rich:popupPanel>
+
+                <rich:popupPanel header="Edit Book" id="editPane" domElementAttachment="parent" width="400"
+                                 height="150" onmaskclick="#{rich:component('editPane')}.hide()">
+                    <rich:messages globalOnly="true"/>
+                    <h:panelGrid columns="3" id="editGrid">
+                        <h:outputText value="Name"/>
+                        <h:inputText value="#{bookAction.currentBook.name}" id="name">
+                            <rich:validator/>
                         </h:inputText>
-                    </f:facet>
-                    <a4j:repeat value="#{book.authors}" var="author" id="repeat">
-                        <h:link value="#{author.firstName} #{author.secondName}" outcome="/author.xhtml">
-                            <f:param name="id" value="#{author.id}"/>
-                        </h:link><br/>
-                    </a4j:repeat>
-                </rich:column>
+                        <rich:message id="nameMsg" for="name"/>
 
-                <rich:column sortBy="#{book.publisher}" styleClass="col_book_publisher"
-                             headerClass="col_book_publisher">
-                    <f:facet name="header">
-                            <a4j:commandButton execute="@this" value="&lt;" render="table"
-                                               action="#{mainSortingBean.sort}"
-                                               rendered="#{mainSortingBean.sortsOrders['publisher']=='descending'}">
-                                <f:param name="sortProperty" value="publisher"/>
-                            </a4j:commandButton>
-                            <a4j:commandButton execute="@this" value="&gt;" render="table"
-                                               action="#{mainSortingBean.sort}"
-                                               rendered="#{mainSortingBean.sortsOrders['publisher']=='ascending'}">
-                                <f:param name="sortProperty" value="publisher"/>
-                            </a4j:commandButton>
-                            <a4j:commandButton execute="@this" value="=" render="table"
-                                               action="#{mainSortingBean.sort}"
-                                               rendered="#{mainSortingBean.sortsOrders['publisher']==null}">
-                                <f:param name="sortProperty" value="publisher"/>
-                            </a4j:commandButton>
-                            <a4j:commandButton execute="@this" value="Publisher" render="table"
-                                               action="#{mainSortingBean.sort}">
-                                <f:param name="sortProperty" value="publisher"/>
-                            </a4j:commandButton>
-                            <a4j:commandButton execute="@this" value="X"
-                                               action="#{mainSortingBean.reset('publisher')}" render="table"/>
-                    </f:facet>
-                    <h:outputText value="#{book.publisher}"/>
-                </rich:column>
-                <rich:column sortBy="#{book.publishedDate}" styleClass="col_book_published_date"
-                             headerClass="col_book_published_date">
-                    <f:facet name="header">
-                            <a4j:commandButton execute="@this" value="&lt;" render="table"
-                                               action="#{mainSortingBean.sort}"
-                                               rendered="#{mainSortingBean.sortsOrders['publishedDate']=='descending'}">
-                                <f:param name="sortProperty" value="publishedDate"/>
-                            </a4j:commandButton>
-                            <a4j:commandButton execute="@this" value="&gt;" render="table"
-                                               action="#{mainSortingBean.sort}"
-                                               rendered="#{mainSortingBean.sortsOrders['publishedDate']=='ascending'}">
-                                <f:param name="sortProperty" value="publishedDate"/>
-                            </a4j:commandButton>
-                            <a4j:commandButton execute="@this" value="=" render="table"
-                                               action="#{mainSortingBean.sort}"
-                                               rendered="#{mainSortingBean.sortsOrders['publishedDate']==null}">
-                                <f:param name="sortProperty" value="publishedDate"/>
-                            </a4j:commandButton>
-                            <a4j:commandButton execute="@this" value="Published date" render="table"
-                                               action="#{mainSortingBean.sort}">
-                                <f:param name="sortProperty" value="publishedDate"/>
-                            </a4j:commandButton>
-                            <a4j:commandButton execute="@this" value="X"
-                                               action="#{mainSortingBean.reset('publishedDate')}" render="table"/>
-                    </f:facet>
-                    <h:outputText value="#{book.publishedDate}"/>
-                </rich:column>
-                <rich:column sortBy="#{book.averageRating}" styleClass="col_book_average_rating"
-                             headerClass="col_book_average_rating">
-                    <f:facet name="header">
-                            <a4j:commandButton execute="@this" value="&lt;" render="table"
-                                               action="#{mainSortingBean.sort}"
-                                               rendered="#{mainSortingBean.sortsOrders['averageRating']=='descending'}">
-                                <f:param name="sortProperty" value="averageRating"/>
-                            </a4j:commandButton>
-                            <a4j:commandButton execute="@this" value="&gt;" render="table"
-                                               action="#{mainSortingBean.sort}"
-                                               rendered="#{mainSortingBean.sortsOrders['averageRating']=='ascending'}">
-                                <f:param name="sortProperty" value="averageRating"/>
-                            </a4j:commandButton>
-                            <a4j:commandButton execute="@this" value="=" render="table"
-                                               action="#{mainSortingBean.sort}"
-                                               rendered="#{mainSortingBean.sortsOrders['averageRating']==null}">
-                                <f:param name="sortProperty" value="averageRating"/>
-                            </a4j:commandButton>
-                            <a4j:commandButton execute="@this" value="Average rating" render="table"
-                                               action="#{mainSortingBean.sort}">
-                                <f:param name="sortProperty" value="averageRating"/>
-                            </a4j:commandButton>
-                            <a4j:commandButton execute="@this" value="X"
-                                               action="#{mainSortingBean.reset('averageRating')}" render="table"/>
-                    </f:facet>
+                    </h:panelGrid>
+                    <a4j:commandButton value="Update" action="#{bookAction.update}" render="table"
+                                       execute="message, editPane"
+                                       oncomplete="if (#{facesContext.maximumSeverity.ordinal==0 or facesContext.maximumSeverity==null}) {#{rich:component('editPane')}.hide();}">
+                    </a4j:commandButton>
+                    <a4j:commandButton value="Cancel" onclick="#{rich:component('editPane')}.hide(); return false;"/>
+                </rich:popupPanel>
 
-                    <h:outputText value="#{book.averageRating} (#{book.countReviews})"/>
-                </rich:column>
-                <rich:column sortBy="#{book.createDate}" styleClass="col_book_create_date"
-                             headerClass="col_book_create_date">
-                    <f:facet name="header">
-                            <a4j:commandButton execute="@this" value="&lt;" render="table"
-                                               action="#{mainSortingBean.sort}"
-                                               rendered="#{mainSortingBean.sortsOrders['createDate']=='descending'}">
-                                <f:param name="sortProperty" value="createDate"/>
-                            </a4j:commandButton>
-                            <a4j:commandButton execute="@this" value="&gt;" render="table"
-                                               action="#{mainSortingBean.sort}"
-                                               rendered="#{mainSortingBean.sortsOrders['createDate']=='ascending'}">
-                                <f:param name="sortProperty" value="createDate"/>
-                            </a4j:commandButton>
-                            <a4j:commandButton execute="@this" value="=" render="table"
-                                               action="#{mainSortingBean.sort}"
-                                               rendered="#{mainSortingBean.sortsOrders['createDate']==null}">
-                                <f:param name="sortProperty" value="createDate"/>
-                            </a4j:commandButton>
-                            <a4j:commandButton execute="@this" value="Create Date" render="table"
-                                               action="#{mainSortingBean.sort}">
-                                <f:param name="sortProperty" value="createDate"/>
-                            </a4j:commandButton>
-                            <a4j:commandButton execute="@this" value="X"
-                                               action="#{mainSortingBean.reset('createDate')}" render="table"/>
-                    </f:facet>
-                    <h:outputText value="#{book.createDate}"/>
-                </rich:column>
+                <rich:popupPanel header="Add new Book" id="createPane" domElementAttachment="parent" width="800"
+                                 height="350" onmaskclick="#{rich:component('createPane')}.hide()">
+                    <rich:messages globalOnly="true"/>
+                    <h:panelGrid columns="3" id="createGrid">
+                        <h:outputText value="Name:"/>
+                        <h:inputText value="#{bookAction.newBook.name}" id="addName" label="name">
+                            <rich:validator/>
+                        </h:inputText>
+                        <rich:message for="addName"/>
+                        <h:outputText value="Publisher:"/>
+                        <h:inputText value="#{bookAction.newBook.publisher}" id="addPublisher" label="publisher">
+                            <rich:validator/>
+                        </h:inputText>
+                        <rich:message for="addPublisher"/>
+                        <h:outputText value="Published Date:"/>
+                        <rich:calendar id="addPublishedDate" datePattern="yyyy-MM-dd"
+                                       value="#{bookAction.newBook.publishedDate}">
+                            <rich:validator/>
+                        </rich:calendar>
+                        <rich:message for="addPublishedDate"/>
+                        <h:outputText value="ISBN:"/>
+                        <h:inputText value="#{bookAction.newBook.isbn}" id="addIsbn" label="isbn">
+                            <rich:validator/>
+                        </h:inputText>
+                        <rich:message for="addIsbn"/>
 
-                <f:facet name="footer" id="pagination">
-                    <rich:dataScroller renderIfSinglePage="false"/>
-                </f:facet>
-            </rich:dataTable>
+                    </h:panelGrid>
 
+                    <rich:pickList id="addAuthors" value="#{bookAction.selectedAuthorIds}"
+                                   sourceCaption="Available authors" targetCaption="Selected authors" listWidth="165px"
+                                   listHeight="100px" style="color:#000;">
+                        <f:selectItems value="#{bookAction.authors}" var="author" itemValue="#{author.id}"
+                                       itemLabel="#{author.secondName} #{author.firstName}"/>
+                    </rich:pickList>
+                    <br/>
+
+                    <a4j:commandButton value="Save" action="#{bookAction.save}"
+                                       render="message, table, noItems, col1, col2, col3, col4, col5, col6"
+                                       execute="createPane"
+                                       oncomplete="if (#{facesContext.maximumSeverity.ordinal==0 or facesContext.maximumSeverity==null}) {#{rich:component('createPane')}.hide();}">
+                    </a4j:commandButton>
+                    <a4j:commandButton value="Cancel" onclick="#{rich:component('createPane')}.hide(); return false;"/>
+
+                </rich:popupPanel>
+
+
+            </h:form>
         </rich:panel>
-        </h:form>
+
     </ui:define>
 </ui:composition>

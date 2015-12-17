@@ -21,6 +21,7 @@ import java.util.List;
 
 @Named
 @Stateless
+@TransactionAttribute(TransactionAttributeType.REQUIRED)
 public class AuthorManagerImpl implements AuthorManager {
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(AuthorManager.class);
@@ -35,7 +36,8 @@ public class AuthorManagerImpl implements AuthorManager {
 	private BookFacade bookFacade;
 
 	@Override
-	@TransactionAttribute(TransactionAttributeType.REQUIRES_NEW)    // todo: why REQUIRES_NEW ?
+	@TransactionAttribute(TransactionAttributeType.REQUIRED)
+	// todo: why REQUIRES_NEW ? - fixed (in our case there is always new transaction)
 	public Author save(Author author) {
 		if (authorFacade.isAuthorExist(author)) {
 			String errorMessage = "Save unsuccessful. Author '" + author + "' is already exist"; // todo; need more info about author - fixed
@@ -47,6 +49,7 @@ public class AuthorManagerImpl implements AuthorManager {
 	}
 
 	@Override
+	@TransactionAttribute(TransactionAttributeType.REQUIRED)
 	public Author update(Author author) {
 		if (authorFacade.isAuthorExist(author)) {
 			String errorMessage = "Update unsuccessful. Author '" + author + "' is already exist";   // todo; need more info about author - fixed
@@ -58,12 +61,14 @@ public class AuthorManagerImpl implements AuthorManager {
 	}
 
 	@Override
+	@TransactionAttribute(TransactionAttributeType.REQUIRED)
 	public void removeByPk(Long id) {
 		LOGGER.debug("Remove Author by primary key: {}", id);
 		authorHome.removeByPk(id);
 	}
 
 	@Override
+	@TransactionAttribute(TransactionAttributeType.REQUIRED)
 	public void removeAll(List<Author> authors) {
 		List<Book> books = bookFacade.findBooksByAuthors(authors);
 		LOGGER.debug("Remove list Books: {}", books);
@@ -75,6 +80,7 @@ public class AuthorManagerImpl implements AuthorManager {
 	}
 
 	@Override
+	@TransactionAttribute(TransactionAttributeType.REQUIRED)
 	public Author findByPk(Long id) {
 		LOGGER.debug("Find author by primary key: {}", id);
 		return initAuthor(authorFacade.findByPk(id));

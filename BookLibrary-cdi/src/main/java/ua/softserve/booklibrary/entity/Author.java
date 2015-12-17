@@ -5,7 +5,6 @@ import org.hibernate.annotations.Formula;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -72,6 +71,9 @@ public class Author extends LibraryEntity {
 	@Formula("(SELECT AVG(r.RATING) FROM Review r, BOOK_AUTHOR ba WHERE r.BOOK_ID = ba.BOOK_ID AND ba.AUTHOR_ID = ID)")
 	private Double averageRating;
 
+	/* Count Books uses on all pages.
+	Calculating count Books generates a large amount of code at all levels.
+	It was decided to add an extra field. */
 	@Formula("(SELECT COUNT(ba.BOOK_ID) FROM BOOK_AUTHOR ba WHERE ba.AUTHOR_ID = ID)")
 	private Integer countBooks;
 
@@ -150,6 +152,7 @@ public class Author extends LibraryEntity {
 				", firstName='" + firstName + '\'' +
 				", secondName='" + secondName + '\'' +
 				", averageRating=" + averageRating +
+				", countBooks=" + countBooks +
 				", createDate=" + super.getCreateDate() +
 				'}';
 	}

@@ -2,64 +2,64 @@ body {
 }
 
 td.top_right_column {
-    width: 140px;
+	width: 140px;
 }
 
 td.left_column {
-    width: 300px;
-    vertical-align: top;
+	width: 300px;
+	vertical-align: top;
 }
 
 td.right_column {
-    vertical-align: top;
+	vertical-align: top;
 }
 
 .col_book_name, .col_author_name {
 }
 
 .col_book_authors {
-    width: 10%;
+	width: 10%;
 }
 
 .col_book_publisher {
-    width: 10%;
+	width: 10%;
 }
 
 .col_book_published_date {
-    width: 10%;
+	width: 10%;
 }
 
 .col_book_average_rating, .col_author_average_rating {
-    width: 10%;
+	width: 10%;
 }
 
 .col_book_create_date, .col_author_create_date {
-    width: 10%;
+	width: 10%;
 }
 
 .col_book_action, .col_author_action {
-    width: 10%;
+	width: 10%;
 }
 
 .col_author_best_book, .col_author_latest_book {
-    width: 27% !important;
+	width: 27% !important;
 }
 
 *.rf-dt-c-srt {
-    color: #fff !important;
+	color: #fff !important;
 }
 
 .even-row {
-    background-color: #FCFFFE;
+	background-color: #FCFFFE;
 }
 
 .odd-row {
-    background-color: #ECF3FE;
+	background-color: #ECF3FE;
 }
 
 .even-row:hover,
 .odd-row:hover {
-    background-color: #FFEBDA;
+	background-color: #FFEBDA;
 }
 
 .message_col {
@@ -67,5 +67,9 @@ td.right_column {
 }
 
 .button_col {
-    width: 35px;
+	width: 35px;
+}
+
+*.rf-pick-src-cptn, *.rf-pick-tgt-cptn {
+	color: #000000 !important;
 }

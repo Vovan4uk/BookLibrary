@@ -37,7 +37,9 @@ import java.util.Set;
 		@NamedQuery(name = "Book.findLatestBooksByAuthorId", query = "SELECT DISTINCT b FROM Book b JOIN b.authors a WHERE a.id = :id ORDER BY b.publishedDate DESC"),
 		@NamedQuery(name = "Book.findBestBooksByAuthorId", query = "SELECT DISTINCT b FROM Book b JOIN b.authors a WHERE b.averageRating IS NOT NULL AND a.id = :id ORDER BY b.averageRating DESC"),
 		@NamedQuery(name = "Book.findBooksByAuthorId", query = "SELECT DISTINCT b FROM Book b JOIN b.authors a WHERE a.id = :id"),
-		@NamedQuery(name = "Book.findBooksByAuthors", query = "SELECT DISTINCT b FROM Book b JOIN b.authors a WHERE a.id IN :ids")
+		@NamedQuery(name = "Book.findBooksByAuthors", query = "SELECT DISTINCT b FROM Book b JOIN b.authors a WHERE a.id IN :ids"),
+		@NamedQuery(name = "Book.isBookExistByIsbn", query = "SELECT CASE WHEN EXISTS (SELECT b FROM Book WHERE isbn = :isbn) THEN TRUE ELSE FALSE END FROM Book b"),
+		@NamedQuery(name = "Book.isBookExistByIsbnWithId", query = "SELECT CASE WHEN EXISTS (SELECT b FROM Book WHERE isbn = :isbn AND id != :id) THEN TRUE ELSE FALSE END FROM Book b")
 })
 @XmlRootElement
 public class Book extends LibraryEntity {
@@ -57,7 +59,7 @@ public class Book extends LibraryEntity {
 	@Column(name = "PUBLISHED_DATE")
 	private Date publishedDate;
 
-	@Size(max = 255)
+	@Size(min = 9, max = 255)
 	@Column(name = "ISBN", unique = true)
 	private String isbn;
 
@@ -72,6 +74,9 @@ public class Book extends LibraryEntity {
 	@Formula("(SELECT AVG(r.RATING) FROM REVIEW r WHERE r.BOOK_ID = ID)")
 	private Double averageRating;
 
+	/* Count Reviews uses on all pages.
+	Calculating count Reviews generates a large amount of code at all levels.
+	It was decided to add an extra field. */
 	@Formula("(SELECT COUNT(r.RATING) FROM REVIEW r WHERE r.BOOK_ID = ID)")
 	private Integer countReviews;
 
@@ -158,11 +163,11 @@ public class Book extends LibraryEntity {
 
 	// todo: is this method really need? - fixed
 
-	/**
-	 * After '@Formula' has been calculated,
-	 * and the last one returned 'null',
-	 * set default averageRating to '0'.
-	 * Then, we shouldn't validate this param by 'null' on UI.
+	/*
+	 After '@Formula' has been calculated,
+	 and the last one returned 'null',
+	 set default averageRating to '0'.
+	 Then, we shouldn't validate this param by 'null' on UI.
 	 */
 	@PostLoad
 	private void onLoad() {
@@ -181,6 +186,7 @@ public class Book extends LibraryEntity {
 				", isbn='" + isbn + '\'' +
 				", publisher='" + publisher + '\'' +
 				", averageRating=" + averageRating +
+				", countReviews=" + countReviews +
 				", createDate=" + super.getCreateDate() +
 				'}';
 	}

@@ -8,17 +8,19 @@ import java.util.List;
 
 @Local
 public interface BookFacade extends GenericFacade<Book> {
-    List<Book> findHotReleases();
+	List<Book> findHotReleases();
 
-    List<Book> findBooksByRating(Integer minRating);
+	List<Book> findBooksByRating(Integer minRating);
 
-    List<Book> findBooksWithoutRating();
+	List<Book> findBooksWithoutRating();
 
-    List<Book> findLatestBooksByAuthorId(Long id, Integer count);
+	List<Book> findLatestBooksByAuthorId(Long id, Integer count);
 
-    List<Book> findBestBooksByAuthorId(Long id, Integer count);
+	List<Book> findBestBooksByAuthorId(Long id, Integer count);
 
-    List<Book> findBooksByAuthorId(Long id);
+	List<Book> findBooksByAuthorId(Long id);
 
-    List<Book> findBooksByAuthors(List<Author> authors);
+	List<Book> findBooksByAuthors(List<Author> authors);
+
+	boolean isBookExist(Book book);
 }

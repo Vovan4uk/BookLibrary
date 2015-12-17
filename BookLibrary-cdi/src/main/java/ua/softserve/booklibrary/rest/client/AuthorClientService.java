@@ -2,10 +2,8 @@ package ua.softserve.booklibrary.rest.client;
 
 import ua.softserve.booklibrary.entity.Author;
 
-import javax.ejb.Local;
 import java.util.List;
 
-@Local
 public interface AuthorClientService {
     Author findAuthorByPk(Long id);
 

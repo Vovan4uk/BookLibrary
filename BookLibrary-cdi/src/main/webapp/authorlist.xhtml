@@ -35,6 +35,8 @@
                         <h:outputText value="No Authors Items Found" rendered="#{empty authorAction.authors}"/>
                     </f:facet>
                 </rich:dataTable>
+
+
                 <rich:dataTable value="#{authorAction.authors}" var="author" style="width:100%;" rows="10"
                                 id="table" iterationStatusVar="it" sortMode="single"
                                 sortPriority="#{mainSortingBean.sortPriorities}"
@@ -96,7 +98,7 @@
                         <h:outputText value="#{author.averageRating}">
                             <f:convertNumber pattern="0.#"/>
                         </h:outputText><h:outputText
-                            value=" (#{author.books.size()} books)"/>
+                            value=" (#{author.countBooks} books)"/>
                     </rich:column>
                     <rich:column sortBy="#{author.createDate}"
                                  sortOrder="#{mainSortingBean.sortsOrders['createDate']}"
@@ -149,10 +151,11 @@
                                 value="Are you sure you want to delete:"/>
                         <br/>
                         <rich:list value="#{authorAction.confirmList}" var="selectedAuthor">
-                            <h:outputText value="#{selectedAuthor.secondName} #{selectedAuthor.firstName}"/>
-                            <rich:list value="#{selectedAuthor.books}" var="selectedBook">
-                                <h:outputText value="#{selectedBook.name}"/><br/>
-                            </rich:list><br/><br/>
+                            <h:link value="#{selectedAuthor.firstName} #{selectedAuthor.secondName}"
+                                    outcome="/author.xhtml">
+                                <f:param name="id" value="#{selectedAuthor.id}"/>
+                            </h:link>
+                            <h:outputText value=" (#{selectedAuthor.countBooks} books will be deleted)"/>
                         </rich:list>
                         <a4j:commandButton value="Delete" onclick="remove(); return false;">
                         </a4j:commandButton>

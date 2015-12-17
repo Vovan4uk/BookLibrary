@@ -60,7 +60,7 @@ public class AuthorFacadeImpl extends GenericFacadeImpl<Author> implements Autho
 	@Override
 	public boolean isAuthorExist(Author author) {
 		if (StringUtils.isEmpty(author.getFirstName())) {
-			String message = "Author first name is empty.";
+			String message = "Author '" + author + "' first name is empty.";
 			LOGGER.error(message);
 			throw new LibraryException(message);
 		}

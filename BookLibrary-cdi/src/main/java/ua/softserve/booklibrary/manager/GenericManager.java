@@ -2,10 +2,10 @@ package ua.softserve.booklibrary.manager;
 
 import ua.softserve.booklibrary.entity.LibraryEntity;
 
-import javax.ejb.Remote;
+import javax.ejb.Local;
 import java.util.List;
 
-@Remote
+@Local
 public interface GenericManager<T extends LibraryEntity> {
     T save(T entity);
 

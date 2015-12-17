@@ -8,6 +8,8 @@ import ua.softserve.booklibrary.entity.LibraryEntity;
 import ua.softserve.booklibrary.exception.LibraryException;
 
 import javax.ejb.EJBException;
+import javax.ejb.TransactionAttribute;
+import javax.ejb.TransactionAttributeType;
 import javax.persistence.EntityExistsException;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityNotFoundException;
@@ -15,7 +17,8 @@ import javax.persistence.PersistenceContext;
 import javax.persistence.PersistenceException;
 import java.util.Collection;
 
-//todo: @TransactionAttribute ?
+//todo: @TransactionAttribute ? - fixed
+@TransactionAttribute(TransactionAttributeType.REQUIRED)
 public abstract class GenericHomeImpl<T extends LibraryEntity> implements GenericHome<T> {
 
 	@PersistenceContext(unitName = "OracleDS")
@@ -40,6 +43,7 @@ public abstract class GenericHomeImpl<T extends LibraryEntity> implements Generi
 		try {
 			em.persist(entity); // todo: NPE - fixed
 			LOGGER.debug("Saved object: {}", entity);
+			return entity;
 		} catch (EntityExistsException e) { // todo: why catch only this exception? - fixed
 			String errorMessage = "Save unsuccessful. '" + entity + "' is already exist";
 			LOGGER.error(errorMessage);
@@ -53,7 +57,6 @@ public abstract class GenericHomeImpl<T extends LibraryEntity> implements Generi
 			LOGGER.error(errorMessage);
 			throw new LibraryException(errorMessage);
 		}
-		return entity;
 	}
 
 	@Override
@@ -67,6 +70,7 @@ public abstract class GenericHomeImpl<T extends LibraryEntity> implements Generi
 		try {
 			em.merge(entity); // todo: NPE (2 cases: entity and entity.id) - fixed (can't validate 'id'. parent class hasn't this param. child classes use sequence.)
 			LOGGER.debug("Updated object: {}", entity);
+			return entity;
 		} catch (IllegalArgumentException e) {
 			String errorMessage = "Update unsuccessful. '" + entity + "' do not exist";
 			LOGGER.error(errorMessage);
@@ -76,7 +80,6 @@ public abstract class GenericHomeImpl<T extends LibraryEntity> implements Generi
 			LOGGER.error(errorMessage);
 			throw new LibraryException(errorMessage);
 		}
-		return entity;
 	}
 
 	@Override
@@ -87,7 +90,7 @@ public abstract class GenericHomeImpl<T extends LibraryEntity> implements Generi
 			throw new LibraryException(errorMessage);
 		}
 		try {
-			em.remove(em.getReference(entityClass, id));    // todo: NPE?
+			em.remove(em.getReference(entityClass, id));    // todo: NPE? -fixed (EntityNotFoundException,IllegalArgumentException catch)
 			LOGGER.debug("Remove '{}' object with primary key '{}'", entityClass.getCanonicalName(), id);
 		} catch (EntityNotFoundException e) {
 			String errorMessage = "Remove unsuccessful. '" + entityClass.getCanonicalName() + "' object with primary key '" + id + "' don't exist";
