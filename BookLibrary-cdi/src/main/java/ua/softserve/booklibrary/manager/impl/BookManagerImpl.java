@@ -5,7 +5,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import ua.softserve.booklibrary.dao.facade.AuthorFacade;
 import ua.softserve.booklibrary.dao.facade.BookFacade;
-import ua.softserve.booklibrary.dao.facade.ReviewFacade;
 import ua.softserve.booklibrary.dao.home.BookHome;
 import ua.softserve.booklibrary.entity.Book;
 import ua.softserve.booklibrary.exception.LibraryException;

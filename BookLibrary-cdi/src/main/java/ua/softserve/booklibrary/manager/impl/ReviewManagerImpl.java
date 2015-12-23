@@ -9,11 +9,14 @@ import ua.softserve.booklibrary.manager.ReviewManager;
 
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
+import javax.ejb.TransactionAttribute;
+import javax.ejb.TransactionAttributeType;
 import javax.inject.Named;
 import java.util.List;
 
 @Named
 @Stateless
+@TransactionAttribute(TransactionAttributeType.REQUIRED)
 public class ReviewManagerImpl implements ReviewManager {
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(ReviewManagerImpl.class);

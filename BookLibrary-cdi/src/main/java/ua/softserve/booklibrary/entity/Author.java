@@ -78,7 +78,7 @@ public class Author extends LibraryEntity {
 	private Integer countBooks;
 
 
-	@ManyToMany(mappedBy = "authors", cascade = CascadeType.ALL)
+	@ManyToMany(mappedBy = "authors", cascade = CascadeType.DETACH)
 	@OrderBy("name DESC")
 	private Set<Book> books = new TreeSet<>();
 

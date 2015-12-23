@@ -54,7 +54,7 @@ public class Book extends LibraryEntity {
 	private Long id;
 
 	@NotNull
-	@Size(min = 2, max = 255)
+	@Size(max = 255)
 	@Column(name = "NAME", nullable = false)
 	private String name;
 

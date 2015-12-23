@@ -12,34 +12,43 @@ import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+import java.util.List;
 
 @Path("/author")
 @Produces({MediaType.APPLICATION_JSON}) // todo: move to class level - fixed
 @Consumes({MediaType.APPLICATION_JSON}) // todo: move to class level - fixed
 public interface AuthorService {
 
-    @GET
-    @Path("{id}")
-    Response getAuthor(@PathParam("id") Long id);
+	@GET
+	@Path("{id}")
+	Response getAuthor(@PathParam("id") Long id);
 
-    @GET
-    @Path("byRating/{rating}")
-    Response getAuthorsByRating(@PathParam("rating") String id);
+	@GET
+	@Path("byRating/{rating}")
+	Response getAuthorsByRating(@PathParam("rating") String rating);
 
-    @GET
-    @Path("all")
-    Response getAllAuthors();
+	@GET
+	@Path("count/byRating/{rating}")
+	Response countAuthorsByRating(@PathParam("rating") String rating);
 
-    @POST
-    @Produces({MediaType.APPLICATION_FORM_URLENCODED})
-    Response saveAuthor(Author author);
+	@GET
+	@Path("count/withoutRating")
+	Response countAuthorsWithoutRating();
 
-    @PUT
-    @Produces({MediaType.APPLICATION_FORM_URLENCODED})
-    Response updateAuthor(Author author);
+	@GET
+	@Path("all")
+	Response getAllAuthors();
 
-    @DELETE
-    @Path("{id}")
-    Response removeAuthor(@PathParam("id") Long id);
+	@POST
+	@Produces({MediaType.APPLICATION_FORM_URLENCODED})
+	Response saveAuthor(Author author);
+
+	@PUT
+	@Produces({MediaType.APPLICATION_FORM_URLENCODED})
+	Response updateAuthor(Author author);
+
+	@DELETE
+	@Path("{id}")
+	Response removeAuthor(@PathParam("id") Long id);
 
 }

@@ -3,62 +3,74 @@
                 xmlns:h="http://java.sun.com/jsf/html"
                 xmlns:f="http://java.sun.com/jsf/core"
                 xmlns:ui="http://java.sun.com/jsf/facelets"
-                xmlns:rich="http://richfaces.org/rich">
+                xmlns:rich="http://richfaces.org/rich"
+                xmlns:a4j="http://richfaces.org/a4j">
 
     <ui:define name="title">#{msgs.HomePageTitle}</ui:define>
 
     <ui:define name="body">
-        <rich:panel header="Books by average rating">
+        <rich:panel>
+            <rich:dataTable value="#{bookAction.ratingList}" var="ratingMain" id="bookTable"
+                            rowClasses="odd-row, even-row" style="width: 100%;">
+                <rich:column style="width: 12%">
+                    <f:facet name="header">
+                        <h:outputText value="Count authors by average rating"/>
+                    </f:facet>
+                    <h:link value="#{authorAction.getCountAuthorsByRating(ratingMain)} authors"
+                            outcome="/authorlist.xhtml">
+                        <f:param name="byrating" value="#{ratingMain}"/>
+                    </h:link>
+                </rich:column>
+                <rich:column>
+                    <h:outputText value="Authors with #{ratingMain} stars"/>
+                </rich:column>
+                <rich:column style="width: 90px">
+                    <f:facet name="header">
+                        <h:outputText value="Average rating"/>
+                    </f:facet>
+                    <a4j:repeat value="#{bookAction.ratingList}" var="rating">
+                        <h:panelGroup rendered="#{ratingMain eq rating}">
+                            <input disabled="disabled" class="star required" type="radio" name="rating#{ratingMain}"
+                                   value="#{rating}" checked="checked" title="rating"/>
+                        </h:panelGroup>
+                        <h:panelGroup rendered="#{ratingMain ne rating}">
+                            <input disabled="disabled" class="star required" type="radio" name="rating#{ratingMain}"
+                                   value="#{rating}" title="rating"/>
+                        </h:panelGroup>
+                    </a4j:repeat>
+                </rich:column>
+                <rich:column style="text-align: right; width: 35%">
+                    <h:outputText value="Books with #{ratingMain} stars"/>
+                </rich:column>
+                <rich:column style="text-align: right; width: 12%">
+                    <f:facet name="header">
+                        <h:outputText value="Count books by average rating"/>
+                    </f:facet>
+                    <h:link value="#{bookAction.getCountBooksByRating(ratingMain)} books" outcome="/booklist.xhtml">
+                        <f:param name="byrating" value="#{ratingMain}"/>
+                    </h:link>
+                </rich:column>
+            </rich:dataTable>
+
             <table class="rf-dt stable" width="100%">
-                <tr class="rf-dt-r rf-dt-fst-r odd-row">
-                    <td class="rf-dt-c" width="33%">1 star</td>
-                    <td class="rf-dt-c" width="33%">*</td>
-                    <td class="rf-dt-c">
-                        <h:link value="#{bookAction.getCountBooksByRating(1)} books" outcome="/booklist.xhtml">
-                            <f:param name="byrating" value="1"/>
+                <tr class="rf-dt-r rf-dt-fst-r even-row">
+                    <td class="rf-dt-c" width="12%">
+                        <h:link value="#{authorAction.countAuthorsWithoutRating} authors"
+                                outcome="/authorlist.xhtml">
+                            <f:param name="byrating" value="0"/>
                         </h:link>
                     </td>
-                </tr>
-                <tr class="rf-dt-r rf-dt-fst-r odd-row">
-                    <td class="rf-dt-c">2 star</td>
-                    <td class="rf-dt-c">**</td>
-                    <td class="rf-dt-c">
-                        <h:link value="#{bookAction.getCountBooksByRating(2)} books" outcome="/booklist.xhtml">
-                            <f:param name="byrating" value="2"/>
-                        </h:link>
+                    <td class="rf-dt-c">Authors without rating</td>
+                    <td class="rf-dt-c" width="90px">
+                        <input class="star  required" disabled="disabled" type="radio" name="test-1-rating-2"
+                               value="1"/>
+                        <input class="star" disabled="disabled" type="radio" name="test-1-rating-2" value="2"/>
+                        <input class="star" disabled="disabled" type="radio" name="test-1-rating-2" value="3"/>
+                        <input class="star" disabled="disabled" type="radio" name="test-1-rating-2" value="4"/>
+                        <input class="star" disabled="disabled" type="radio" name="test-1-rating-2" value="5"/>
                     </td>
-                </tr>
-                <tr class="rf-dt-r rf-dt-fst-r odd-row">
-                    <td class="rf-dt-c">3 star</td>
-                    <td class="rf-dt-c">***</td>
-                    <td class="rf-dt-c">
-                        <h:link value="#{bookAction.getCountBooksByRating(3)} books" outcome="/booklist.xhtml">
-                            <f:param name="byrating" value="3"/>
-                        </h:link>
-                    </td>
-                </tr>
-                <tr class="rf-dt-r rf-dt-fst-r odd-row">
-                    <td class="rf-dt-c">4 star</td>
-                    <td class="rf-dt-c">****</td>
-                    <td class="rf-dt-c">
-                        <h:link value="#{bookAction.getCountBooksByRating(4)} books" outcome="/booklist.xhtml">
-                            <f:param name="byrating" value="4"/>
-                        </h:link>
-                    </td>
-                </tr>
-                <tr class="rf-dt-r rf-dt-fst-r odd-row">
-                    <td class="rf-dt-c">5 star</td>
-                    <td class="rf-dt-c">*****</td>
-                    <td class="rf-dt-c">
-                        <h:link value="#{bookAction.getCountBooksByRating(5)} books" outcome="/booklist.xhtml">
-                            <f:param name="byrating" value="5"/>
-                        </h:link>
-                    </td>
-                </tr>
-                <tr class="rf-dt-r rf-dt-fst-r odd-row">
-                    <td class="rf-dt-c">Without rating</td>
-                    <td class="rf-dt-c">-------------------------------------------------</td>
-                    <td class="rf-dt-c">
+                    <td class="rf-dt-c" width="35%" align="right">Books without rating</td>
+                    <td class="rf-dt-c" width="12%" align="right">
                         <h:link value="#{bookAction.getCountBooksWithoutRating()} books" outcome="/booklist.xhtml">
                             <f:param name="byrating" value="0"/>
                         </h:link>
@@ -67,70 +79,5 @@
             </table>
         </rich:panel><br/>
 
-
-        <rich:panel header="Authors by average rating">
-            <table class="rf-dt stable" width="100%">
-                <tr class="rf-dt-r rf-dt-fst-r odd-row">
-                    <td class="rf-dt-c" width="33%">1 star</td>
-                    <td class="rf-dt-c" width="33%">*</td>
-                    <td class="rf-dt-c">
-                        <h:link value="#{authorAction.getCountAuthorsByRating(1)} authors"
-                                outcome="/authorlist.xhtml">
-                            <f:param name="byrating" value="1"/>
-                        </h:link>
-                    </td>
-                </tr>
-                <tr class="rf-dt-r rf-dt-fst-r odd-row">
-                    <td class="rf-dt-c">2 star</td>
-                    <td class="rf-dt-c">**</td>
-                    <td class="rf-dt-c">
-                        <h:link value="#{authorAction.getCountAuthorsByRating(2)} authors"
-                                outcome="/authorlist.xhtml">
-                            <f:param name="byrating" value="2"/>
-                        </h:link>
-                    </td>
-                </tr>
-                <tr class="rf-dt-r rf-dt-fst-r odd-row">
-                    <td class="rf-dt-c">3 star</td>
-                    <td class="rf-dt-c">***</td>
-                    <td class="rf-dt-c">
-                        <h:link value="#{authorAction.getCountAuthorsByRating(3)} authors"
-                                outcome="/authorlist.xhtml">
-                            <f:param name="byrating" value="3"/>
-                        </h:link>
-                    </td>
-                </tr>
-                <tr class="rf-dt-r rf-dt-fst-r odd-row">
-                    <td class="rf-dt-c">4 star</td>
-                    <td class="rf-dt-c">****</td>
-                    <td class="rf-dt-c">
-                        <h:link value="#{authorAction.getCountAuthorsByRating(4)} authors"
-                                outcome="/authorlist.xhtml">
-                            <f:param name="byrating" value="4"/>
-                        </h:link>
-                    </td>
-                </tr>
-                <tr class="rf-dt-r rf-dt-fst-r odd-row">
-                    <td class="rf-dt-c">5 star</td>
-                    <td class="rf-dt-c">*****</td>
-                    <td class="rf-dt-c">
-                        <h:link value="#{authorAction.getCountAuthorsByRating(5)} authors"
-                                outcome="/authorlist.xhtml">
-                            <f:param name="byrating" value="5"/>
-                        </h:link>
-                    </td>
-                </tr>
-                <tr class="rf-dt-r rf-dt-fst-r odd-row">
-                    <td class="rf-dt-c">Without rating</td>
-                    <td class="rf-dt-c">-------------------------------------------------</td>
-                    <td class="rf-dt-c">
-                        <h:link value="#{authorAction.countAuthorsWithoutRating} authors"
-                                outcome="/authorlist.xhtml">
-                            <f:param name="byrating" value="0"/>
-                        </h:link>
-                    </td>
-                </tr>
-            </table>
-        </rich:panel>
     </ui:define>
 </ui:composition>

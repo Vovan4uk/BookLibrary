@@ -8,6 +8,7 @@ import ua.softserve.booklibrary.manager.AuthorManager;
 import ua.softserve.booklibrary.rest.client.AuthorClientService;
 
 import javax.ejb.EJB;
+import javax.ejb.EJBException;
 import javax.faces.application.FacesMessage;
 import javax.faces.component.EditableValueHolder;
 import javax.faces.component.UIComponent;
@@ -50,7 +51,7 @@ public class AuthorAction implements Serializable {
 				currentAuthorId = currentAuthor.getId();
 			}
 		} catch (LibraryException e) {
-			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, e.getMessage(), e.getMessage()));
+			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Author with primary key " + getId() + " doesn't exist.", e.getMessage()));
 			currentAuthor = null;
 		}
 	}
@@ -59,7 +60,7 @@ public class AuthorAction implements Serializable {
 		try {
 			authorClientService.saveAuthor(newAuthor);
 		} catch (LibraryException e) {
-			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, e.getMessage(), e.getMessage()));
+			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Author can't be create. Author is already exist.", e.getMessage()));
 		}
 		newAuthor = new Author();
 		initAuthors();
@@ -69,7 +70,7 @@ public class AuthorAction implements Serializable {
 		try {
 			authorClientService.updateAuthor(currentAuthor);
 		} catch (LibraryException e) {
-			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, e.getMessage(), e.getMessage()));
+			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Author can't be update. Author is already exist.", e.getMessage()));
 		}
 		initAuthors();
 	}
@@ -78,7 +79,7 @@ public class AuthorAction implements Serializable {
 		try {
 			authorClientService.removeAuthor(currentAuthorId);
 		} catch (LibraryException e) {
-			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, e.getMessage(), e.getMessage()));
+			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Author can't be delete.", e.getMessage()));
 		}
 		initAuthors();
 	}
@@ -86,18 +87,20 @@ public class AuthorAction implements Serializable {
 	public void removeAll() {
 		try {
 			authorManager.removeAll(getConfirmList());
-		} catch (LibraryException e) {
-			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, e.getMessage(), e.getMessage()));
+		} catch (EJBException | LibraryException e) {
+			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Authors can't be delete.", e.getMessage()));
 		}
 		initAuthors();
 	}
 
 	public Integer getCountAuthorsByRating(Integer minRating) {
-		return authorManager.countAuthorsByRating(minRating);
+//		return authorManager.countAuthorsByRating(minRating);
+		return authorClientService.countAuthorsByRating(minRating.toString());
 	}
 
 	public Integer getCountAuthorsWithoutRating() {
-		return authorManager.countAuthorsWithoutRating(); // todo: it's wrong !! - fixed (uses namedQueries which return count of authors)
+//		return authorManager.countAuthorsWithoutRating(); // todo: it's wrong !! - fixed (uses namedQueries which return count of authors)
+		return authorClientService.countAuthorsWithoutRating();
 	}
 
 	public String getTitle() {
@@ -111,10 +114,6 @@ public class AuthorAction implements Serializable {
 		return title;
 	}
 
-	public void setTitle(String title) {
-		this.title = title;
-	}
-
 	public String getId() {
 		if (id == null) {
 			id = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap().get("id");
@@ -122,19 +121,11 @@ public class AuthorAction implements Serializable {
 		return id;
 	}
 
-	public void setId(String id) {
-		this.id = id;
-	}
-
 	public String getByRating() {
 		if (byRating == null) {
 			byRating = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap().get("byrating");
 		}
 		return byRating;
-	}
-
-	public void setByRating(String byRating) {
-		this.byRating = byRating;
 	}
 
 	public List<Author> getAuthors() {
@@ -157,7 +148,7 @@ public class AuthorAction implements Serializable {
 		initCheckMap();
 	}
 
-	private void initCheckMap() {
+	public void initCheckMap() {
 		checkMap.clear();
 		for (Author author : authors) {
 			checkMap.put(author, Boolean.FALSE);
@@ -207,13 +198,11 @@ public class AuthorAction implements Serializable {
 	}
 
 	public void resetValues() {
-		if (!JsfVersion.getCurrent().isCompliantWith(JsfVersion.JSF_2_2)) {
-			FacesContext fc = FacesContext.getCurrentInstance();
-			UIComponent comp = fc.getViewRoot().findComponent("form2:editGrid");
+		FacesContext fc = FacesContext.getCurrentInstance();
+		UIComponent comp = fc.getViewRoot().findComponent("form2:editGrid");
 
-			((EditableValueHolder) comp.findComponent("form2:firstName")).resetValue();
-			((EditableValueHolder) comp.findComponent("form2:secondName")).resetValue();
-		}
+		((EditableValueHolder) comp.findComponent("form2:firstName")).resetValue();
+		((EditableValueHolder) comp.findComponent("form2:secondName")).resetValue();
 	}
 
 	public void resetAddValues() {

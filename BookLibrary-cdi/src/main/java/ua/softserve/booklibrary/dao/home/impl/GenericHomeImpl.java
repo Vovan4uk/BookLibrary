@@ -34,7 +34,7 @@ public abstract class GenericHomeImpl<T extends LibraryEntity> implements Generi
 
 	@Override
 	public T save(T entity) {
-		LOGGER.debug("Save '{}' object", entityClass.getCanonicalName());
+		LOGGER.debug("Save '{}'", entityClass.getCanonicalName());
 		if (entity == null) {
 			String errorMessage = "Save unsuccessful. '" + entityClass.getCanonicalName() + "' is empty";
 			LOGGER.error(errorMessage);
@@ -61,7 +61,7 @@ public abstract class GenericHomeImpl<T extends LibraryEntity> implements Generi
 
 	@Override
 	public T update(T entity) {
-		LOGGER.debug("Update '{}' object", entityClass.getCanonicalName());
+		LOGGER.debug("Update '{}'", entityClass.getCanonicalName());
 		if (entity == null) {
 			String errorMessage = "Update unsuccessful. '" + entityClass.getCanonicalName() + "' is empty";
 			LOGGER.error(errorMessage);
@@ -69,7 +69,7 @@ public abstract class GenericHomeImpl<T extends LibraryEntity> implements Generi
 		}
 		try {
 			em.merge(entity); // todo: NPE (2 cases: entity and entity.id) - fixed (can't validate 'id'. parent class hasn't this param. child classes use sequence.)
-			LOGGER.debug("Updated object: {}", entity);
+			LOGGER.debug("Updated: {}", entity);
 			return entity;
 		} catch (IllegalArgumentException e) {
 			String errorMessage = "Update unsuccessful. '" + entity + "' do not exist";
@@ -85,15 +85,15 @@ public abstract class GenericHomeImpl<T extends LibraryEntity> implements Generi
 	@Override
 	public void removeByPk(Long id) {
 		if (id == null) {
-			String errorMessage = "Object '" + entityClass.getCanonicalName() + "' cannot be remove by null primary key";
+			String errorMessage = entityClass.getCanonicalName() + " cannot be remove by null primary key";
 			LOGGER.error(errorMessage);
 			throw new LibraryException(errorMessage);
 		}
 		try {
 			em.remove(em.getReference(entityClass, id));    // todo: NPE? -fixed (EntityNotFoundException,IllegalArgumentException catch)
-			LOGGER.debug("Remove '{}' object with primary key '{}'", entityClass.getCanonicalName(), id);
+			LOGGER.debug("Remove '{}' with primary key '{}'", entityClass.getCanonicalName(), id);
 		} catch (EntityNotFoundException e) {
-			String errorMessage = "Remove unsuccessful. '" + entityClass.getCanonicalName() + "' object with primary key '" + id + "' don't exist";
+			String errorMessage = "Remove unsuccessful. '" + entityClass.getCanonicalName() + "' with primary key '" + id + "' don't exist";
 			LOGGER.error(errorMessage);
 			throw new LibraryException(errorMessage);
 		} catch (IllegalArgumentException e) {
@@ -119,7 +119,7 @@ public abstract class GenericHomeImpl<T extends LibraryEntity> implements Generi
 					.setParameter("entities", entities)
 					.executeUpdate();
 			em.flush();
-			LOGGER.debug("Remove '{}' objects successful", entityClass.getCanonicalName());
+			LOGGER.debug("Remove '{}' successful", entityClass.getCanonicalName());
 		} catch (EJBException | PersistenceException | HibernateException e) {
 			String errorMessage = "Remove collection '" + entityClass.getCanonicalName() + "' unsuccessful. " + e.getMessage();
 			LOGGER.error(errorMessage);

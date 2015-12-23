@@ -1,34 +1,25 @@
 package ua.softserve.booklibrary.rest.service.impl;
 
+import org.apache.commons.lang3.math.NumberUtils;
 import ua.softserve.booklibrary.entity.Author;
 import ua.softserve.booklibrary.exception.LibraryException;
 import ua.softserve.booklibrary.manager.AuthorManager;
 import ua.softserve.booklibrary.rest.service.AuthorService;
 
-import javax.annotation.Resource;
 import javax.ejb.EJB;
 import javax.ejb.EJBException;
-import javax.ejb.SessionContext;
 import javax.ejb.Stateless;
 import javax.ejb.TransactionManagement;
 import javax.ejb.TransactionManagementType;
-import javax.ws.rs.core.Context;
 import javax.ws.rs.core.Response;
-import javax.ws.rs.core.UriInfo;
 import java.util.List;
 
 @Stateless
 @TransactionManagement(TransactionManagementType.BEAN)
 public class AuthorServiceImpl implements AuthorService {
 
-	@Context
-	private UriInfo uriInfo;
-
 	@EJB
 	private AuthorManager authorManager;
-
-	@Resource
-	SessionContext context;
 
 	@Override
 	public Response getAuthor(Long id) {
@@ -48,6 +39,26 @@ public class AuthorServiceImpl implements AuthorService {
 				author.setBooks(null);
 			}
 			return Response.accepted(authors).build();
+		} catch (EJBException | LibraryException e) {
+			return Response.status(422).entity(e.getMessage()).build();
+		}
+	}
+
+	@Override
+	public Response countAuthorsByRating(String rating) {
+		try {
+			Integer count = authorManager.countAuthorsByRating(NumberUtils.toInt(rating));
+			return Response.accepted(count).build();
+		} catch (EJBException | LibraryException e) {
+			return Response.status(422).entity(e.getMessage()).build();
+		}
+	}
+
+	@Override
+	public Response countAuthorsWithoutRating() {
+		try {
+			Integer count = authorManager.countAuthorsWithoutRating();
+			return Response.accepted(count).build();
 		} catch (EJBException | LibraryException e) {
 			return Response.status(422).entity(e.getMessage()).build();
 		}

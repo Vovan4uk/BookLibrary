@@ -5,15 +5,19 @@ import ua.softserve.booklibrary.entity.Author;
 import java.util.List;
 
 public interface AuthorClientService {
-    Author findAuthorByPk(Long id);
+	Author findAuthorByPk(Long id);
 
-    List<Author> findAuthorsByRating(String rating);
+	List<Author> findAuthorsByRating(String rating);
 
-    List<Author> findAllAuthors();
+	List<Author> findAllAuthors();
 
-    void saveAuthor(Author author);
+	Integer countAuthorsByRating(String rating);
 
-    void updateAuthor(Author author);
+	Integer countAuthorsWithoutRating();
 
-    void removeAuthor(Long id);
+	void saveAuthor(Author author);
+
+	void updateAuthor(Author author);
+
+	void removeAuthor(Long id);
 }

@@ -70,11 +70,6 @@ public class AuthorManagerImpl implements AuthorManager {
 	@Override
 	@TransactionAttribute(TransactionAttributeType.REQUIRED)
 	public void removeAll(List<Author> authors) {
-		List<Book> books = bookFacade.findBooksByAuthors(authors);
-		LOGGER.debug("Remove list Books: {}", books);
-		if (!books.isEmpty()) {
-			bookHome.removeAll(books);
-		}
 		LOGGER.debug("Remove list Authors: {}", authors);
 		authorHome.removeAll(authors);   // todo: really need to create Set ? - fixed
 	}
