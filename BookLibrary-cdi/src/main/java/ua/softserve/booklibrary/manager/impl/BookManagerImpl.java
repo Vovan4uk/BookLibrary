@@ -60,19 +60,19 @@ public class BookManagerImpl implements BookManager {
 	}
 
 	@Override
-	public void removeByPk(Long id) {   //todo: - fixed
+	public void removeByPk(Long id) {
 		LOGGER.debug("Remove Book by primary key: {}", id);
 		bookHome.removeByPk(id);
 	}
 
 	@Override
-	public void removeAll(List<Book> books) {    //todo: ? - fixed
+	public void removeAll(List<Book> books) {
 		LOGGER.debug("Remove list Books: {}", books);
 		bookHome.removeAll(books);
 	}
 
 	@Override
-	public Book findByPk(Long id) { //todo: really need to init all Authors and Reviews? - fixed (we use this object only in 'Book Details Page', so we need to init all data)
+	public Book findByPk(Long id) {
 		LOGGER.debug("Find and initialize book by id {}", id);
 		Book book = bookFacade.findByPk(id);
 		book.getAuthors().size();
@@ -106,7 +106,7 @@ public class BookManagerImpl implements BookManager {
 		return resultList;
 	}
 
-	private List<Book> initAuthorList(List<Book> books) { //todo: really need to init all Authors and Reviews? - fixed (delete init reviews, but not authors. we use author list(id, first name, second name) in all pages. and we need init author list for 'filtering by Author' in Book List Page)
+	private List<Book> initAuthorList(List<Book> books) {
 		LOGGER.debug("Initialize list books {}", books);
 		for (Book book : books) {
 			book.getAuthors().size();

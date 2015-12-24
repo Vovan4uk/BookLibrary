@@ -13,8 +13,8 @@ import javax.ws.rs.core.Response;
 @RequestScoped
 public class BookClientServiceImpl implements BookClientService {
 
-	private final String target = "http://localhost:8080/BookLibrary-cdi/rest/book";
-	private final Client client = ClientBuilder.newClient();
+	private final String target = "http://localhost:8080/BookLibrary-cdi/rest/book";     // todo: static
+	private final Client client = ClientBuilder.newClient();     // todo: static
 
 	@Override
 	public Integer countBooksByRating(String rating) {

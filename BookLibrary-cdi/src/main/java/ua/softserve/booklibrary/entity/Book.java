@@ -70,7 +70,6 @@ public class Book extends LibraryEntity {
 	@Column(name = "PUBLISHER")
 	private String publisher;
 
-	// todo: why fetch = FetchType.EAGER ? - fixed
 	@OneToMany(mappedBy = "book", cascade = CascadeType.ALL)
 	@OrderBy("createDate DESC")
 	private Set<Review> reviews = new HashSet<>();
@@ -166,8 +165,6 @@ public class Book extends LibraryEntity {
 		this.countReviews = countReviews;
 	}
 
-	// todo: is this method really need? - fixed
-
 	/*
 	 After '@Formula' has been calculated,
 	 and the last one returned 'null',
@@ -183,7 +180,6 @@ public class Book extends LibraryEntity {
 
 	@Override
 	public String toString() {
-		// todo: lost result from parent method - fixed
 		return "Book{" +
 				"id=" + id +
 				", name='" + name + '\'' +

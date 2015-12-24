@@ -316,7 +316,7 @@ public class BookAction implements Serializable {
 
 	private void initSelectedAuthorIds() {
 		selectedAuthorIds.clear();
-		if (!currentBook.getAuthors().isEmpty()) {
+		if (!currentBook.getAuthors().isEmpty()) {  // todo useless 'if'
 			for (Author author : currentBook.getAuthors()) {
 				selectedAuthorIds.add(author.getId());
 			}

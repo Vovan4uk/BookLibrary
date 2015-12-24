@@ -3,7 +3,7 @@ package ua.softserve.booklibrary.rest.dto;
 import javax.xml.bind.annotation.XmlRootElement;
 import java.util.Date;
 
-@XmlRootElement
+@XmlRootElement // todo for what?
 public class AuthorDTO {
 	private Long id;
 	private String firstName;

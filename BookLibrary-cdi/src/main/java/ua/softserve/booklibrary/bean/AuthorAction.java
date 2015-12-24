@@ -28,9 +28,9 @@ public class AuthorAction implements Serializable {
 	private static final long serialVersionUID = 3795838153393063077L;
 
 	@EJB
-	private transient AuthorManager authorManager;    //todo: transient - fixed
+	private transient AuthorManager authorManager;
 	@Inject
-	private transient AuthorClientService authorClientService;    //todo: transient - fixed
+	private transient AuthorClientService authorClientService;
 
 	private List<Author> authors;
 	private Author newAuthor = new Author();
@@ -97,7 +97,7 @@ public class AuthorAction implements Serializable {
 	}
 
 	public Integer getCountAuthorsWithoutRating() {
-		return authorClientService.countAuthorsWithoutRating(); // todo: it's wrong !! - fixed (uses namedQueries which return count of authors)
+		return authorClientService.countAuthorsWithoutRating();
 	}
 
 	public String getTitle() {

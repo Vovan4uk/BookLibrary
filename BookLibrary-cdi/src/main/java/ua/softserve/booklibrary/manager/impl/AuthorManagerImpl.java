@@ -42,10 +42,9 @@ public class AuthorManagerImpl implements AuthorManager {
 
 	@Override
 	@TransactionAttribute(TransactionAttributeType.REQUIRED)
-	// todo: why REQUIRES_NEW ? - fixed (in our case there is always new transaction)
 	public Author save(Author author) {
 		if (authorFacade.isAuthorExist(author)) {
-			String errorMessage = "Save unsuccessful. Author '" + author + "' is already exist"; // todo; need more info about author - fixed
+			String errorMessage = "Save unsuccessful. Author '" + author + "' is already exist";
 			LOGGER.error(errorMessage);
 			throw new LibraryException(errorMessage);
 		}
@@ -57,7 +56,7 @@ public class AuthorManagerImpl implements AuthorManager {
 	@TransactionAttribute(TransactionAttributeType.REQUIRED)
 	public Author update(Author author) {
 		if (authorFacade.isAuthorExist(author)) {
-			String errorMessage = "Update unsuccessful. Author '" + author + "' is already exist";   // todo; need more info about author - fixed
+			String errorMessage = "Update unsuccessful. Author '" + author + "' is already exist";
 			LOGGER.error(errorMessage);
 			throw new LibraryException(errorMessage);
 		}
@@ -76,7 +75,7 @@ public class AuthorManagerImpl implements AuthorManager {
 	@TransactionAttribute(TransactionAttributeType.REQUIRED)
 	public void removeAll(List<Author> authors) {
 		LOGGER.debug("Remove list Authors: {}", authors);
-		authorHome.removeAll(authors);   // todo: really need to create Set ? - fixed
+		authorHome.removeAll(authors);
 	}
 
 	@Override
@@ -135,9 +134,7 @@ public class AuthorManagerImpl implements AuthorManager {
 		return authorFacade.countAuthorsWithoutRating();
 	}
 
-	//todo: really need to init all books? - fixed (delete method)
-
-	private Author initAuthor(Author author) {    //todo: really need to init all reviews? - fixed (init only books for authorDetails page)
+	private Author initAuthor(Author author) {    //todo: move this code to findByPk()
 		LOGGER.debug("Initialize book list (Books is lazy init)");
 		author.getBooks().size();
 		return author;

@@ -18,8 +18,8 @@ import java.util.List;
 @RequestScoped
 public class AuthorClientServiceImpl implements AuthorClientService {
 
-	private final String target = "http://localhost:8080/BookLibrary-cdi/rest/author";    // todo: final - fixed
-	private final Client client = ClientBuilder.newClient();  // todo: final - fixed
+	private final String target = "http://localhost:8080/BookLibrary-cdi/rest/author";    // todo: static
+	private final Client client = ClientBuilder.newClient();  // todo: static
 
 	@Override
 	public Author findAuthorByPk(Long id) {

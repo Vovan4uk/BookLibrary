@@ -18,8 +18,8 @@ import java.util.Map;
 @ViewScoped
 public class MainSortingBean implements Serializable {
 	private static final long serialVersionUID = -7944021928506372310L;
-	private final Map<String, SortOrder> sortsOrders; //todo: final - fixed
-	private final List<String> sortPriorities;    //todo: final - fixed
+	private final Map<String, SortOrder> sortsOrders;
+	private final List<String> sortPriorities;
 
 	private static final String SORT_PROPERTY_PARAMETER = "sortProperty";
 	private static final String AVERAGE_RATING_SORT = "averageRating";

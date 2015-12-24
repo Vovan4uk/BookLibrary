@@ -22,7 +22,6 @@ import java.util.Collection;
  *
  * @see ua.softserve.booklibrary.dao.home.GenericHome
  */
-//todo: @TransactionAttribute ? - fixed
 @TransactionAttribute(TransactionAttributeType.REQUIRED)
 public abstract class GenericHomeImpl<T extends LibraryEntity> implements GenericHome<T> {
 
@@ -46,13 +45,13 @@ public abstract class GenericHomeImpl<T extends LibraryEntity> implements Generi
 			throw new LibraryException(errorMessage);
 		}
 		try {
-			em.persist(entity); // todo: NPE - fixed
+			em.persist(entity);
 			LOGGER.debug("Saved object: {}", entity);
 			return entity;
-		} catch (EntityExistsException e) { // todo: why catch only this exception? - fixed
+		} catch (EntityExistsException e) {
 			String errorMessage = "Save unsuccessful. '" + entity + "' is already exist";
-			LOGGER.error(errorMessage);
-			throw new LibraryException(errorMessage);
+			LOGGER.error(errorMessage);     // todo: add variable e to logging (for all classes & places)
+			throw new LibraryException(errorMessage);   // todo: lose stacktrace
 		} catch (IllegalArgumentException e) {
 			String errorMessage = "Save unsuccessful. '" + entity + "' is not valid";
 			LOGGER.error(errorMessage);
@@ -73,7 +72,7 @@ public abstract class GenericHomeImpl<T extends LibraryEntity> implements Generi
 			throw new LibraryException(errorMessage);
 		}
 		try {
-			em.merge(entity); // todo: NPE (2 cases: entity and entity.id) - fixed (can't validate 'id'. parent class hasn't this param. child classes use sequence.)
+			em.merge(entity); // todo: entity.id == null ?
 			LOGGER.debug("Updated: {}", entity);
 			return entity;
 		} catch (IllegalArgumentException e) {
@@ -95,7 +94,7 @@ public abstract class GenericHomeImpl<T extends LibraryEntity> implements Generi
 			throw new LibraryException(errorMessage);
 		}
 		try {
-			em.remove(em.getReference(entityClass, id));    // todo: NPE? -fixed (EntityNotFoundException,IllegalArgumentException catch)
+			em.remove(em.getReference(entityClass, id));
 			LOGGER.debug("Remove '{}' with primary key '{}'", entityClass.getCanonicalName(), id);
 		} catch (EntityNotFoundException e) {
 			String errorMessage = "Remove unsuccessful. '" + entityClass.getCanonicalName() + "' with primary key '" + id + "' don't exist";

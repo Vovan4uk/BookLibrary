@@ -130,8 +130,6 @@ public class Author extends LibraryEntity {
 		this.countBooks = countBooks;
 	}
 
-	// todo: is this method really need? - fixed
-
 	/**
 	 * After '@Formula' calculate, if last return 'null',
 	 * set default averageRating to '0'.
@@ -146,7 +144,6 @@ public class Author extends LibraryEntity {
 
 	@Override
 	public String toString() {
-		// todo: lost result from parent method - fixed
 		return "Author{" +
 				"id=" + id +
 				", firstName='" + firstName + '\'' +
