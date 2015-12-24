@@ -19,25 +19,31 @@
 
                 <rich:messages globalOnly="true"/><br/>
                 <h:panelGrid columns="3" id="editGrid1">
-                    <h:outputText value="Name"/>
+                    <h:panelGroup>
+                        <h:outputText value="Name:"/>
+                        <h:outputText style="color: red" value="*"/>
+                    </h:panelGroup>
                     <h:inputText value="#{bookAction.currentBook.name}" id="name">
                         <rich:validator/>
                     </h:inputText>
                     <rich:message id="nameMsg" for="name"/>
 
-                    <h:outputText value="Publisher"/>
+                    <h:outputText value="Publisher:"/>
                     <h:inputText value="#{bookAction.currentBook.publisher}" id="publisher" label="publisher">
                         <rich:validator/>
                     </h:inputText>
                     <rich:message id="publisherMsg" for="publisher"/>
 
-                    <h:outputText value="Published Date"/>
+                    <h:outputText value="Published Date: "/>
                     <rich:calendar id="publishedDate" datePattern="yyyy-MM-dd"
                                    value="#{bookAction.currentBook.publishedDate}">
                         <rich:validator/>
                     </rich:calendar>
                     <rich:message for="publishedDate" id="publisherDateMsg"/>
-                    <h:outputText value="ISBN"/>
+                    <h:panelGroup>
+                        <h:outputText value="ISBN:"/>
+                        <h:outputText style="color: red" value="*"/>
+                    </h:panelGroup>
                     <h:inputText value="#{bookAction.currentBook.isbn}" id="isbn" label="isbn">
                         <rich:validator/>
                     </h:inputText>
@@ -74,12 +80,11 @@
 
 
                 <rich:popupPanel id="confirmPane" autosized="true" header="Confirm delete"
-                                 onmaskclick="#{rich:component('confirmPane')}.hide()">
-                    <h:outputText value="Are you sure you want to delete #{bookAction.currentBook.name}"/>
-                    <a4j:repeat value="#{authorAction.currentAuthor.books}" var="book" id="repeat3">
-                        <br/><h:outputText value="#{book.name} "/>
-                    </a4j:repeat>
-                    <h:outputText value="?"/><br/>
+                                 onmaskclick="#{rich:component('confirmPane')}.hide()" minHeight="100" minWidth="400">
+                    <h:outputText value="Are you sure you want to delete"/>
+                    <br/><br/>
+                    <h:outputText value="#{bookAction.currentBook.name}"/>
+                    <br/><br/>
                     <a4j:commandButton value="Delete" onclick="remove(); return false;">
                         <a4j:param value="#{param['id']}" name="id"/>
                     </a4j:commandButton>
@@ -204,19 +209,20 @@
                     </h:panelGroup>
                 </rich:popupPanel>
 
-
                 <rich:popupPanel header="Edit Review" id="editPane" domElementAttachment="parent" width="800"
                                  height="400" onmaskclick="#{rich:component('editPane')}.hide()">
 
-
                     <rich:messages globalOnly="true"/>
                     <h:panelGrid columns="3" id="editGrid">
-                        <h:outputText value="Commenter name"/>
+                        <h:panelGroup>
+                            <h:outputText value="Commenter name:"/>
+                            <h:outputText style="color: red" value="*"/>
+                        </h:panelGroup>
                         <h:inputText value="#{bookAction.currentReview.commenterName}" id="commenterName">
                             <rich:validator/>
                         </h:inputText>
                         <rich:message id="commenterNameMsg" for="commenterName"/>
-                        <h:outputText value="Rating"/>
+                        <h:outputText value="Rating:"/>
                         <h:panelGroup>
                             <script src="http://localhost:8080/BookLibrary-cdi/js/jquery.rating.js"
                                     type="text/javascript" language="javascript"></script>
@@ -232,7 +238,10 @@
                             </a4j:repeat>
                         </h:panelGroup>
                         <h:outputText value=""/>
-                        <h:outputText value="Comment"/>
+                        <h:panelGroup>
+                            <h:outputText value="Comment:"/>
+                            <h:outputText style="color: red" value="*"/>
+                        </h:panelGroup>
                         <rich:editor value="#{bookAction.currentReview.commentBody}" id="commentBody" width="450">
                             <rich:validator/>
                         </rich:editor>
@@ -248,19 +257,21 @@
                     <a4j:commandButton value="Cancel" onclick="#{rich:component('editPane')}.hide(); return false;"/>
                 </rich:popupPanel>
 
-
                 <rich:popupPanel header="Add new Review" id="createPane" domElementAttachment="parent" width="800"
                                  height="400" onmaskclick="#{rich:component('createPane')}.hide()">
                     <script src="js/jquery.rating.js" type="text/javascript" language="javascript"></script>
                     <rich:messages globalOnly="true"/>
                     <h:panelGrid columns="3" id="createGrid">
-                        <h:outputText value="Commenter name"/>
+                        <h:panelGroup>
+                            <h:outputText value="Commenter name:"/>
+                            <h:outputText style="color: red" value="*"/>
+                        </h:panelGroup>
                         <h:inputText value="#{bookAction.newReview.commenterName}" id="addcommenterName"
                                      label="commenterName">
                             <rich:validator/>
                         </h:inputText>
                         <rich:message for="addcommenterName"/>
-                        <h:outputText value="Rating"/>
+                        <h:outputText value="Rating:"/>
                         <h:panelGroup>
                             <a4j:repeat value="#{bookAction.ratingList}" var="rating">
                                 <h:panelGroup rendered="#{rating eq 1}">
@@ -274,7 +285,10 @@
                             </a4j:repeat>
                         </h:panelGroup>
                         <h:outputText value=""/>
-                        <h:outputText value="Comment"/>
+                        <h:panelGroup>
+                            <h:outputText value="Comment:"/>
+                            <h:outputText style="color: red" value="*"/>
+                        </h:panelGroup>
                         <rich:editor value="#{bookAction.newReview.commentBody}" id="addcommentBody" width="450"
                                      label="commentBody">
                             <rich:validator/>

@@ -17,6 +17,11 @@ import javax.persistence.PersistenceContext;
 import javax.persistence.PersistenceException;
 import java.util.Collection;
 
+/**
+ * GenericHome implementation.
+ *
+ * @see ua.softserve.booklibrary.dao.home.GenericHome
+ */
 //todo: @TransactionAttribute ? - fixed
 @TransactionAttribute(TransactionAttributeType.REQUIRED)
 public abstract class GenericHomeImpl<T extends LibraryEntity> implements GenericHome<T> {

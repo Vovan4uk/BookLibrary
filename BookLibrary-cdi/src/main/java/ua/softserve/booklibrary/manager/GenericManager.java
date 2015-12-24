@@ -2,21 +2,59 @@ package ua.softserve.booklibrary.manager;
 
 import ua.softserve.booklibrary.entity.LibraryEntity;
 
-import javax.ejb.Local;
 import java.util.List;
 
-@Local
+/**
+ * Generic interface for all managers interfaces.
+ * Manager interface provide business logic operations
+ *
+ * @param <T> entity class
+ */
 public interface GenericManager<T extends LibraryEntity> {
-    T save(T entity);
 
-    T update(T entity);
+	/**
+	 * Persist entity in the database.
+	 *
+	 * @param entity Entity to save
+	 * @return created Entity
+	 */
+	T save(T entity);
 
-    void removeByPk(Long id);
+	/**
+	 * Update entity in the database.
+	 *
+	 * @param entity Entity to update
+	 * @return updated Entity
+	 */
+	T update(T entity);
 
-    void removeAll(List<T> entities);
+	/**
+	 * Delete the entity from the database by primary key.
+	 *
+	 * @param id Entity id
+	 */
+	void removeByPk(Long id);
 
-    T findByPk(Long id);
+	/**
+	 * Removes entities from database
+	 *
+	 * @param entities Entities collection
+	 */
+	void removeAll(List<T> entities);
 
-    List<T> findAll();
+	/**
+	 * Find entity in the database by primary key.
+	 *
+	 * @param id - entity id
+	 * @return Entity
+	 */
+	T findByPk(Long id);
+
+	/**
+	 * Find all entities in the database.
+	 *
+	 * @return List<T> - list of entities
+	 */
+	List<T> findAll();
 
 }

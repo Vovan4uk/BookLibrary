@@ -171,12 +171,10 @@ public class BookAction implements Serializable {
 	}
 
 	public Integer getCountBooksByRating(Integer minRating) {
-//		return bookManager.countBooksByRating(minRating);
 		return bookClientService.countBooksByRating(minRating.toString());
 	}
 
 	public Integer getCountBooksWithoutRating() {
-//		return bookManager.countBooksWithoutRating();
 		return bookClientService.countBooksWithoutRating();
 	}
 

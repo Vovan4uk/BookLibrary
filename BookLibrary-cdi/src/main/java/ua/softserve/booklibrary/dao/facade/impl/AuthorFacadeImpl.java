@@ -13,6 +13,11 @@ import javax.ejb.TransactionAttributeType;
 import javax.inject.Named;
 import java.util.List;
 
+/**
+ * Author Facade Bean
+ *
+ * @see ua.softserve.booklibrary.dao.facade.AuthorFacade
+ */
 @Named
 @Stateless
 @TransactionAttribute(TransactionAttributeType.SUPPORTS)

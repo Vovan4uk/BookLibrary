@@ -17,6 +17,12 @@ import javax.ejb.TransactionAttributeType;
 import javax.inject.Named;
 import java.util.List;
 
+/**
+ * Book Manager implementation.
+ * This bean encapsulate business logic.
+ *
+ * @see ua.softserve.booklibrary.manager.BookManager
+ */
 @Named
 @Stateless
 @TransactionAttribute(TransactionAttributeType.REQUIRED)

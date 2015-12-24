@@ -8,7 +8,6 @@ import ua.softserve.booklibrary.dao.facade.BookFacade;
 import ua.softserve.booklibrary.dao.home.AuthorHome;
 import ua.softserve.booklibrary.dao.home.BookHome;
 import ua.softserve.booklibrary.entity.Author;
-import ua.softserve.booklibrary.entity.Book;
 import ua.softserve.booklibrary.exception.LibraryException;
 import ua.softserve.booklibrary.manager.AuthorManager;
 
@@ -19,6 +18,12 @@ import javax.ejb.TransactionAttributeType;
 import javax.inject.Named;
 import java.util.List;
 
+/**
+ * Author Manager implementation.
+ * This bean encapsulate business logic.
+ *
+ * @see ua.softserve.booklibrary.manager.AuthorManager
+ */
 @Named
 @Stateless
 @TransactionAttribute(TransactionAttributeType.REQUIRED)

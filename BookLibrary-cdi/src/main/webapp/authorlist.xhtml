@@ -86,13 +86,13 @@
                                 <h:panelGroup
                                         rendered="#{(book.averageRating ge rating and book.averageRating lt rating+1)}">
                                     <input disabled="disabled" class="star required" type="radio"
-                                           name="ratingBook#{book.id}" value="#{rating}" checked="checked"
+                                           name="ratingBook#{book.id}_#{author.id}" value="#{rating}" checked="checked"
                                            title="rating"/>
                                 </h:panelGroup>
                                 <h:panelGroup
                                         rendered="#{!(book.averageRating ge rating and book.averageRating lt rating+1)}">
                                     <input disabled="disabled" class="star required" type="radio"
-                                           name="ratingBook#{book.id}" value="#{rating}" title="rating"/>
+                                           name="ratingBook#{book.id}_#{author.id}" value="#{rating}" title="rating"/>
                                 </h:panelGroup>
                             </a4j:repeat>
 
@@ -250,13 +250,16 @@
                                  height="150" onmaskclick="#{rich:component('editPane')}.hide()">
                     <rich:messages globalOnly="true"/>
                     <h:panelGrid columns="3" id="editGrid">
-                        <h:outputText value="First name"/>
+                        <h:panelGroup>
+                            <h:outputText value="First name:"/>
+                            <h:outputText style="color: red" value="*"/>
+                        </h:panelGroup>
                         <h:inputText value="#{authorAction.currentAuthor.firstName}" id="firstName">
                             <rich:validator/>
                         </h:inputText>
                         <rich:message id="firstNameMsg" for="firstName"/>
 
-                        <h:outputText value="Second name"/>
+                        <h:outputText value="Second name:"/>
                         <h:inputText value="#{authorAction.currentAuthor.secondName}" id="secondName">
                             <rich:validator/>
                         </h:inputText>
@@ -274,7 +277,10 @@
                                  height="150" onmaskclick="#{rich:component('createPane')}.hide()">
                     <rich:messages globalOnly="true"/>
                     <h:panelGrid columns="3" id="createGrid">
-                        <h:outputText value="First name:"/>
+                        <h:panelGroup>
+                            <h:outputText value="First name:"/>
+                            <h:outputText style="color: red" value="*"/>
+                        </h:panelGroup>
                         <h:inputText value="#{authorAction.newAuthor.firstName}" id="addFirstName" label="firstName">
                             <rich:validator/>
                         </h:inputText>

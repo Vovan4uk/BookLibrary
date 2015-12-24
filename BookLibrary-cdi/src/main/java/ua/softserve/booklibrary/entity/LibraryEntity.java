@@ -8,32 +8,35 @@ import javax.persistence.TemporalType;
 import java.io.Serializable;
 import java.util.Date;
 
+/**
+ * Parent for all entities encapsulated create date
+ */
 @MappedSuperclass
 public abstract class LibraryEntity implements Serializable {
 
-    private static final long serialVersionUID = 4236384240741049123L;
+	private static final long serialVersionUID = 4236384240741049123L;
 
-    @Temporal(TemporalType.DATE)
-    @Column(name = "CREATE_DATE", nullable = false, updatable = false)
-    private Date createDate;
+	@Temporal(TemporalType.DATE)
+	@Column(name = "CREATE_DATE", nullable = false, updatable = false)
+	private Date createDate;
 
-    @PrePersist
-    protected void onCreate() {
-        createDate = new Date();
-    }
+	@PrePersist
+	protected void onCreate() {
+		createDate = new Date();
+	}
 
-    public Date getCreateDate() {
-        return createDate;
-    }
+	public Date getCreateDate() {
+		return createDate;
+	}
 
-    public void setCreateDate(Date createDate) {
-        this.createDate = createDate;
-    }
+	public void setCreateDate(Date createDate) {
+		this.createDate = createDate;
+	}
 
-    @Override
-    public String toString() {
-        return "LibraryEntity{" +
-                "createDate=" + createDate +
-                '}';
-    }
+	@Override
+	public String toString() {
+		return "LibraryEntity{" +
+				"createDate=" + createDate +
+				'}';
+	}
 }

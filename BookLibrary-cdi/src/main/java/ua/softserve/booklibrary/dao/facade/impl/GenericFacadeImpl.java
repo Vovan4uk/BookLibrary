@@ -1,20 +1,22 @@
 package ua.softserve.booklibrary.dao.facade.impl;
 
-import org.hibernate.HibernateException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import ua.softserve.booklibrary.dao.facade.GenericFacade;
 import ua.softserve.booklibrary.entity.LibraryEntity;
 import ua.softserve.booklibrary.exception.LibraryException;
 
-import javax.ejb.EJBException;
 import javax.ejb.TransactionAttribute;
 import javax.ejb.TransactionAttributeType;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
-import javax.persistence.PersistenceException;
 import java.util.List;
 
+/**
+ * GenericFacade implementation.
+ *
+ * @see ua.softserve.booklibrary.dao.facade.GenericFacade
+ */
 @TransactionAttribute(TransactionAttributeType.SUPPORTS)
 public abstract class GenericFacadeImpl<T extends LibraryEntity> implements GenericFacade<T> {
 

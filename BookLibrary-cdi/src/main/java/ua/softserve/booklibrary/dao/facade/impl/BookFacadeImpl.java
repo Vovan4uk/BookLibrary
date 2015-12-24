@@ -4,7 +4,6 @@ import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import ua.softserve.booklibrary.dao.facade.BookFacade;
-import ua.softserve.booklibrary.entity.Author;
 import ua.softserve.booklibrary.entity.Book;
 import ua.softserve.booklibrary.exception.LibraryException;
 
@@ -12,9 +11,13 @@ import javax.ejb.Stateless;
 import javax.ejb.TransactionAttribute;
 import javax.ejb.TransactionAttributeType;
 import javax.inject.Named;
-import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Book Facade Bean
+ *
+ * @see ua.softserve.booklibrary.dao.facade.BookFacade
+ */
 @Named
 @Stateless
 @TransactionAttribute(TransactionAttributeType.SUPPORTS)
@@ -87,18 +90,6 @@ public class BookFacadeImpl extends GenericFacadeImpl<Book> implements BookFacad
 	public List<Book> findBooksByAuthorId(Long id) {
 		LOGGER.debug("Find books  by author id {}", id);
 		List<Book> result = em.createNamedQuery("Book.findBooksByAuthorId", Book.class).setParameter("id", id).getResultList();
-		LOGGER.debug("Result: {}", result);
-		return result;
-	}
-
-	@Override
-	public List<Book> findBooksByAuthors(List<Author> authors) {
-		LOGGER.debug("Find books  by authors {}", authors);
-		List<Long> ids = new ArrayList<>();
-		for (Author author : authors) {
-			ids.add(author.getId());
-		}
-		List<Book> result = em.createNamedQuery("Book.findBooksByAuthors", Book.class).setParameter("ids", ids).getResultList();
 		LOGGER.debug("Result: {}", result);
 		return result;
 	}

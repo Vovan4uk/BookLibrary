@@ -1,7 +1,6 @@
 package ua.softserve.booklibrary.bean;
 
 import org.apache.commons.lang3.math.NumberUtils;
-import org.richfaces.JsfVersion;
 import ua.softserve.booklibrary.entity.Author;
 import ua.softserve.booklibrary.exception.LibraryException;
 import ua.softserve.booklibrary.manager.AuthorManager;
@@ -94,13 +93,11 @@ public class AuthorAction implements Serializable {
 	}
 
 	public Integer getCountAuthorsByRating(Integer minRating) {
-//		return authorManager.countAuthorsByRating(minRating);
 		return authorClientService.countAuthorsByRating(minRating.toString());
 	}
 
 	public Integer getCountAuthorsWithoutRating() {
-//		return authorManager.countAuthorsWithoutRating(); // todo: it's wrong !! - fixed (uses namedQueries which return count of authors)
-		return authorClientService.countAuthorsWithoutRating();
+		return authorClientService.countAuthorsWithoutRating(); // todo: it's wrong !! - fixed (uses namedQueries which return count of authors)
 	}
 
 	public String getTitle() {

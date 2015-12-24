@@ -10,6 +10,9 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
 import java.io.Serializable;
 
+/**
+ * Book Filtering Bean
+ */
 @ManagedBean
 @ViewScoped
 public class BooksFilteringBean implements Serializable {

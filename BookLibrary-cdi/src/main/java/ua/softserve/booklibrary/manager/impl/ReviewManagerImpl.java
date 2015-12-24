@@ -14,6 +14,12 @@ import javax.ejb.TransactionAttributeType;
 import javax.inject.Named;
 import java.util.List;
 
+/**
+ * Review Manager implementation.
+ * This bean encapsulate business logic.
+ *
+ * @see ua.softserve.booklibrary.manager.ReviewManager
+ */
 @Named
 @Stateless
 @TransactionAttribute(TransactionAttributeType.REQUIRED)

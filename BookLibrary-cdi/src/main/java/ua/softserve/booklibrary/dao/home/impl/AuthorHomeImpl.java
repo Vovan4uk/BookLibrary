@@ -18,6 +18,11 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
+/**
+ * Author Home Bean
+ *
+ * @see ua.softserve.booklibrary.dao.home.AuthorHome
+ */
 @Named
 @Stateless
 public class AuthorHomeImpl extends GenericHomeImpl<Author> implements AuthorHome {

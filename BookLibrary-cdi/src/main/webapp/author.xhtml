@@ -18,12 +18,24 @@
                         id="authorPane" rendered="#{null ne authorAction.currentAuthor}">
 
                 <rich:messages globalOnly="true"/><br/>
-                <h:inputText value="#{authorAction.currentAuthor.firstName}" id="afirstName">
-                    <rich:validator/>
-                </h:inputText><br/>
-                <h:inputText value="#{authorAction.currentAuthor.secondName}" id="asecondName">
-                    <rich:validator/>
-                </h:inputText><br/>
+
+                <h:panelGrid columns="3" id="editGrid1">
+                    <h:panelGroup>
+                        <h:outputText value="First name:"/>
+                        <h:outputText style="color: red" value="*"/>
+                    </h:panelGroup>
+                    <h:inputText value="#{authorAction.currentAuthor.firstName}" id="afirstName">
+                        <rich:validator/>
+                    </h:inputText>
+                    <rich:message id="firstNameMsg" for="afirstName"/>
+                    <h:outputText value="First name:"/>
+                    <h:inputText value="#{authorAction.currentAuthor.secondName}" id="asecondName">
+                        <rich:validator/>
+                    </h:inputText>
+                    <rich:message id="secondNameMsg" for="asecondName"/>
+                </h:panelGrid>
+
+
                 <a4j:commandButton value="Update" action="#{authorAction.update}" render="editPane"
                                    oncomplete="if (#{facesContext.maximumSeverity.ordinal==0
                                    or facesContext.maximumSeverity==null}) {redirectToAuthorList()}">

@@ -227,25 +227,31 @@
                                  height="350" onmaskclick="#{rich:component('editPane')}.hide()">
                     <rich:messages globalOnly="true"/>
                     <h:panelGrid columns="3" id="editGrid">
-                        <h:outputText value="Name"/>
+                        <h:panelGroup>
+                            <h:outputText value="Name:"/>
+                            <h:outputText style="color: red" value="*"/>
+                        </h:panelGroup>
                         <h:inputText value="#{bookAction.currentBook.name}" id="name">
                             <rich:validator/>
                         </h:inputText>
                         <rich:message id="nameMsg" for="name"/>
 
-                        <h:outputText value="Publisher"/>
+                        <h:outputText value="Publisher:"/>
                         <h:inputText value="#{bookAction.currentBook.publisher}" id="publisher" label="publisher">
                             <rich:validator/>
                         </h:inputText>
                         <rich:message id="publisherMsg" for="publisher"/>
 
-                        <h:outputText value="Published Date"/>
+                        <h:outputText value="Published Date: "/>
                         <rich:calendar id="publishedDate" datePattern="yyyy-MM-dd"
                                        value="#{bookAction.currentBook.publishedDate}">
                             <rich:validator/>
                         </rich:calendar>
                         <rich:message for="publishedDate" id="publisherDateMsg"/>
-                        <h:outputText value="ISBN"/>
+                        <h:panelGroup>
+                            <h:outputText value="ISBN:"/>
+                            <h:outputText style="color: red" value="*"/>
+                        </h:panelGroup>
                         <h:inputText value="#{bookAction.currentBook.isbn}" id="isbn" label="isbn">
                             <rich:validator/>
                         </h:inputText>
@@ -269,7 +275,10 @@
                                  height="350" onmaskclick="#{rich:component('createPane')}.hide()">
                     <rich:messages globalOnly="true"/>
                     <h:panelGrid columns="3" id="createGrid">
-                        <h:outputText value="Name:"/>
+                        <h:panelGroup>
+                            <h:outputText value="Name:"/>
+                            <h:outputText style="color: red" value="*"/>
+                        </h:panelGroup>
                         <h:inputText value="#{bookAction.newBook.name}" id="addName" label="name">
                             <rich:validator/>
                         </h:inputText>
@@ -285,7 +294,10 @@
                             <rich:validator/>
                         </rich:calendar>
                         <rich:message for="addPublishedDate"/>
-                        <h:outputText value="ISBN:"/>
+                        <h:panelGroup>
+                            <h:outputText value="ISBN:"/>
+                            <h:outputText style="color: red" value="*"/>
+                        </h:panelGroup>
                         <h:inputText value="#{bookAction.newBook.isbn}" id="addIsbn" label="isbn">
                             <rich:validator/>
                         </h:inputText>
