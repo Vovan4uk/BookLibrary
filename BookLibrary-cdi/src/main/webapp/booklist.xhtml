@@ -115,8 +115,7 @@
                         <f:facet name="header">
                             <h:outputText value="Average rating"/>
                         </f:facet>
-                        <script src="http://localhost:8080/BookLibrary-cdi/js/jquery.rating.js" type="text/javascript"
-                                language="javascript"></script>
+                        <script src="js/jquery.rating.js" type="text/javascript" language="javascript"></script>
                         <a4j:repeat value="#{bookAction.ratingList}" var="rating">
                             <h:panelGroup
                                     rendered="#{(book.averageRating ge rating and book.averageRating lt rating+1)}">

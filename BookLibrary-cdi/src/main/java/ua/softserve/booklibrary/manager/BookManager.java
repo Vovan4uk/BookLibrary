@@ -65,7 +65,7 @@ public interface BookManager extends GenericManager<Book> {
 	 * @param byRating - average rating.
 	 * @return List<Book> - list entities
 	 */
-	List<Book> findAll(String byRating);
+	List<Book> findByRating(String byRating);
 
 	/**
 	 * Get count of Book entities which average rating between minRating and maxRating.
@@ -73,7 +73,7 @@ public interface BookManager extends GenericManager<Book> {
 	 * @param minRating - minimal rating. Maximal rating <= minRating + 1.
 	 * @return Integer - count of entities
 	 */
-	Integer countBooksByRating(Integer minRating);
+	Integer countBooksByRating(String minRating);
 
 	/**
 	 * Get count of Book entities without average rating.

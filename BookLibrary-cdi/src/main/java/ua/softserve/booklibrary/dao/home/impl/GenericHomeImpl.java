@@ -22,7 +22,6 @@ import java.util.Collection;
  *
  * @see ua.softserve.booklibrary.dao.home.GenericHome
  */
-//todo: @TransactionAttribute ? - fixed
 @TransactionAttribute(TransactionAttributeType.REQUIRED)
 public abstract class GenericHomeImpl<T extends LibraryEntity> implements GenericHome<T> {
 
@@ -46,21 +45,21 @@ public abstract class GenericHomeImpl<T extends LibraryEntity> implements Generi
 			throw new LibraryException(errorMessage);
 		}
 		try {
-			em.persist(entity); // todo: NPE - fixed
+			em.persist(entity);
 			LOGGER.debug("Saved object: {}", entity);
 			return entity;
-		} catch (EntityExistsException e) { // todo: why catch only this exception? - fixed
+		} catch (EntityExistsException e) {
 			String errorMessage = "Save unsuccessful. '" + entity + "' is already exist";
-			LOGGER.error(errorMessage);
-			throw new LibraryException(errorMessage);
+			LOGGER.error(errorMessage, e);     // todo: add variable e to logging (for all classes & places) - fixed
+			throw new LibraryException(errorMessage, e);   // todo: lose stacktrace - fixed
 		} catch (IllegalArgumentException e) {
 			String errorMessage = "Save unsuccessful. '" + entity + "' is not valid";
-			LOGGER.error(errorMessage);
-			throw new LibraryException(errorMessage);
+			LOGGER.error(errorMessage, e);
+			throw new LibraryException(errorMessage, e);
 		} catch (EJBException | PersistenceException | HibernateException e) {
 			String errorMessage = "Save '" + entityClass.getCanonicalName() + "' unsuccessful. " + e.getMessage();
-			LOGGER.error(errorMessage);
-			throw new LibraryException(errorMessage);
+			LOGGER.error(errorMessage, e);
+			throw new LibraryException(errorMessage, e);
 		}
 	}
 
@@ -72,18 +71,23 @@ public abstract class GenericHomeImpl<T extends LibraryEntity> implements Generi
 			LOGGER.error(errorMessage);
 			throw new LibraryException(errorMessage);
 		}
+		if (entity.getId() == null) {
+			String errorMessage = "Update unsuccessful. '" + entityClass.getCanonicalName() + "' primary key is empty";
+			LOGGER.error(errorMessage);
+			throw new LibraryException(errorMessage);
+		}
 		try {
-			em.merge(entity); // todo: NPE (2 cases: entity and entity.id) - fixed (can't validate 'id'. parent class hasn't this param. child classes use sequence.)
+			em.merge(entity); // todo: entity.id == null ? - fixed
 			LOGGER.debug("Updated: {}", entity);
 			return entity;
 		} catch (IllegalArgumentException e) {
 			String errorMessage = "Update unsuccessful. '" + entity + "' do not exist";
-			LOGGER.error(errorMessage);
-			throw new LibraryException(errorMessage);
+			LOGGER.error(errorMessage, e);
+			throw new LibraryException(errorMessage, e);
 		} catch (EJBException | PersistenceException | HibernateException e) {
 			String errorMessage = "Update '" + entityClass.getCanonicalName() + "' unsuccessful. " + e.getMessage();
-			LOGGER.error(errorMessage);
-			throw new LibraryException(errorMessage);
+			LOGGER.error(errorMessage, e);
+			throw new LibraryException(errorMessage, e);
 		}
 	}
 
@@ -95,20 +99,20 @@ public abstract class GenericHomeImpl<T extends LibraryEntity> implements Generi
 			throw new LibraryException(errorMessage);
 		}
 		try {
-			em.remove(em.getReference(entityClass, id));    // todo: NPE? -fixed (EntityNotFoundException,IllegalArgumentException catch)
+			em.remove(em.getReference(entityClass, id));
 			LOGGER.debug("Remove '{}' with primary key '{}'", entityClass.getCanonicalName(), id);
 		} catch (EntityNotFoundException e) {
 			String errorMessage = "Remove unsuccessful. '" + entityClass.getCanonicalName() + "' with primary key '" + id + "' don't exist";
-			LOGGER.error(errorMessage);
-			throw new LibraryException(errorMessage);
+			LOGGER.error(errorMessage, e);
+			throw new LibraryException(errorMessage, e);
 		} catch (IllegalArgumentException e) {
 			String errorMessage = "Remove unsuccessful. '" + entityClass.getCanonicalName() + "' with PK '" + id + "' is already removed or detached";
-			LOGGER.error(errorMessage);
-			throw new LibraryException(errorMessage);
+			LOGGER.error(errorMessage, e);
+			throw new LibraryException(errorMessage, e);
 		} catch (EJBException | HibernateException | PersistenceException e) {
 			String errorMessage = "Remove '" + entityClass.getCanonicalName() + "' unsuccessful. " + e.getMessage();
-			LOGGER.error(errorMessage);
-			throw new LibraryException(errorMessage);
+			LOGGER.error(errorMessage, e);
+			throw new LibraryException(errorMessage, e);
 		}
 	}
 
@@ -127,8 +131,8 @@ public abstract class GenericHomeImpl<T extends LibraryEntity> implements Generi
 			LOGGER.debug("Remove '{}' successful", entityClass.getCanonicalName());
 		} catch (EJBException | PersistenceException | HibernateException e) {
 			String errorMessage = "Remove collection '" + entityClass.getCanonicalName() + "' unsuccessful. " + e.getMessage();
-			LOGGER.error(errorMessage);
-			throw new LibraryException(errorMessage);
+			LOGGER.error(errorMessage, e);
+			throw new LibraryException(errorMessage, e);
 		}
 	}
 }

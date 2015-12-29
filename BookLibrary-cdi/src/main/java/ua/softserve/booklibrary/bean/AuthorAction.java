@@ -28,9 +28,9 @@ public class AuthorAction implements Serializable {
 	private static final long serialVersionUID = 3795838153393063077L;
 
 	@EJB
-	private transient AuthorManager authorManager;    //todo: transient - fixed
+	private transient AuthorManager authorManager;
 	@Inject
-	private transient AuthorClientService authorClientService;    //todo: transient - fixed
+	private transient AuthorClientService authorClientService;
 
 	private List<Author> authors;
 	private Author newAuthor = new Author();
@@ -92,12 +92,22 @@ public class AuthorAction implements Serializable {
 		initAuthors();
 	}
 
-	public Integer getCountAuthorsByRating(Integer minRating) {
-		return authorClientService.countAuthorsByRating(minRating.toString());
+	public Integer getCountAuthorsByRating(String minRating) {
+		try {
+			return authorClientService.countAuthorsByRating(minRating);
+		} catch (EJBException | LibraryException e) {
+			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Can't find authors.", e.getMessage()));
+			return 0;
+		}
 	}
 
 	public Integer getCountAuthorsWithoutRating() {
-		return authorClientService.countAuthorsWithoutRating(); // todo: it's wrong !! - fixed (uses namedQueries which return count of authors)
+		try {
+			return authorClientService.countAuthorsWithoutRating();
+		} catch (EJBException | LibraryException e) {
+			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Can't find authors.", e.getMessage()));
+			return 0;
+		}
 	}
 
 	public String getTitle() {
@@ -137,10 +147,15 @@ public class AuthorAction implements Serializable {
 	}
 
 	private void initAuthors() {
-		if (getByRating() == null) {
-			authors = authorClientService.findAllAuthors();
-		} else {
-			authors = authorClientService.findAuthorsByRating(getByRating());
+		try {
+			if (getByRating() == null) {
+				authors = authorClientService.findAllAuthors();
+			} else {
+				authors = authorClientService.findAuthorsByRating(getByRating());
+			}
+		} catch (EJBException | LibraryException e) {
+			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Can't find authors.", e.getMessage()));
+			authors = new ArrayList<>();
 		}
 		initCheckMap();
 	}

@@ -32,7 +32,7 @@ public interface AuthorManager extends GenericManager<Author> {
 	 * @param minRating - minimal rating. Maximal rating <= minRating + 1.
 	 * @return Integer - count of entities
 	 */
-	Integer countAuthorsByRating(Integer minRating);
+	Integer countAuthorsByRating(String minRating);
 
 	/**
 	 * Get count of Author entities without average rating.
@@ -47,5 +47,5 @@ public interface AuthorManager extends GenericManager<Author> {
 	 * @param byRating - average rating.
 	 * @return List<Author> - list entities
 	 */
-	List<Author> findAll(String byRating);
+	List<Author> findByRating(String byRating);
 }

@@ -34,7 +34,7 @@ public class AuthorServiceImpl implements AuthorService {
 	@Override
 	public Response getAuthorsByRating(String rating) {
 		try {
-			List<Author> authors = authorManager.findAll(rating);
+			List<Author> authors = authorManager.findByRating(rating);
 			for (Author author : authors) {
 				author.setBooks(null);
 			}
@@ -47,7 +47,7 @@ public class AuthorServiceImpl implements AuthorService {
 	@Override
 	public Response countAuthorsByRating(String rating) {
 		try {
-			Integer count = authorManager.countAuthorsByRating(NumberUtils.toInt(rating));
+			Integer count = authorManager.countAuthorsByRating(rating);
 			return Response.accepted(count).build();
 		} catch (EJBException | LibraryException e) {
 			return Response.status(422).entity(e.getMessage()).build();

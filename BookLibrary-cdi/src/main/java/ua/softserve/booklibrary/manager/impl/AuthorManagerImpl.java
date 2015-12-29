@@ -42,10 +42,9 @@ public class AuthorManagerImpl implements AuthorManager {
 
 	@Override
 	@TransactionAttribute(TransactionAttributeType.REQUIRED)
-	// todo: why REQUIRES_NEW ? - fixed (in our case there is always new transaction)
 	public Author save(Author author) {
 		if (authorFacade.isAuthorExist(author)) {
-			String errorMessage = "Save unsuccessful. Author '" + author + "' is already exist"; // todo; need more info about author - fixed
+			String errorMessage = "Save unsuccessful. Author '" + author + "' is already exist";
 			LOGGER.error(errorMessage);
 			throw new LibraryException(errorMessage);
 		}
@@ -57,7 +56,7 @@ public class AuthorManagerImpl implements AuthorManager {
 	@TransactionAttribute(TransactionAttributeType.REQUIRED)
 	public Author update(Author author) {
 		if (authorFacade.isAuthorExist(author)) {
-			String errorMessage = "Update unsuccessful. Author '" + author + "' is already exist";   // todo; need more info about author - fixed
+			String errorMessage = "Update unsuccessful. Author '" + author + "' is already exist";
 			LOGGER.error(errorMessage);
 			throw new LibraryException(errorMessage);
 		}
@@ -76,14 +75,16 @@ public class AuthorManagerImpl implements AuthorManager {
 	@TransactionAttribute(TransactionAttributeType.REQUIRED)
 	public void removeAll(List<Author> authors) {
 		LOGGER.debug("Remove list Authors: {}", authors);
-		authorHome.removeAll(authors);   // todo: really need to create Set ? - fixed
+		authorHome.removeAll(authors);
 	}
 
 	@Override
 	@TransactionAttribute(TransactionAttributeType.REQUIRED)
 	public Author findByPk(Long id) {
 		LOGGER.debug("Find author by primary key: {}", id);
-		return initAuthor(authorFacade.findByPk(id));
+		Author author = authorFacade.findByPk(id);
+		author.getBooks().size();   //todo: move this code to findByPk() - fixed
+		return author;
 	}
 
 	@Override
@@ -93,14 +94,14 @@ public class AuthorManagerImpl implements AuthorManager {
 	}
 
 	@Override
-	public List<Author> findAll(String byRating) {
+	public List<Author> findByRating(String byRating) { // todo: findByRating - fixed
 		LOGGER.debug("Find authors by rating");
 		return getAuthors(byRating);
 	}
 
 	private List<Author> getAuthors(String byRating) {
 		List<Author> resultList;
-		Integer rating = NumberUtils.toInt(byRating);
+		Integer rating = NumberUtils.toInt(byRating, 6);
 		if (rating == 0) {
 			resultList = findAuthorsWithoutRating();
 		} else if (rating > 0 && rating <= 5) {
@@ -124,7 +125,7 @@ public class AuthorManagerImpl implements AuthorManager {
 	}
 
 	@Override
-	public Integer countAuthorsByRating(Integer minRating) {
+	public Integer countAuthorsByRating(String minRating) {
 		LOGGER.debug("Count authors with rating {}", minRating);
 		return authorFacade.countAuthorsByRating(minRating);
 	}
@@ -133,13 +134,5 @@ public class AuthorManagerImpl implements AuthorManager {
 	public Integer countAuthorsWithoutRating() {
 		LOGGER.debug("Count authors without rating");
 		return authorFacade.countAuthorsWithoutRating();
-	}
-
-	//todo: really need to init all books? - fixed (delete method)
-
-	private Author initAuthor(Author author) {    //todo: really need to init all reviews? - fixed (init only books for authorDetails page)
-		LOGGER.debug("Initialize book list (Books is lazy init)");
-		author.getBooks().size();
-		return author;
 	}
 }

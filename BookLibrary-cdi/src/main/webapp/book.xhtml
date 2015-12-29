@@ -146,8 +146,7 @@
                         </f:facet>
                             <h:outputText value="#{review.commenterName}"/><br/>
                             <h:outputText value="#{review.createDate}"/><br/>
-                        <script src="http://localhost:8080/BookLibrary-cdi/js/jquery.rating.js" type="text/javascript"
-                                language="javascript"></script>
+                        <script src="js/jquery.rating.js" type="text/javascript" language="javascript"></script>
                         <a4j:repeat value="#{bookAction.ratingList}" var="rating">
                             <h:panelGroup rendered="#{rating eq review.rating}">
                                 <input disabled="disabled" class="star required" type="radio"
@@ -224,8 +223,7 @@
                         <rich:message id="commenterNameMsg" for="commenterName"/>
                         <h:outputText value="Rating:"/>
                         <h:panelGroup>
-                            <script src="http://localhost:8080/BookLibrary-cdi/js/jquery.rating.js"
-                                    type="text/javascript" language="javascript"></script>
+                            <script src="js/jquery.rating.js" type="text/javascript" language="javascript"></script>
                             <a4j:repeat value="#{bookAction.ratingList}" var="rating">
                                 <h:panelGroup rendered="#{rating eq bookAction.currentReview.rating}">
                                     <input class="star required" type="radio" name="ratingUpdate" value="#{rating}"

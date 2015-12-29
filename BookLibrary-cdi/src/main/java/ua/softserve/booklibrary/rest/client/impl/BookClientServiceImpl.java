@@ -13,12 +13,12 @@ import javax.ws.rs.core.Response;
 @RequestScoped
 public class BookClientServiceImpl implements BookClientService {
 
-	private final String target = "http://localhost:8080/BookLibrary-cdi/rest/book";
-	private final Client client = ClientBuilder.newClient();
+	private static final String TARGET = "http://localhost:8080/BookLibrary-cdi/rest/book";     // todo: static - fixed
+	private static final Client CLIENT = ClientBuilder.newClient();     // todo: static - fixed
 
 	@Override
 	public Integer countBooksByRating(String rating) {
-		Response response = client.target(target)
+		Response response = CLIENT.target(TARGET)
 				.path("count/byRating")
 				.path(rating)
 				.request()
@@ -31,7 +31,7 @@ public class BookClientServiceImpl implements BookClientService {
 
 	@Override
 	public Integer countBooksWithoutRating() {
-		Response response = client.target(target)
+		Response response = CLIENT.target(TARGET)
 				.path("count/withoutRating")
 				.request()
 				.get();

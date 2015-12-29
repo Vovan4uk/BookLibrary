@@ -34,7 +34,7 @@ public abstract class GenericFacadeImpl<T extends LibraryEntity> implements Gene
 	@Override
 	public T findByPk(Long id) {
 		if (id == null) {
-			String errorMessage = entityClass.getSimpleName() + " cannot be find by null primary key"; // todo: add class name to message - fixed
+			String errorMessage = entityClass.getSimpleName() + " cannot be find by null primary key";
 			LOGGER.error(errorMessage);
 			throw new LibraryException(errorMessage);
 		}
@@ -50,8 +50,8 @@ public abstract class GenericFacadeImpl<T extends LibraryEntity> implements Gene
 			return entity;
 		} catch (IllegalArgumentException e) {
 			String errorMessage = entityClass.getSimpleName() + " cannot be find by primary key" + e.getMessage();
-			LOGGER.error(errorMessage);
-			throw new LibraryException(errorMessage);
+			LOGGER.error(errorMessage, e);
+			throw new LibraryException(errorMessage, e);
 		}
 	}
 
@@ -61,12 +61,12 @@ public abstract class GenericFacadeImpl<T extends LibraryEntity> implements Gene
 		LOGGER.debug("Find all '{}' objects", entityClass.getCanonicalName());
 		try {
 			List<T> resultList = em.createQuery("select e from " + entityClass.getName() + " e").getResultList();
-			LOGGER.debug("Result list: {}", resultList);
+			LOGGER.debug("Result list: {}", resultList);    // todo: LOGGER.trace
 			return resultList;
 		} catch (IllegalArgumentException e) {
 			String errorMessage = "Find all '" + entityClass.getCanonicalName() + "' unsuccessful. " + e.getMessage();
-			LOGGER.error(errorMessage);
-			throw new LibraryException(errorMessage);
+			LOGGER.error(errorMessage, e);
+			throw new LibraryException(errorMessage, e);
 		}
 	}
 

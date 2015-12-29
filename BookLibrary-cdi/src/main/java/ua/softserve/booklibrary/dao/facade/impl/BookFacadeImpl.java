@@ -1,6 +1,7 @@
 package ua.softserve.booklibrary.dao.facade.impl;
 
 import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.math.NumberUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import ua.softserve.booklibrary.dao.facade.BookFacade;
@@ -38,6 +39,11 @@ public class BookFacadeImpl extends GenericFacadeImpl<Book> implements BookFacad
 
 	@Override
 	public List<Book> findBooksByRating(Integer minRating) {
+		if (minRating == null || minRating < 1 || minRating > 5) {
+			String message = "MinRating '" + minRating + "' is not valid.";
+			LOGGER.error(message);
+			throw new LibraryException(message);
+		}
 		Integer maxRating = minRating + 1;
 		LOGGER.debug("Find books by rating between ({} and {})", minRating, maxRating);
 		List<Book> result = em.createNamedQuery("Book.findBooksByRating", Book.class).setParameter("minRating", minRating.doubleValue()).setParameter("maxRating", maxRating.doubleValue()).getResultList();
@@ -54,10 +60,19 @@ public class BookFacadeImpl extends GenericFacadeImpl<Book> implements BookFacad
 	}
 
 	@Override
-	public Integer countBooksByRating(Integer minRating) {
+	public Integer countBooksByRating(String minRatingString) {
+		Integer minRating = NumberUtils.toInt(minRatingString);
+		if (minRating < 1 || minRating > 5) {
+			String message = "MinRating '" + minRatingString + "' is not valid.";
+			LOGGER.error(message);
+			throw new LibraryException(message);
+		}
 		Integer maxRating = minRating + 1;
 		LOGGER.debug("Count books by rating between ({} and {})", minRating, maxRating);
-		Integer result = em.createNamedQuery("Book.countBooksByRating", Number.class).setParameter("minRating", minRating.doubleValue()).setParameter("maxRating", maxRating.doubleValue()).getSingleResult().intValue();
+		Integer result = em.createNamedQuery("Book.countBooksByRating", Number.class)
+				.setParameter("minRating", minRating.doubleValue())
+				.setParameter("maxRating", maxRating.doubleValue())
+				.getSingleResult().intValue();
 		LOGGER.debug("Result: {}", result);
 		return result;
 	}
@@ -122,5 +137,4 @@ public class BookFacadeImpl extends GenericFacadeImpl<Book> implements BookFacad
 				.setParameter("id", book.getId())
 				.getSingleResult();
 	}
-
 }

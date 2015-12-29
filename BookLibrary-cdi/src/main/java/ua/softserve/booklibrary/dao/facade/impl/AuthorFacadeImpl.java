@@ -1,6 +1,7 @@
 package ua.softserve.booklibrary.dao.facade.impl;
 
 import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.math.NumberUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import ua.softserve.booklibrary.dao.facade.AuthorFacade;
@@ -30,9 +31,17 @@ public class AuthorFacadeImpl extends GenericFacadeImpl<Author> implements Autho
 
 	@Override
 	public List<Author> findAuthorsByRating(Integer minRating) {
+		if (minRating == null || minRating < 1 || minRating > 5) {
+			String message = "MinRating '" + minRating + "' is not valid.";
+			LOGGER.error(message);
+			throw new LibraryException(message);
+		}
 		Integer maxRating = minRating + 1;
 		LOGGER.debug("Find authors by rating between ({} and {})", minRating, maxRating);
-		List<Author> resultList = em.createNamedQuery("Author.findAuthorsByRating", Author.class).setParameter("minRating", minRating.doubleValue()).setParameter("maxRating", maxRating.doubleValue()).getResultList();
+		List<Author> resultList = em.createNamedQuery("Author.findAuthorsByRating", Author.class)
+				.setParameter("minRating", minRating.doubleValue())
+				.setParameter("maxRating", maxRating.doubleValue())
+				.getResultList();
 		LOGGER.debug("Result list: {}", resultList);
 		return resultList;
 	}
@@ -46,7 +55,13 @@ public class AuthorFacadeImpl extends GenericFacadeImpl<Author> implements Autho
 	}
 
 	@Override
-	public Integer countAuthorsByRating(Integer minRating) {
+	public Integer countAuthorsByRating(String minRatingString) {
+		Integer minRating = NumberUtils.toInt(minRatingString);
+		if (minRating < 1 || minRating > 5) {
+			String message = "MinRating '" + minRatingString + "' is not valid.";
+			LOGGER.error(message);
+			throw new LibraryException(message);
+		}
 		Integer maxRating = minRating + 1;
 		LOGGER.debug("Count authors by rating between ({} and {})", minRating, maxRating);
 		Integer result = em.createNamedQuery("Author.countAuthorsByRating", Number.class).setParameter("minRating", minRating.doubleValue()).setParameter("maxRating", maxRating.doubleValue()).getSingleResult().intValue();

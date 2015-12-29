@@ -18,12 +18,12 @@ import java.util.List;
 @RequestScoped
 public class AuthorClientServiceImpl implements AuthorClientService {
 
-	private final String target = "http://localhost:8080/BookLibrary-cdi/rest/author";    // todo: final - fixed
-	private final Client client = ClientBuilder.newClient();  // todo: final - fixed
+	private static final String TARGET = "http://localhost:8080/BookLibrary-cdi/rest/author";    // todo: static - fixed
+	private static final Client CLIENT = ClientBuilder.newClient();  // todo: static - fixed
 
 	@Override
 	public Author findAuthorByPk(Long id) {
-		Response response = client.target(target)
+		Response response = CLIENT.target(TARGET)
 				.path(id.toString())
 				.request()
 				.get();
@@ -35,7 +35,7 @@ public class AuthorClientServiceImpl implements AuthorClientService {
 
 	@Override
 	public List<Author> findAuthorsByRating(String rating) {
-		Response response = client.target(target)
+		Response response = CLIENT.target(TARGET)
 				.path("byRating")
 				.path(rating)
 				.request()
@@ -49,7 +49,7 @@ public class AuthorClientServiceImpl implements AuthorClientService {
 
 	@Override
 	public Integer countAuthorsByRating(String rating) {
-		Response response = client.target(target)
+		Response response = CLIENT.target(TARGET)
 				.path("count/byRating")
 				.path(rating)
 				.request()
@@ -62,7 +62,7 @@ public class AuthorClientServiceImpl implements AuthorClientService {
 
 	@Override
 	public Integer countAuthorsWithoutRating() {
-		Response response = client.target(target)
+		Response response = CLIENT.target(TARGET)
 				.path("count/withoutRating")
 				.request()
 				.get();
@@ -74,7 +74,7 @@ public class AuthorClientServiceImpl implements AuthorClientService {
 
 	@Override
 	public List<Author> findAllAuthors() {
-		Response response = client.target(target)
+		Response response = CLIENT.target(TARGET)
 				.path("all")
 				.request()
 				.get();
@@ -87,7 +87,7 @@ public class AuthorClientServiceImpl implements AuthorClientService {
 
 	@Override
 	public void saveAuthor(Author author) {
-		Response response = client.target(target)
+		Response response = CLIENT.target(TARGET)
 				.request()
 				.post(Entity.entity(author, MediaType.APPLICATION_JSON));
 		if (response.getStatus() == 422) {
@@ -98,7 +98,7 @@ public class AuthorClientServiceImpl implements AuthorClientService {
 
 	@Override
 	public void updateAuthor(Author author) {
-		Response response = client.target(target)
+		Response response = CLIENT.target(TARGET)
 				.request()
 				.put(Entity.entity(author, MediaType.APPLICATION_JSON));
 		if (response.getStatus() == 422) {
@@ -109,7 +109,7 @@ public class AuthorClientServiceImpl implements AuthorClientService {
 
 	@Override
 	public void removeAuthor(Long id) {
-		Response response = client.target(target)
+		Response response = CLIENT.target(TARGET)
 				.path(id.toString())
 				.request()
 				.delete();

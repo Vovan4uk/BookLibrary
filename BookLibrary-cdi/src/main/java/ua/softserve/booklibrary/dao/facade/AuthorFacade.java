@@ -33,7 +33,7 @@ public interface AuthorFacade extends GenericFacade<Author> {
 	 * @param minRating - minimal rating. Maximal rating <= minRating + 1.
 	 * @return Integer - count of entities
 	 */
-	Integer countAuthorsByRating(Integer minRating);
+	Integer countAuthorsByRating(String minRating);
 
 	/**
 	 * Get count of Author entities without average rating.

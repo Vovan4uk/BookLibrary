@@ -1,4 +1,6 @@
 body {
+	background: url("back.jpg") top center no-repeat;
+	background-size: cover;
 }
 
 td.top_right_column {
@@ -74,3 +76,12 @@ td.right_column {
 	color: #000000 !important;
 }
 
+div.mainPP {
+	width: 1300px;
+	margin: auto;
+	border: 1px solid #999;
+	border: 1px solid #999;
+	border-radius: 10px;
+	margin-top: 20px;
+	background: #ffeeee url("logo.jpg") 20px 20px no-repeat;
+}

@@ -20,6 +20,8 @@ public abstract class LibraryEntity implements Serializable {
 	@Column(name = "CREATE_DATE", nullable = false, updatable = false)
 	private Date createDate;
 
+	public abstract Long getId();
+
 	@PrePersist
 	protected void onCreate() {
 		createDate = new Date();

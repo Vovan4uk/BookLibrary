@@ -40,7 +40,7 @@ public interface BookFacade extends GenericFacade<Book> {
 	 * @param minRating - minimal rating. Maximal rating <= minRating + 1.
 	 * @return Integer - count of entities
 	 */
-	Integer countBooksByRating(Integer minRating);
+	Integer countBooksByRating(String minRating);
 
 	/**
 	 * Get count of Book entities without average rating.

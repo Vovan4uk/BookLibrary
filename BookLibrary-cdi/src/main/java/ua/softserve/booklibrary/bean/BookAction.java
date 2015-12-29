@@ -170,12 +170,22 @@ public class BookAction implements Serializable {
 		initBook();
 	}
 
-	public Integer getCountBooksByRating(Integer minRating) {
-		return bookClientService.countBooksByRating(minRating.toString());
+	public Integer getCountBooksByRating(String minRating) {
+		try {
+			return bookClientService.countBooksByRating(minRating);
+		} catch (EJBException | LibraryException e) {
+			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Can't find books.", e.getMessage()));
+			return 0;
+		}
 	}
 
 	public Integer getCountBooksWithoutRating() {
-		return bookClientService.countBooksWithoutRating();
+		try {
+			return bookClientService.countBooksWithoutRating();
+		} catch (EJBException | LibraryException e) {
+			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Can't find books.", e.getMessage()));
+			return 0;
+		}
 	}
 
 	public String getTitle() {
@@ -225,10 +235,15 @@ public class BookAction implements Serializable {
 	}
 
 	private void initBooks() {
-		if (getByRating() == null) {
-			books = bookManager.findAll();
-		} else {
-			books = bookManager.findAll(getByRating());
+		try {
+			if (getByRating() == null) {
+				books = bookManager.findAll();
+			} else {
+				books = bookManager.findByRating(getByRating());
+			}
+		} catch (EJBException | LibraryException e) {
+			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Can't find books.", e.getMessage()));
+			authors = new ArrayList<>();
 		}
 		initCheckMap();
 	}
@@ -255,8 +270,13 @@ public class BookAction implements Serializable {
 	}
 
 	public List<Author> getAuthors() {
-		if (authors == null) {
-			authors = authorManager.findAll();
+		try {
+			if (authors == null) {
+				authors = authorManager.findAll();
+			}
+		} catch (EJBException | LibraryException e) {
+			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Can't find authors.", e.getMessage()));
+			authors = new ArrayList<>();
 		}
 		return authors;
 	}
@@ -316,26 +336,39 @@ public class BookAction implements Serializable {
 
 	private void initSelectedAuthorIds() {
 		selectedAuthorIds.clear();
-		if (!currentBook.getAuthors().isEmpty()) {
-			for (Author author : currentBook.getAuthors()) {
-				selectedAuthorIds.add(author.getId());
-			}
+		for (Author author : currentBook.getAuthors()) {  // todo useless 'if' - fixed
+			selectedAuthorIds.add(author.getId());
 		}
 	}
 
 	public List<Book> getHotReleases() {
-		if (hotReleases == null) {
-			hotReleases = bookManager.findHotReleases();
+		try {
+			if (hotReleases == null) {
+				hotReleases = bookManager.findHotReleases();
+			}
+		} catch (EJBException | LibraryException e) {
+			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Can't find Hot Releases.", e.getMessage()));
+			hotReleases = new ArrayList<>();
 		}
 		return hotReleases;
 	}
 
 	public List<Book> getLatestBooksByAuthorId(Long id, Integer count) {
-		return bookManager.findLatestBooksByAuthorId(id, count);
+		try {
+			return bookManager.findLatestBooksByAuthorId(id, count);
+		} catch (EJBException | LibraryException e) {
+			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Can't find Latest book.", e.getMessage()));
+			return new ArrayList<>();
+		}
 	}
 
 	public List<Book> getBestBooksByAuthorId(Long id, Integer count) {
-		return bookManager.findBestBooksByAuthorId(id, count);
+		try {
+			return bookManager.findBestBooksByAuthorId(id, count);
+		} catch (EJBException | LibraryException e) {
+			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Can't find Best book.", e.getMessage()));
+			return new ArrayList<>();
+		}
 	}
 
 	public void resetValues() {

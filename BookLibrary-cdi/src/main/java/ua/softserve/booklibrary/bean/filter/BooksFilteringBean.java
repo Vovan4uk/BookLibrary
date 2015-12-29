@@ -23,13 +23,15 @@ public class BooksFilteringBean implements Serializable {
 	@EJB
 	private AuthorManager authorManager;
 
-	public boolean getFilterAuthorImpl(Object current) {    // todo: refactoring! - fixed
+	public boolean getFilterAuthorImpl(Object current) {
+		// todo: Is this field really need? - fixed
 		Book currentBook = (Book) current;
 		if (StringUtils.isEmpty(authorFilter)) {
 			result = true;
 		} else {
 			for (Author author : currentBook.getAuthors()) {
 				result = StringUtils.containsIgnoreCase((author.getFirstName() + " " + author.getSecondName()), authorFilter);
+				if (result) break;
 			}
 		}
 		return result;

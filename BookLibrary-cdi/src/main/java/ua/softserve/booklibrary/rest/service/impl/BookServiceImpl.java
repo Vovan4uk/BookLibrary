@@ -22,7 +22,7 @@ public class BookServiceImpl implements BookService {
 	@Override
 	public Response countBooksByRating(String rating) {
 		try {
-			Integer count = bookManager.countBooksByRating(NumberUtils.toInt(rating));
+			Integer count = bookManager.countBooksByRating(rating);
 			return Response.accepted(count).build();
 		} catch (EJBException | LibraryException e) {
 			return Response.status(422).entity(e.getMessage()).build();

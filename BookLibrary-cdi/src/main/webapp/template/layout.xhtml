@@ -8,16 +8,13 @@
     <title><ui:insert name="title">#{msgs.BookLibraryTitle}</ui:insert></title>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
     <link rel="stylesheet" href="css/template.css" type="text/css"/>
-    <script src="http://localhost:8080/BookLibrary-cdi/js/jquery.js" type="text/javascript"></script>
-    <!--
-        <script src="js/jquery.MetaData.js" type="text/javascript" language="javascript"></script>
-    -->
-    <script src="http://localhost:8080/BookLibrary-cdi/js/jquery.rating.js" type="text/javascript"
-            language="javascript"></script>
-    <link href="http://localhost:8080/BookLibrary-cdi/js/jquery.rating.css" type="text/css" rel="stylesheet"/>
+    <link href="js/jquery.rating.css" type="text/css" rel="stylesheet"/>
+    <script src="js/jquery.js" type="text/javascript"></script>
+    <script src="js/jquery.rating.js" type="text/javascript" language="javascript"></script>
 </h:head>
 <ui:insert name="extraHeaderContent"/>
 <h:body>
+    <rich:panel styleClass="mainPP">
     <h:panelGrid columns="2" columnClasses="top_left_column,top_right_column" width="100%">
         <rich:panel>
             <ui:insert name="title">#{msgs.BookLibraryTitle}</ui:insert>
@@ -25,20 +22,16 @@
         <ui:include src="menu.xhtml"/>
     </h:panelGrid>
 
-    <!--
         <h:panelGrid columns="2" columnClasses="left_column,right_column" width="100%">
             <ui:include src="hot-releases.xhtml"/>
-    -->
         <h:panelGroup>
             <ui:insert name="body">#{msgs.DefaultBodyText}</ui:insert>
         </h:panelGroup>
-    <!--
         </h:panelGrid>
-    -->
 
     <h:panelGrid columns="1" columnClasses="footer_column" width="100%">
         <ui:include src="footer.xhtml"/>
     </h:panelGrid>
-
+    </rich:panel>
 </h:body>
 </html>

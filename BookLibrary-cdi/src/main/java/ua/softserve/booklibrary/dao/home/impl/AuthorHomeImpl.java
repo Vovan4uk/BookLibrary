@@ -53,16 +53,16 @@ public class AuthorHomeImpl extends GenericHomeImpl<Author> implements AuthorHom
 			LOGGER.debug("Remove Author with primary key '{}'", id);
 		} catch (EntityNotFoundException e) {
 			String errorMessage = "Remove unsuccessful. '" + Author.class.getCanonicalName() + "' with primary key '" + id + "' don't exist";
-			LOGGER.error(errorMessage);
-			throw new LibraryException(errorMessage);
+			LOGGER.error(errorMessage, e);
+			throw new LibraryException(errorMessage, e);
 		} catch (IllegalArgumentException e) {
 			String errorMessage = "Remove unsuccessful. '" + Author.class.getCanonicalName() + "' with PK '" + id + "' is already removed or detached";
-			LOGGER.error(errorMessage);
-			throw new LibraryException(errorMessage);
+			LOGGER.error(errorMessage, e);
+			throw new LibraryException(errorMessage, e);
 		} catch (EJBException | HibernateException | PersistenceException e) {
 			String errorMessage = "Remove '" + Author.class.getCanonicalName() + "' unsuccessful. " + e.getMessage();
-			LOGGER.error(errorMessage);
-			throw new LibraryException(errorMessage);
+			LOGGER.error(errorMessage, e);
+			throw new LibraryException(errorMessage, e);
 		}
 	}
 
@@ -87,8 +87,8 @@ public class AuthorHomeImpl extends GenericHomeImpl<Author> implements AuthorHom
 			LOGGER.debug("Remove '{}' successful", Author.class.getCanonicalName());
 		} catch (EJBException | PersistenceException | HibernateException e) {
 			String errorMessage = "Remove collection '" + Author.class.getCanonicalName() + "' unsuccessful. " + e.getMessage();
-			LOGGER.error(errorMessage);
-			throw new LibraryException(errorMessage);
+			LOGGER.error(errorMessage, e);
+			throw new LibraryException(errorMessage, e);
 		}
 	}
 }

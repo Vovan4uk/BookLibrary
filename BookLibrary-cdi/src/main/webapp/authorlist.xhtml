@@ -80,8 +80,7 @@
                             <h:link value="#{book.name}" outcome="/book.xhtml">
                                 <f:param name="id" value="#{book.id}"/>
                             </h:link><br/>
-                            <script src="http://localhost:8080/BookLibrary-cdi/js/jquery.rating.js"
-                                    type="text/javascript" language="javascript"></script>
+                            <script src="js/jquery.rating.js" type="text/javascript" language="javascript"></script>
                             <a4j:repeat value="#{bookAction.ratingList}" var="rating">
                                 <h:panelGroup
                                         rendered="#{(book.averageRating ge rating and book.averageRating lt rating+1)}">
@@ -109,7 +108,7 @@
                             <h:link value="#{book.name}" outcome="/book.xhtml">
                                 <f:param name="id" value="#{book.id}"/>
                             </h:link><br/>
-                            <h:outputText value=" (#{book.publishedDate})">
+                            <h:outputText value=" #{book.publishedDate}">
                                 <f:convertDateTime pattern="yyyy-MM-dd"/>
                             </h:outputText><br/>
                         </a4j:repeat>
@@ -122,7 +121,7 @@
                             <h:outputText value="Average rating"/>
                         </f:facet>
 
-                        <script src="http://localhost:8080/BookLibrary-cdi/js/jquery.rating.js" type="text/javascript"
+                        <script src="js/jquery.rating.js" type="text/javascript"
                                 language="javascript"></script>
                         <a4j:repeat value="#{bookAction.ratingList}" var="rating">
                             <h:panelGroup
@@ -179,7 +178,7 @@
                     </rich:column>
 
                     <f:facet name="footer" id="pagination">
-                        <rich:dataScroller renderIfSinglePage="false" render="mainPane" oncomplete="resetCheckMap()"/>
+                        <rich:dataScroller renderIfSinglePage="false" oncomplete="resetCheckMap()"/>
                     </f:facet>
                 </rich:dataTable>
                 <a4j:jsFunction name="resetCheckMap" action="#{authorAction.initCheckMap()}"
