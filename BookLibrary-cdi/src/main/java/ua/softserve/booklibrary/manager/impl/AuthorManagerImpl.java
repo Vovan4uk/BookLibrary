@@ -135,4 +135,10 @@ public class AuthorManagerImpl implements AuthorManager {
 		LOGGER.debug("Count authors without rating");
 		return authorFacade.countAuthorsWithoutRating();
 	}
+
+	@Override
+	public Integer countAllAuthors() {
+		LOGGER.debug("Count all authors");
+		return authorFacade.countAllAuthors();
+	}
 }

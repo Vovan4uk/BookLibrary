@@ -104,6 +104,7 @@ public class BookAction implements Serializable {
 		}
 		newReview = new Review();
 		initBook();
+		hotReleases = null;
 	}
 
 	private Set<Author> getSelectedAuthors() {
@@ -140,6 +141,7 @@ public class BookAction implements Serializable {
 			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Review can't be update.", e.getMessage()));
 		}
 		initBook();
+		hotReleases = null;
 	}
 
 
@@ -168,6 +170,7 @@ public class BookAction implements Serializable {
 			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Review can't be delete.", e.getMessage()));
 		}
 		initBook();
+		hotReleases = null;
 	}
 
 	public Integer getCountBooksByRating(String minRating) {
@@ -184,6 +187,24 @@ public class BookAction implements Serializable {
 			return bookClientService.countBooksWithoutRating();
 		} catch (EJBException | LibraryException e) {
 			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Can't find books.", e.getMessage()));
+			return 0;
+		}
+	}
+
+	public Integer getCountAllBooks() {
+		try {
+			return bookClientService.countAllBooks();
+		} catch (EJBException | LibraryException e) {
+			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Can't find books.", e.getMessage()));
+			return 0;
+		}
+	}
+
+	public Integer getCountAllReviews() {
+		try {
+			return bookClientService.countAllReviews();
+		} catch (EJBException | LibraryException e) {
+			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Can't find reviews.", e.getMessage()));
 			return 0;
 		}
 	}
@@ -341,13 +362,13 @@ public class BookAction implements Serializable {
 		}
 	}
 
-	public List<Book> getHotReleases() {
+	public List<Book> getMostPopular() {
 		try {
 			if (hotReleases == null) {
-				hotReleases = bookManager.findHotReleases();
+				hotReleases = bookClientService.findMostPopular();
 			}
 		} catch (EJBException | LibraryException e) {
-			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Can't find Hot Releases.", e.getMessage()));
+			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Can't find Most Popular Books.", e.getMessage()));
 			hotReleases = new ArrayList<>();
 		}
 		return hotReleases;

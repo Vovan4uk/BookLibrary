@@ -42,6 +42,13 @@ public interface AuthorManager extends GenericManager<Author> {
 	Integer countAuthorsWithoutRating();
 
 	/**
+	 * Get count of all Author entities.
+	 *
+	 * @return Integer - count of all entities
+	 */
+	Integer countAllAuthors();
+
+	/**
 	 * Find Author entities by average rating.
 	 *
 	 * @param byRating - average rating.

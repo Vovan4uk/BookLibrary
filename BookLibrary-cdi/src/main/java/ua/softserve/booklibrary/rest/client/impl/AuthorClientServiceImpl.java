@@ -73,6 +73,18 @@ public class AuthorClientServiceImpl implements AuthorClientService {
 	}
 
 	@Override
+	public Integer countAllAuthors() {
+		Response response = CLIENT.target(TARGET)
+				.path("count/allAuthors")
+				.request()
+				.get();
+		if (response.getStatus() == 422) {
+			throw new LibraryException(response.readEntity(String.class));
+		}
+		return response.readEntity(Integer.class);
+	}
+
+	@Override
 	public List<Author> findAllAuthors() {
 		Response response = CLIENT.target(TARGET)
 				.path("all")

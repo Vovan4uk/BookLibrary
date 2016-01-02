@@ -16,14 +16,14 @@
 <h:body>
     <rich:panel styleClass="mainPP">
     <h:panelGrid columns="2" columnClasses="top_left_column,top_right_column" width="100%">
-        <rich:panel>
-            <ui:insert name="title">#{msgs.BookLibraryTitle}</ui:insert>
+        <rich:panel bodyClass="new_year">
+            Merry Christmas and Happy New Year!<br/> I hope you still have a festive mood, which you share with me.
         </rich:panel>
         <ui:include src="menu.xhtml"/>
     </h:panelGrid>
 
         <h:panelGrid columns="2" columnClasses="left_column,right_column" width="100%">
-            <ui:include src="hot-releases.xhtml"/>
+            <ui:include src="most-popular.xhtml"/>
         <h:panelGroup>
             <ui:insert name="body">#{msgs.DefaultBodyText}</ui:insert>
         </h:panelGroup>

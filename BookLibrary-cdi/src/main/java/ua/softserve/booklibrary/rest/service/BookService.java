@@ -13,12 +13,50 @@ import javax.ws.rs.core.Response;
 @Consumes({MediaType.APPLICATION_JSON})
 public interface BookService {
 
+	/**
+	 * Count of books by average rating in param request
+	 *
+	 * @param rating - average rating
+	 * @return Integer - count of books
+	 */
 	@GET
 	@Path("count/byRating/{rating}")
 	Response countBooksByRating(@PathParam("rating") String rating);
 
+	/**
+	 * Count of books without average rating
+	 *
+	 * @return Integer - count of books
+	 */
 	@GET
 	@Path("count/withoutRating")
 	Response countBooksWithoutRating();
+
+	/**
+	 * Count of all books
+	 *
+	 * @return Integer - count of all books
+	 */
+	@GET
+	@Path("count/allBooks")
+	Response countAllBooks();
+
+	/**
+	 * Count of all reviews
+	 *
+	 * @return Integer - count of all reviews
+	 */
+	@GET
+	@Path("count/allReviews")
+	Response countAllReviews();
+
+	/**
+	 * Get most popular books
+	 *
+	 * @return List<Book> - list of books
+	 */
+	@GET
+	@Path("mostPopular")
+	Response getMostPopular();
 
 }

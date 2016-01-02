@@ -30,9 +30,9 @@ public class BookFacadeImpl extends GenericFacadeImpl<Book> implements BookFacad
 	private static final Logger LOGGER = LoggerFactory.getLogger(Book.class);
 
 	@Override
-	public List<Book> findHotReleases() {
-		LOGGER.debug("Find HotReleases");
-		List<Book> hotReleases = em.createNamedQuery("Book.findHotReleases", Book.class).setMaxResults(5).getResultList();
+	public List<Book> findMostPopular() {
+		LOGGER.debug("Find Most Popular Books");
+		List<Book> hotReleases = em.createNamedQuery("Book.findMostPopular", Book.class).setMaxResults(7).getResultList();
 		LOGGER.debug("Result: {}", hotReleases);
 		return hotReleases;
 	}
@@ -81,6 +81,14 @@ public class BookFacadeImpl extends GenericFacadeImpl<Book> implements BookFacad
 	public Integer countBooksWithoutRating() {
 		LOGGER.debug("Count books without rating");
 		Integer result = em.createNamedQuery("Book.countBooksWithoutRating", Number.class).getSingleResult().intValue();
+		LOGGER.debug("Result: {}", result);
+		return result;
+	}
+
+	@Override
+	public Integer countAllBooks() {
+		LOGGER.debug("Count all books");
+		Integer result = em.createNamedQuery("Book.countAllBooks", Number.class).getSingleResult().intValue();
 		LOGGER.debug("Result: {}", result);
 		return result;
 	}

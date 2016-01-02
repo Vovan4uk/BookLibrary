@@ -6,70 +6,11 @@
                 xmlns:rich="http://richfaces.org/rich"
                 xmlns:a4j="http://richfaces.org/a4j">
 
-    <ui:define name="title">#{msgs.HomePageTitle}</ui:define>
-
     <ui:define name="body">
-        <rich:panel>
-            <rich:dataTable value="#{bookAction.ratingList}" var="ratingMain" id="bookTable"
-                            rowClasses="odd-row, even-row" style="width: 100%;">
-                <rich:column style="width: 90px">
-                    <f:facet name="header">
-                        <h:outputText value="Average rating"/>
-                    </f:facet>
-                    <a4j:repeat value="#{bookAction.ratingList}" var="rating">
-                        <h:panelGroup rendered="#{6-ratingMain eq rating}">
-                            <input disabled="disabled" class="star required" type="radio" name="rating#{ratingMain}"
-                                   value="#{rating}" checked="checked" title="rating"/>
-                        </h:panelGroup>
-                        <h:panelGroup rendered="#{6-ratingMain ne rating}">
-                            <input disabled="disabled" class="star required" type="radio" name="rating#{ratingMain}"
-                                   value="#{rating}" title="rating"/>
-                        </h:panelGroup>
-                    </a4j:repeat>
-                </rich:column>
-                <rich:column>
-                    <h:outputText value="Books with #{6-ratingMain} stars"/>
-                </rich:column>
-                <rich:column>
-                    <f:facet name="header">
-                        <h:outputText value="Count books by average rating"/>
-                    </f:facet>
-                    <h:link value="#{bookAction.getCountBooksByRating(6-ratingMain)} books" outcome="/booklist.xhtml">
-                        <f:param name="byrating" value="#{6-ratingMain}"/>
-                    </h:link>
-                </rich:column>
-            </rich:dataTable>
-
-            <table class="rf-dt stable" width="100%">
-                <tr class="rf-dt-r rf-dt-fst-r even-row">
-                    <td class="rf-dt-c" width="90px">
-                        <input class="star  required" disabled="disabled" type="radio" name="test-1-rating-2"
-                               value="1" title="1"/>
-                        <input class="star" disabled="disabled" type="radio" name="test-1-rating-2" value="2"
-                               title="2"/>
-                        <input class="star" disabled="disabled" type="radio" name="test-1-rating-2" value="3"
-                               title="3"/>
-                        <input class="star" disabled="disabled" type="radio" name="test-1-rating-2" value="4"
-                               title="4"/>
-                        <input class="star" disabled="disabled" type="radio" name="test-1-rating-2" value="5"
-                               title="5"/>
-                    </td>
-                    <td class="rf-dt-c">Books without rating</td>
-                    <td class="rf-dt-c">
-                        <h:link value="#{bookAction.getCountBooksWithoutRating()} books" outcome="/booklist.xhtml">
-                            <f:param name="byrating" value="0"/>
-                        </h:link>
-                    </td>
-                </tr>
-            </table>
-
-
+        <rich:panel header="Authors by average rating" bodyClass="body_authors" headerClass="head_authors">
             <rich:dataTable value="#{bookAction.ratingList}" var="ratingMain" id="bookTable2"
                             rowClasses="odd-row, even-row" style="width: 100%;">
                 <rich:column style="width: 90px">
-                    <f:facet name="header">
-                        <h:outputText value="Average rating"/>
-                    </f:facet>
                     <a4j:repeat value="#{bookAction.ratingList}" var="rating1">
                         <h:panelGroup rendered="#{6-ratingMain eq rating1}">
                             <input disabled="disabled" class="star required" type="radio" name="arating#{6-ratingMain}"
@@ -84,11 +25,9 @@
                 <rich:column>
                     <h:outputText value="Authors with #{6-ratingMain} stars"/>
                 </rich:column>
-                <rich:column>
-                    <f:facet name="header">
-                        <h:outputText value="Count authors by average rating"/>
-                    </f:facet>
-                    <h:link value="#{authorAction.getCountAuthorsByRating(6-ratingMain)} authors"
+                <rich:column styleClass="width_count">
+                    <h:link styleClass="link_to_all_author"
+                            value="#{authorAction.getCountAuthorsByRating(6-ratingMain)} authors"
                             outcome="/authorlist.xhtml">
                         <f:param name="byrating" value="#{6-ratingMain}"/>
                     </h:link>
@@ -110,17 +49,80 @@
                                title="5"/>
                     </td>
                     <td class="rf-dt-c">Authors without rating</td>
-                    <td class="rf-dt-c">
-                        <h:link value="#{authorAction.countAuthorsWithoutRating} authors"
+                    <td class="rf-dt-c width_count">
+                        <h:link styleClass="link_to_all_author"
+                                value="#{authorAction.countAuthorsWithoutRating} authors"
                                 outcome="/authorlist.xhtml">
                             <f:param name="byrating" value="0"/>
                         </h:link>
                     </td>
                 </tr>
             </table>
+        </rich:panel>
+        <br/>
+        <rich:panel header="Project statistic" headerClass="head_neutral" bodyClass="body_neutral">
+            <h:panelGrid columns="3" width="100%" columnClasses="td_authors_count, td_books_count, td_reviews_count">
+                <h:panelGroup class="authors_count" layout="block">
+                    <h:outputText value="#{authorAction.countAllAuthors}"/>
+                </h:panelGroup>
+                <h:panelGroup class="books_count" layout="block">
+                    <h:outputText value="#{bookAction.countAllBooks}"/>
+                </h:panelGroup>
+                <h:panelGroup class="reviews_count" layout="block">
+                    <h:outputText value="#{bookAction.countAllReviews}"/>
+                </h:panelGroup>
+            </h:panelGrid>
+        </rich:panel>
+        <br/>
+        <rich:panel header="Books by average rating" bodyClass="body_books" headerClass="head_books">
+            <rich:dataTable value="#{bookAction.ratingList}" var="ratingMain" id="bookTable"
+                            rowClasses="odd-row, even-row" style="width: 100%;">
+                <rich:column style="width: 90px">
+                    <a4j:repeat value="#{bookAction.ratingList}" var="rating">
+                        <h:panelGroup rendered="#{6-ratingMain eq rating}">
+                            <input disabled="disabled" class="star required" type="radio" name="rating#{ratingMain}"
+                                   value="#{rating}" checked="checked" title="rating"/>
+                        </h:panelGroup>
+                        <h:panelGroup rendered="#{6-ratingMain ne rating}">
+                            <input disabled="disabled" class="star required" type="radio" name="rating#{ratingMain}"
+                                   value="#{rating}" title="rating"/>
+                        </h:panelGroup>
+                    </a4j:repeat>
+                </rich:column>
+                <rich:column>
+                    <h:outputText value="Books with #{6-ratingMain} stars"/>
+                </rich:column>
+                <rich:column styleClass="width_count">
+                    <h:link styleClass="link_to_all_book"
+                            value="#{bookAction.getCountBooksByRating(6-ratingMain)} books" outcome="/booklist.xhtml">
+                        <f:param name="byrating" value="#{6-ratingMain}"/>
+                    </h:link>
+                </rich:column>
+            </rich:dataTable>
 
-
-        </rich:panel><br/>
-
+            <table class="rf-dt stable" width="100%">
+                <tr class="rf-dt-r rf-dt-fst-r even-row">
+                    <td class="rf-dt-c" width="90px">
+                        <input class="star  required" disabled="disabled" type="radio" name="test-1-rating-2"
+                               value="1" title="1"/>
+                        <input class="star" disabled="disabled" type="radio" name="test-1-rating-2" value="2"
+                               title="2"/>
+                        <input class="star" disabled="disabled" type="radio" name="test-1-rating-2" value="3"
+                               title="3"/>
+                        <input class="star" disabled="disabled" type="radio" name="test-1-rating-2" value="4"
+                               title="4"/>
+                        <input class="star" disabled="disabled" type="radio" name="test-1-rating-2" value="5"
+                               title="5"/>
+                    </td>
+                    <td class="rf-dt-c">Books without rating</td>
+                    <td class="rf-dt-c width_count">
+                        <h:link styleClass="link_to_all_book" value="#{bookAction.getCountBooksWithoutRating()} books"
+                                outcome="/booklist.xhtml">
+                            <f:param name="byrating" value="0"/>
+                        </h:link>
+                    </td>
+                </tr>
+            </table>
+        </rich:panel>
     </ui:define>
 </ui:composition>

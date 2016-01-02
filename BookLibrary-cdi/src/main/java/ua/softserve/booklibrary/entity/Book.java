@@ -32,7 +32,7 @@ import java.util.Set;
 @Entity
 @Table(name = "BOOK")
 @NamedQueries({
-		@NamedQuery(name = "Book.findHotReleases", query = "SELECT b FROM Book b ORDER BY countReviews desc "),
+		@NamedQuery(name = "Book.findMostPopular", query = "SELECT b FROM Book b ORDER BY countReviews desc "),
 		@NamedQuery(name = "Book.findBooksByRating", query = "SELECT b FROM Book b WHERE averageRating >= :minRating AND averageRating < :maxRating "),
 		@NamedQuery(name = "Book.findBooksWithoutRating", query = "SELECT b FROM Book b WHERE averageRating IS NULL"),
 		@NamedQuery(name = "Book.findLatestBooksByAuthorId", query = "SELECT DISTINCT b FROM Book b JOIN b.authors a WHERE a.id = :id ORDER BY b.publishedDate DESC"),
@@ -42,7 +42,8 @@ import java.util.Set;
 		@NamedQuery(name = "Book.isBookExistByIsbn", query = "SELECT CASE WHEN EXISTS (SELECT b FROM Book WHERE isbn = :isbn) THEN TRUE ELSE FALSE END FROM Book b"),
 		@NamedQuery(name = "Book.isBookExistByIsbnWithId", query = "SELECT CASE WHEN EXISTS (SELECT b FROM Book WHERE isbn = :isbn AND id != :id) THEN TRUE ELSE FALSE END FROM Book b"),
 		@NamedQuery(name = "Book.countBooksByRating", query = "SELECT COUNT(b) FROM Book b WHERE averageRating >= :minRating AND averageRating < :maxRating "),
-		@NamedQuery(name = "Book.countBooksWithoutRating", query = "SELECT COUNT(b) FROM Book b WHERE averageRating IS NULL")
+		@NamedQuery(name = "Book.countBooksWithoutRating", query = "SELECT COUNT(b) FROM Book b WHERE averageRating IS NULL"),
+		@NamedQuery(name = "Book.countAllBooks", query = "SELECT COUNT(b) FROM Book b")
 })
 @XmlRootElement
 public class Book extends LibraryEntity {

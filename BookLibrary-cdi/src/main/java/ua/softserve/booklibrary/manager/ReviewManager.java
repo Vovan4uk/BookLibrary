@@ -8,4 +8,12 @@ import ua.softserve.booklibrary.entity.Review;
  * @see ua.softserve.booklibrary.manager.GenericManager
  */
 public interface ReviewManager extends GenericManager<Review> {
+
+	/**
+	 * Get count of all Review entities.
+	 *
+	 * @return Integer - count of all entities
+	 */
+	Integer countAllReviews();
+
 }

@@ -13,11 +13,11 @@ import java.util.List;
 public interface BookFacade extends GenericFacade<Book> {
 
 	/**
-	 * Find latest Book entities in the database.
+	 * Find most popular Book entities in the database.
 	 *
 	 * @return List<Book> - list entities
 	 */
-	List<Book> findHotReleases();
+	List<Book> findMostPopular();
 
 	/**
 	 * Find Book entities which average rating between minRating and maxRating.
@@ -48,6 +48,13 @@ public interface BookFacade extends GenericFacade<Book> {
 	 * @return Integer - count of entities
 	 */
 	Integer countBooksWithoutRating();
+
+	/**
+	 * Get count of all Book entities.
+	 *
+	 * @return Integer - count of all entities
+	 */
+	Integer countAllBooks();
 
 	/**
 	 * Find latest Book entities by Author id.

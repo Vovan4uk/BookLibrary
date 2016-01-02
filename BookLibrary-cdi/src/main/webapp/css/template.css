@@ -4,7 +4,26 @@ body {
 }
 
 td.top_right_column {
-	width: 140px;
+	width: 300px;
+}
+
+a.home_link, a.author_link, .book_link {
+	font-weight: bold;
+	font-size: 14px;
+	text-transform: uppercase;
+	padding: 15px;
+}
+
+a.home_link {
+	color: #7C98A6 !important;
+}
+
+a.book_link {
+	color: #4CAF50 !important;
+}
+
+a.author_link {
+	color: #2196F3 !important;
 }
 
 td.left_column {
@@ -23,23 +42,27 @@ td.right_column {
 	width: 10%;
 }
 
-.col_book_publisher {
+.col_author_book_isbn {
+	width: 14%;
+}
+
+.col_book_publisher, .col_author_book_publisher {
 	width: 10%;
 }
 
-.col_book_published_date {
+.col_book_published_date, .col_author_book_published_date {
+	width: 13%;
+}
+
+.col_book_average_rating, .col_author_book_average_rating, .col_author_average_rating {
+	width: 12%;
+}
+
+.col_book_create_date, .col_author_book_create_date, .col_author_create_date {
 	width: 10%;
 }
 
-.col_book_average_rating, .col_author_average_rating {
-	width: 10%;
-}
-
-.col_book_create_date, .col_author_create_date {
-	width: 10%;
-}
-
-.col_book_action, .col_author_action {
+.col_book_action, .col_author_book_action, .col_author_action {
 	width: 10%;
 }
 
@@ -48,7 +71,7 @@ td.right_column {
 }
 
 *.rf-dt-c-srt {
-	color: #fff !important;
+	color: #0B356C !important;
 }
 
 .even-row {
@@ -61,11 +84,10 @@ td.right_column {
 
 .even-row:hover,
 .odd-row:hover {
-	background-color: #FFEBDA;
+	background-color: #eaeaea;
 }
 
 .message_col {
-
 }
 
 .button_col {
@@ -78,10 +100,182 @@ td.right_column {
 
 div.mainPP {
 	width: 1300px;
-	margin: auto;
-	border: 1px solid #999;
-	border: 1px solid #999;
+	border: 1px solid #666;
 	border-radius: 10px;
-	margin-top: 20px;
-	background: #ffeeee url("logo.jpg") 20px 20px no-repeat;
+	margin: 20px auto auto;
+	background: #fff url("logo1.jpg") 20px 20px no-repeat;
+	box-shadow: 2px 2px 3px #666;
+}
+
+div.div_rating_h {
+	height: 20px;
+	padding-top: 3px;
+}
+
+.authors_count, .books_count, .reviews_count {
+	width: 64px;
+	padding-top: 66px;
+	height: 30px;
+	text-align: center;
+	font-size: 26px;
+	font-weight: bold;
+	margin: auto;
+}
+
+.authors_count {
+	background: url("authors_64.png") 0 0 no-repeat;
+	color: #2196F3;
+}
+
+.books_count {
+	background: url("books_64.png") 0 0 no-repeat;
+	color: #4CAF50;
+}
+
+.reviews_count {
+	background: url("reviews_64.png") 0 0 no-repeat;
+	color: #FF9800;
+}
+
+.td_authors_count, .td_books_count, .td_reviews_count {
+	text-align: center;
+}
+
+*.rf-p-hdr, *.rf-pp-hdr-cnt {
+	padding: 7px !important;
+	font-size: 12px !important;
+	color: #333 !important;
+}
+
+.rf-p {
+	box-shadow: 1px 1px 2px #aaa;
+}
+
+.head_neutral {
+	background-color: #dee !important;
+}
+
+.body_neutral {
+}
+
+.head_authors {
+}
+
+.body_authors {
+	background: #ddffff !important;
+}
+
+.head_books {
+}
+
+.body_books {
+	background: #E9FDF0;
+}
+
+.head_reviews {
+}
+
+.body_reviews {
+	background: #FFF8E0;
+}
+
+.body_books .even-row:hover,
+.body_books .odd-row:hover {
+	background-color: #cCfFc0;
+}
+
+.body_authors .even-row:hover,
+.body_authors .odd-row:hover {
+	background-color: #c1ffFf;
+}
+
+.body_reviews .even-row:hover,
+.body_reviews .odd-row:hover {
+	background-color: #FFe8b0;
+}
+
+div.div_tool {
+	float: right;
+	padding-bottom: 12px;
+	padding-top: 5px;
+}
+
+div.div_tool_popup {
+	padding-top: 15px;
+	padding-bottom: 10px;
+}
+
+div.div_tool a, div.div_tool_popup a {
+	margin-left: 10px;
+	font-weight: bold;
+	padding: 4px;
+	color: #fff;
+	background: #7C98A6;
+	text-decoration: none;
+	border: 1px solid #666;
+	box-shadow: 2px 2px 3px #999;
+}
+
+div.div_tool a:hover, div.div_tool_popup a:hover {
+	box-shadow: 0 0 1px #999;
+}
+
+div.div_tool_popup a {
+	margin-left: 0;
+	margin-right: 10px;
+}
+
+.footer_column {
+	font-weight: bold;
+}
+
+.footer_column div {
+	background: #7C98A6;
+	color: #fff;
+	text-align: center;
+}
+
+div.new_year {
+	background: #7C98A6;
+	color: #fff;
+	font-weight: bold;
+	text-transform: uppercase;
+	text-align: center;
+}
+
+a.book_name, a.link_to_all_book, a.link_to_book {
+	color: #036B0C !important;
+}
+
+.width_count {
+	width: 100px;
+	text-align: center;
+}
+
+.caution {
+	padding-bottom: 10px;
+}
+
+div.author_full_name {
+	font-weight: bold;
+	color: #2196F3;
+	width: 150px;
+}
+
+div.book_full_name {
+	font-weight: bold;
+	color: #036B0C;
+}
+
+div.review_author_name {
+	font-weight: bold;
+	color: #9F7800;
+}
+
+div.author_will_be_deleted {
+	color: #036B0C;
+}
+
+div.author_will_not_be_deleted {
+	color: red;
 }

@@ -67,4 +67,10 @@ public class ReviewManagerImpl implements ReviewManager {
 		LOGGER.debug("Find all Reviews");
 		return reviewFacade.findAll();
 	}
+
+	@Override
+	public Integer countAllReviews() {
+		LOGGER.debug("Count all reviews");
+		return reviewFacade.countAllReviews();
+	}
 }

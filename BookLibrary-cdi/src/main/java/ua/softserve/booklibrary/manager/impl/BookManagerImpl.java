@@ -115,9 +115,9 @@ public class BookManagerImpl implements BookManager {
 	}
 
 	@Override
-	public List<Book> findHotReleases() {
-		LOGGER.debug("Find HotReleases");
-		return initAuthorList(bookFacade.findHotReleases());
+	public List<Book> findMostPopular() {
+		LOGGER.debug("Find Most Popular Books");
+		return initAuthorList(bookFacade.findMostPopular());
 	}
 
 	@Override
@@ -134,14 +134,20 @@ public class BookManagerImpl implements BookManager {
 
 	@Override
 	public Integer countBooksByRating(String minRating) {
-		LOGGER.debug("Count authors with rating {}", minRating);
+		LOGGER.debug("Count books with rating {}", minRating);
 		return bookFacade.countBooksByRating(minRating);
 	}
 
 	@Override
 	public Integer countBooksWithoutRating() {
-		LOGGER.debug("Count authors without rating");
+		LOGGER.debug("Count books without rating");
 		return bookFacade.countBooksWithoutRating();
+	}
+
+	@Override
+	public Integer countAllBooks() {
+		LOGGER.debug("Count all books");
+		return bookFacade.countAllBooks();
 	}
 
 	@Override

@@ -110,6 +110,15 @@ public class AuthorAction implements Serializable {
 		}
 	}
 
+	public Integer getCountAllAuthors() {
+		try {
+			return authorClientService.countAllAuthors();
+		} catch (EJBException | LibraryException e) {
+			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Can't find authors.", e.getMessage()));
+			return 0;
+		}
+	}
+
 	public String getTitle() {
 		Integer rating = NumberUtils.toInt(FacesContext.getCurrentInstance()
 				.getExternalContext()

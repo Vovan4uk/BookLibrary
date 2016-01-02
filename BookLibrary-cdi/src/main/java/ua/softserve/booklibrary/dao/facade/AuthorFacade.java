@@ -43,6 +43,13 @@ public interface AuthorFacade extends GenericFacade<Author> {
 	Integer countAuthorsWithoutRating();
 
 	/**
+	 * Get count of all Author entities.
+	 *
+	 * @return Integer - count of all entities
+	 */
+	Integer countAllAuthors();
+
+	/**
 	 * Find Author entity.
 	 *
 	 * @param author - Author entity.

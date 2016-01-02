@@ -29,6 +29,7 @@ import java.util.TreeSet;
 		@NamedQuery(name = "Author.findAuthorsWithoutRating", query = "SELECT a FROM Author a WHERE averageRating IS NULL"),
 		@NamedQuery(name = "Author.countAuthorsByRating", query = "SELECT COUNT(a) FROM Author a WHERE averageRating >= :minRating AND averageRating < :maxRating "),
 		@NamedQuery(name = "Author.countAuthorsWithoutRating", query = "SELECT COUNT(a) FROM Author a WHERE averageRating IS NULL"),
+		@NamedQuery(name = "Author.countAllAuthors", query = "SELECT COUNT(a) FROM Author a"),
 
 		// todo: Use EXISTS instead CASE - fixed(removed 'group by' operation, but kept 'case-true-false')
 		@NamedQuery(name = "Author.isAuthorsExistByFirstName", query = "SELECT CASE WHEN " +

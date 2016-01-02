@@ -78,6 +78,14 @@ public class AuthorFacadeImpl extends GenericFacadeImpl<Author> implements Autho
 	}
 
 	@Override
+	public Integer countAllAuthors() {
+		LOGGER.debug("Count all authors");
+		Integer result = em.createNamedQuery("Author.countAllAuthors", Number.class).getSingleResult().intValue();
+		LOGGER.debug("Result: {}", result);
+		return result;
+	}
+
+	@Override
 	public boolean isAuthorExist(Author author) {
 		if (StringUtils.isEmpty(author.getFirstName())) {
 			String message = "Author '" + author + "' first name is empty.";

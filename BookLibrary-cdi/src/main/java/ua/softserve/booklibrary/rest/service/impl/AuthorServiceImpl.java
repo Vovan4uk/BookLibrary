@@ -65,6 +65,16 @@ public class AuthorServiceImpl implements AuthorService {
 	}
 
 	@Override
+	public Response countAllAuthors() {
+		try {
+			Integer count = authorManager.countAllAuthors();
+			return Response.accepted(count).build();
+		} catch (EJBException | LibraryException e) {
+			return Response.status(422).entity(e.getMessage()).build();
+		}
+	}
+
+	@Override
 	public Response getAllAuthors() {
 		try {
 			List<Author> authors = authorManager.findAll();

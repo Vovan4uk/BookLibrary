@@ -15,6 +15,8 @@ public interface AuthorClientService {
 
 	Integer countAuthorsWithoutRating();
 
+	Integer countAllAuthors();
+
 	void saveAuthor(Author author);
 
 	void updateAuthor(Author author);

@@ -6,18 +6,33 @@
                 xmlns:rich="http://richfaces.org/rich"
                 xmlns:a4j="http://richfaces.org/a4j">
 
-    <ui:define name="title">Book details</ui:define>
-
     <ui:define name="body">
         <h:form id="form">
-            <rich:panel rendered="#{null eq bookAction.currentBook}" header="Book doesn't exist">
+            <rich:panel rendered="#{null eq bookAction.currentBook}" header="Book doesn't exist" bodyClass="body_books"
+                        headerClass="head_books">
                 <rich:messages globalOnly="true"/><br/>
             </rich:panel>
             <f:event type="preRenderView" listener="#{bookAction.loadData}"/>
             <rich:panel header="#{bookAction.currentBook.name}"
-                        id="bookPane" rendered="#{null ne bookAction.currentBook}">
+                        id="bookPane" rendered="#{null ne bookAction.currentBook}" bodyClass="body_books"
+                        headerClass="head_books">
 
-                <rich:messages globalOnly="true"/><br/>
+                <rich:messages globalOnly="true"/>
+                <h:panelGroup layout="block" styleClass="div_tool">
+                    <h:panelGroup>
+                        <a4j:commandLink value="Update book" action="#{bookAction.update}"
+                                         oncomplete="if (#{facesContext.maximumSeverity.ordinal==0
+                                   or facesContext.maximumSeverity==null}) {redirectToBookList()}">
+                            <a4j:param value="#{param['id']}" name="id"/>
+                        </a4j:commandLink>
+                        <a4j:commandLink value="Delete book" render="editPane"
+                                         oncomplete="#{rich:component('confirmPane')}.show()">
+                            <a4j:param value="#{param['id']}" name="id"/>
+                        </a4j:commandLink>
+                        <a4j:commandLink value="Cancel and back to books list" oncomplete="redirectToBookList()"/>
+                    </h:panelGroup>
+                </h:panelGroup>
+                <br/>
                 <h:panelGrid columns="3" id="editGrid1">
                     <h:panelGroup>
                         <h:outputText value="Name:"/>
@@ -34,7 +49,7 @@
                     </h:inputText>
                     <rich:message id="publisherMsg" for="publisher"/>
 
-                    <h:outputText value="Published Date: "/>
+                    <h:outputText value="Published date: "/>
                     <rich:calendar id="publishedDate" datePattern="yyyy-MM-dd"
                                    value="#{bookAction.currentBook.publishedDate}">
                         <rich:validator/>
@@ -55,19 +70,6 @@
                     <f:selectItems value="#{bookAction.authors}" var="author" itemValue="#{author.id}"
                                    itemLabel="#{author.firstName} #{author.secondName}"/>
                 </rich:pickList>
-                <br/>
-
-                <a4j:commandButton value="Update" action="#{bookAction.update}"
-                                   oncomplete="if (#{facesContext.maximumSeverity.ordinal==0
-                                   or facesContext.maximumSeverity==null}) {redirectToBookList()}">
-                    <a4j:param value="#{param['id']}" name="id"/>
-                </a4j:commandButton>
-                <a4j:commandButton value="Delete" render="editPane"
-                                   oncomplete="#{rich:component('confirmPane')}.show()">
-                    <a4j:param value="#{param['id']}" name="id"/>
-                </a4j:commandButton>
-                <a4j:commandButton value="Cancel" oncomplete="redirectToBookList()"/>
-
                 <a4j:jsFunction name="redirectToBookList" action="booklist.jsf?faces-redirect=true"/>
 
 
@@ -83,51 +85,74 @@
                                  onmaskclick="#{rich:component('confirmPane')}.hide()" minHeight="100" minWidth="400">
                     <h:outputText value="Are you sure you want to delete"/>
                     <br/><br/>
-                    <h:outputText value="#{bookAction.currentBook.name}"/>
-                    <br/><br/>
-                    <a4j:commandButton value="Delete" onclick="remove(); return false;">
-                        <a4j:param value="#{param['id']}" name="id"/>
-                    </a4j:commandButton>
-                    <a4j:commandButton value="Cancel" onclick="#{rich:component('confirmPane')}.hide(); return false;"/>
+                    <h:panelGroup layout="block" styleClass="book_full_name">
+                        <h:outputText value="#{bookAction.currentBook.name}"/>
+                    </h:panelGroup>
+                    <h:panelGroup layout="block" styleClass="div_tool_popup">
+                        <h:panelGroup>
+                            <a4j:commandLink value="Delete book" onclick="remove(); return false;">
+                                <a4j:param value="#{param['id']}" name="id"/>
+                            </a4j:commandLink>
+                            <a4j:commandLink value="Cancel and close"
+                                             onclick="#{rich:component('confirmPane')}.hide(); return false;"/>
+                        </h:panelGroup>
+                    </h:panelGroup>
                 </rich:popupPanel>
                 <br/>
-                <a4j:repeat value="#{bookAction.ratingList}" var="rating">
-                    <h:panelGroup
-                            rendered="#{(bookAction.currentBook.averageRating ge rating and bookAction.currentBook.averageRating lt rating+1)}">
-                        <input disabled="disabled" class="star required" type="radio" name="ratingBook"
-                               value="#{rating}" checked="checked" title="rating"/>
+                <h:panelGrid columns="2">
+                    <h:outputText value="Average rating: "/>
+                    <h:panelGroup>
+                        <div class="div_rating_h">
+                            <a4j:repeat value="#{bookAction.ratingList}" var="rating">
+                                <h:panelGroup
+                                        rendered="#{(bookAction.currentBook.averageRating ge rating and bookAction.currentBook.averageRating lt rating+1)}">
+                                    <input disabled="disabled" class="star required" type="radio" name="ratingBook"
+                                           value="#{rating}" checked="checked" title="rating"/>
+                                </h:panelGroup>
+                                <h:panelGroup
+                                        rendered="#{!(bookAction.currentBook.averageRating ge rating and bookAction.currentBook.averageRating lt rating+1)}">
+                                    <input disabled="disabled" class="star required" type="radio" name="ratingBook"
+                                           value="#{rating}" title="rating"/>
+                                </h:panelGroup>
+                            </a4j:repeat>
+                        </div>
+                        <div style="clear: both;"></div>
                     </h:panelGroup>
-                    <h:panelGroup
-                            rendered="#{!(bookAction.currentBook.averageRating ge rating and bookAction.currentBook.averageRating lt rating+1)}">
-                        <input disabled="disabled" class="star required" type="radio" name="ratingBook"
-                               value="#{rating}" title="rating"/>
+                    <h:panelGroup/>
+                    <h:panelGroup>
+                        <h:outputText value="#{bookAction.currentBook.averageRating}">
+                            <f:convertNumber pattern="0.#"/>
+                        </h:outputText>
+                        <h:outputText value=" (#{bookAction.currentBook.countReviews} reviews)"/><br/>
+                        <br/>
                     </h:panelGroup>
-                </a4j:repeat>
+                    <h:outputText value="Create date:"/>
+                    <h:outputText value="#{bookAction.currentBook.createDate}">
+                        <f:convertDateTime pattern="yyyy-MM-dd"/>
+                    </h:outputText>
 
-                <div style="clear: both;"></div>
-                <h:outputText value="#{bookAction.currentBook.averageRating}">
-                    <f:convertNumber pattern="0.#"/>
-                </h:outputText>
-                <h:outputText value=" (#{bookAction.currentBook.countReviews} reviews)"/><br/>
-                <h:outputText value="#{bookAction.currentBook.createDate}">
-                    <f:convertDateTime pattern="yyyy-MM-dd"/>
-                </h:outputText>
-                <br/><br/>
+                </h:panelGrid>
+
             </rich:panel>
         </h:form>
         <br/>
         <h:form id="form2">
             <rich:panel header="Book reviews" name="reviewsPane" id="reviewsPane"
-                        rendered="#{null ne bookAction.currentBook}">
+                        rendered="#{null ne bookAction.currentBook}" bodyClass="body_reviews"
+                        headerClass="head_reviews">
 
-                    <h:panelGroup style="float: right;">
-                        <a4j:commandLink styleClass="no-decor" execute="@this" render="reviews, createPane, bookPane"
+
+                <h:panelGroup layout="block" styleClass="div_tool">
+                    <h:panelGroup>
+                        <a4j:commandLink value="Add new review" styleClass="no-decor" execute="@this"
+                                         render="reviews, createPane, bookPane"
                                          oncomplete="#{rich:component('createPane')}.show()" resetValues="true"
                                          actionListener="#{bookAction.resetAddReview()}">
-                            <h:graphicImage value="/images/new.png" alt="add new"/>
                             <a4j:param value="#{param['id']}" name="id"/>
                         </a4j:commandLink>
                     </h:panelGroup>
+                </h:panelGroup>
+
 
                 <rich:dataTable style="width: 100%;" id="noItems">
                     <f:facet name="header">
@@ -138,91 +163,104 @@
 
 
                 <rich:dataTable value="#{bookAction.currentBook.reviews}" var="review" name="reviews" id="reviews"
-                                rows="5"
-                                    style="width: 100%;">
+                                rows="5" style="width: 100%;" rowClasses="odd-row, even-row">
                     <rich:column style="width: 15%">
                         <f:facet name="header">
                             Info
                         </f:facet>
-                            <h:outputText value="#{review.commenterName}"/><br/>
-                            <h:outputText value="#{review.createDate}"/><br/>
-                        <script src="js/jquery.rating.js" type="text/javascript" language="javascript"></script>
-                        <a4j:repeat value="#{bookAction.ratingList}" var="rating">
-                            <h:panelGroup rendered="#{rating eq review.rating}">
-                                <input disabled="disabled" class="star required" type="radio"
-                                       name="ratingDetails#{review.id}" value="#{rating}" checked="checked"
-                                       title="rating"/>
-                            </h:panelGroup>
-                            <h:panelGroup rendered="#{rating ne review.rating}">
-                                <input disabled="disabled" class="star required" type="radio"
-                                       name="ratingDetails#{review.id}" value="#{rating}" title="rating"/>
-                            </h:panelGroup>
-                        </a4j:repeat>
-                        </rich:column>
+                        <h:outputText value="#{review.commenterName}"/><br/>
+
+                        <div class="div_rating_h">
+                            <script src="js/jquery.rating.js" type="text/javascript" language="javascript"></script>
+                            <a4j:repeat value="#{bookAction.ratingList}" var="rating">
+                                <h:panelGroup rendered="#{rating eq review.rating}">
+                                    <input disabled="disabled" class="star required" type="radio"
+                                           name="ratingDetails#{review.id}" value="#{rating}" checked="checked"
+                                           title="rating"/>
+                                </h:panelGroup>
+                                <h:panelGroup rendered="#{rating ne review.rating}">
+                                    <input disabled="disabled" class="star required" type="radio"
+                                           name="ratingDetails#{review.id}" value="#{rating}" title="rating"/>
+                                </h:panelGroup>
+                            </a4j:repeat>
+                        </div>
+                        <h:outputText value="#{review.createDate}"/>
+                    </rich:column>
                     <rich:column>
                         <f:facet name="header">
-                            Comment description
+                            Comment
                         </f:facet>
                         <h:outputText value="#{review.commentBody}" escape="false"/>
                     </rich:column>
                     <rich:column style="width:20px;">
-                            <a4j:commandLink styleClass="no-decor" render="editGrid" execute="@this"
-                                             oncomplete="#{rich:component('editPane')}.show()" resetValues="true"
-                                             actionListener="#{bookAction.resetReview()}">
-                                <h:graphicImage value="/images/edit.gif" alt="edit"/>
-                                <a4j:param value="#{review.id}" assignTo="#{bookAction.currentReviewId}"/>
-                                <f:setPropertyActionListener target="#{bookAction.currentReview}" value="#{review}"/>
+                        <a4j:commandLink title="Edit review" styleClass="no-decor" render="editGrid" execute="@this"
+                                         oncomplete="#{rich:component('editPane')}.show()" resetValues="true"
+                                         actionListener="#{bookAction.resetReview()}">
+                            <h:graphicImage value="/images/edit.gif" alt="edit"/>
+                            <a4j:param value="#{review.id}" assignTo="#{bookAction.currentReviewId}"/>
+                            <f:setPropertyActionListener target="#{bookAction.currentReview}" value="#{review}"/>
+                            <a4j:param value="#{param['id']}" name="id"/>
+                        </a4j:commandLink>
+                        <a4j:commandLink title="Delete review" styleClass="no-decor" execute="@this"
+                                         render="confirmReviewPane, noItems"
+                                         oncomplete="#{rich:component('confirmReviewPane')}.show()">
+                            <h:graphicImage value="/images/delete.gif" alt="delete"/>
+                            <a4j:param value="#{review.id}" assignTo="#{bookAction.currentReviewId}"/>
+                            <f:setPropertyActionListener target="#{bookAction.currentReview}" value="#{review}"/>
+                            <a4j:param value="#{param['id']}" name="id"/>
+                        </a4j:commandLink>
+                    </rich:column>
+                    <f:facet name="footer" id="pagination">
+                        <rich:dataScroller renderIfSinglePage="false"/>
+                    </f:facet>
+                </rich:dataTable>
+            </rich:panel>
+
+            <a4j:jsFunction name="removeReview" action="#{bookAction.removeReview}"
+                            render="message, reviews, noItems, bookPane, hot" execute="@this"
+                            oncomplete="#{rich:component('confirmReviewPane')}.hide();">
+                <a4j:param value="#{param['id']}" name="id"/>
+            </a4j:jsFunction>
+
+            <rich:popupPanel id="confirmReviewPane" autosized="true" header="Confirm delete"
+                             onmaskclick="#{rich:component('confirmReviewPane')}.hide()" style="width: 400px;">
+                <h:panelGroup>
+                    <h:outputText value="Are you sure you want to delete this review:"/><br/><br/>
+                    <h:panelGroup layout="block" styleClass="review_author_name">
+                        <h:outputText value="#{bookAction.currentReview.commenterName}"/>
+                    </h:panelGroup>
+                    <h:panelGroup layout="block" styleClass="review_comment">
+                        <h:outputText value="#{bookAction.currentReview.commentBody}" escape="false"/>
+                    </h:panelGroup>
+                    <h:panelGroup layout="block" styleClass="div_tool_popup">
+                        <h:panelGroup>
+                            <a4j:commandLink value="Delete review" onclick="removeReview(); return false;">
                                 <a4j:param value="#{param['id']}" name="id"/>
                             </a4j:commandLink>
-                        <a4j:commandLink styleClass="no-decor" execute="@this" render="confirmReviewPane, noItems"
-                                             oncomplete="#{rich:component('confirmReviewPane')}.show()">
-                                <h:graphicImage value="/images/delete.gif" alt="delete"/>
-                                <a4j:param value="#{review.id}" assignTo="#{bookAction.currentReviewId}"/>
-                                <f:setPropertyActionListener target="#{bookAction.currentReview}" value="#{review}"/>
-                            <a4j:param value="#{param['id']}" name="id"/>
-                            </a4j:commandLink>
-                        </rich:column>
-                        <f:facet name="footer" id="pagination">
-                            <rich:dataScroller renderIfSinglePage="false"/>
-                        </f:facet>
-                    </rich:dataTable>
-                </rich:panel>
-
-                <a4j:jsFunction name="removeReview" action="#{bookAction.removeReview}"
-                                render="message, reviews, noItems, bookPane" execute="@this"
-                                oncomplete="#{rich:component('confirmReviewPane')}.hide();">
-                    <a4j:param value="#{param['id']}" name="id"/>
-                </a4j:jsFunction>
-
-                <rich:popupPanel id="confirmReviewPane" autosized="true" header="Confirm delete"
-                                 onmaskclick="#{rich:component('confirmReviewPane')}.hide()" style="width: 400px;">
-                    <h:panelGroup>
-                        <h:outputText value="Are you sure you want to delete this review:"/><br/><br/>
-                        <h:outputText value="#{bookAction.currentReview.commenterName}"/><br/>
-                        <h:outputText value="#{bookAction.currentReview.commentBody}" escape="false"/><br/><br/>
-                        <a4j:commandButton value="Delete" onclick="removeReview(); return false;">
-                            <a4j:param value="#{param['id']}" name="id"/>
-                        </a4j:commandButton>
-                        <a4j:commandButton value="Cancel"
-                                           onclick="#{rich:component('confirmReviewPane')}.hide(); return false;"/>
-                    </h:panelGroup>
-                </rich:popupPanel>
-
-                <rich:popupPanel header="Edit Review" id="editPane" domElementAttachment="parent" width="800"
-                                 height="400" onmaskclick="#{rich:component('editPane')}.hide()">
-
-                    <rich:messages globalOnly="true"/>
-                    <h:panelGrid columns="3" id="editGrid">
-                        <h:panelGroup>
-                            <h:outputText value="Commenter name:"/>
-                            <h:outputText style="color: red" value="*"/>
+                            <a4j:commandLink value="Cancel and close"
+                                             onclick="#{rich:component('confirmReviewPane')}.hide(); return false;"/>
                         </h:panelGroup>
-                        <h:inputText value="#{bookAction.currentReview.commenterName}" id="commenterName">
-                            <rich:validator/>
-                        </h:inputText>
-                        <rich:message id="commenterNameMsg" for="commenterName"/>
-                        <h:outputText value="Rating:"/>
-                        <h:panelGroup>
+                    </h:panelGroup>
+                </h:panelGroup>
+            </rich:popupPanel>
+
+            <rich:popupPanel header="Edit Review" autosized="true" id="editPane" domElementAttachment="parent"
+                             minWidth="800"
+                             minHeight="420" onmaskclick="#{rich:component('editPane')}.hide()">
+
+                <rich:messages globalOnly="true"/>
+                <h:panelGrid columns="3" id="editGrid">
+                    <h:panelGroup>
+                        <h:outputText value="Commenter name:"/>
+                        <h:outputText style="color: red" value="*"/>
+                    </h:panelGroup>
+                    <h:inputText value="#{bookAction.currentReview.commenterName}" id="commenterName">
+                        <rich:validator/>
+                    </h:inputText>
+                    <rich:message id="commenterNameMsg" for="commenterName"/>
+                    <h:outputText value="Rating:"/>
+                    <h:panelGroup>
+                        <div class="div_rating_h">
                             <script src="js/jquery.rating.js" type="text/javascript" language="javascript"></script>
                             <a4j:repeat value="#{bookAction.ratingList}" var="rating">
                                 <h:panelGroup rendered="#{rating eq bookAction.currentReview.rating}">
@@ -234,43 +272,52 @@
                                            title="rating"/>
                                 </h:panelGroup>
                             </a4j:repeat>
-                        </h:panelGroup>
-                        <h:outputText value=""/>
-                        <h:panelGroup>
-                            <h:outputText value="Comment:"/>
-                            <h:outputText style="color: red" value="*"/>
-                        </h:panelGroup>
-                        <rich:editor value="#{bookAction.currentReview.commentBody}" id="commentBody" width="450">
-                            <rich:validator/>
-                        </rich:editor>
-                        <rich:message id="commentBodyMsg" for="commentBody"/>
-                    </h:panelGrid>
-                    <a4j:commandButton value="Save" action="#{bookAction.updateReview}"
-                                       render="message, reviews, noItems, bookPane"
-                                       execute="editPane"
-                                       oncomplete="if (#{facesContext.maximumSeverity.ordinal==0 or facesContext.maximumSeverity==null}) {#{rich:component('editPane')}.hide();}">
-                        <a4j:param value="#{param['id']}" name="id"/>
-                        <a4j:param value="#{param['ratingUpdate']}" name="ratingUpdate"/>
-                    </a4j:commandButton>
-                    <a4j:commandButton value="Cancel" onclick="#{rich:component('editPane')}.hide(); return false;"/>
-                </rich:popupPanel>
+                        </div>
+                    </h:panelGroup>
+                    <h:outputText value=""/>
+                    <h:panelGroup>
+                        <h:outputText value="Comment:"/>
+                        <h:outputText style="color: red" value="*"/>
+                    </h:panelGroup>
+                    <rich:editor value="#{bookAction.currentReview.commentBody}" id="commentBody" width="450">
+                        <rich:validator/>
+                    </rich:editor>
+                    <rich:message id="commentBodyMsg" for="commentBody"/>
+                </h:panelGrid>
+                <h:panelGroup layout="block" styleClass="div_tool_popup">
+                    <h:panelGroup>
 
-                <rich:popupPanel header="Add new Review" id="createPane" domElementAttachment="parent" width="800"
-                                 height="400" onmaskclick="#{rich:component('createPane')}.hide()">
-                    <script src="js/jquery.rating.js" type="text/javascript" language="javascript"></script>
-                    <rich:messages globalOnly="true"/>
-                    <h:panelGrid columns="3" id="createGrid">
-                        <h:panelGroup>
-                            <h:outputText value="Commenter name:"/>
-                            <h:outputText style="color: red" value="*"/>
-                        </h:panelGroup>
-                        <h:inputText value="#{bookAction.newReview.commenterName}" id="addcommenterName"
-                                     label="commenterName">
-                            <rich:validator/>
-                        </h:inputText>
-                        <rich:message for="addcommenterName"/>
-                        <h:outputText value="Rating:"/>
-                        <h:panelGroup>
+                        <a4j:commandLink value="Update review" action="#{bookAction.updateReview}"
+                                         render="message, reviews, noItems, bookPane, hot"
+                                         execute="editPane"
+                                         oncomplete="if (#{facesContext.maximumSeverity.ordinal==0 or facesContext.maximumSeverity==null}) {#{rich:component('editPane')}.hide();}">
+                            <a4j:param value="#{param['id']}" name="id"/>
+                            <a4j:param value="#{param['ratingUpdate']}" name="ratingUpdate"/>
+                        </a4j:commandLink>
+                        <a4j:commandLink value="Cancel and close"
+                                         onclick="#{rich:component('editPane')}.hide(); return false;"/>
+                    </h:panelGroup>
+                </h:panelGroup>
+
+            </rich:popupPanel>
+
+            <rich:popupPanel header="Add new Review" id="createPane" domElementAttachment="parent" minWidth="800"
+                             minHeight="420" autosized="true" onmaskclick="#{rich:component('createPane')}.hide()">
+                <script src="js/jquery.rating.js" type="text/javascript" language="javascript"></script>
+                <rich:messages globalOnly="true"/>
+                <h:panelGrid columns="3" id="createGrid">
+                    <h:panelGroup>
+                        <h:outputText value="Commenter name:"/>
+                        <h:outputText style="color: red" value="*"/>
+                    </h:panelGroup>
+                    <h:inputText value="#{bookAction.newReview.commenterName}" id="addcommenterName"
+                                 label="commenterName">
+                        <rich:validator/>
+                    </h:inputText>
+                    <rich:message for="addcommenterName"/>
+                    <h:outputText value="Rating:"/>
+                    <h:panelGroup>
+                        <div class="div_rating_h">
                             <a4j:repeat value="#{bookAction.ratingList}" var="rating">
                                 <h:panelGroup rendered="#{rating eq 1}">
                                     <input class="star required" type="radio" name="rating" value="#{rating}"
@@ -281,27 +328,34 @@
                                            title="rating"/>
                                 </h:panelGroup>
                             </a4j:repeat>
-                        </h:panelGroup>
-                        <h:outputText value=""/>
-                        <h:panelGroup>
-                            <h:outputText value="Comment:"/>
-                            <h:outputText style="color: red" value="*"/>
-                        </h:panelGroup>
-                        <rich:editor value="#{bookAction.newReview.commentBody}" id="addcommentBody" width="450"
-                                     label="commentBody">
-                            <rich:validator/>
-                        </rich:editor>
-                        <rich:message for="addcommentBody"/>
-                    </h:panelGrid>
-                    <a4j:commandButton value="Save" action="#{bookAction.saveReview}"
-                                       render="message, reviews, reviewsPane, bookPane, noItems"
-                                       execute="createPane"
-                                       oncomplete="if (#{facesContext.maximumSeverity.ordinal==0 or facesContext.maximumSeverity==null}) {#{rich:component('createPane')}.hide();}">
-                        <a4j:param value="#{param['id']}" name="id"/>
-                        <a4j:param value="#{param['rating']}" name="rating"/>
-                    </a4j:commandButton>
-                    <a4j:commandButton value="Cancel" onclick="#{rich:component('createPane')}.hide(); return false;"/>
-                </rich:popupPanel>
+                        </div>
+                    </h:panelGroup>
+                    <h:outputText value=""/>
+                    <h:panelGroup>
+                        <h:outputText value="Comment:"/>
+                        <h:outputText style="color: red" value="*"/>
+                    </h:panelGroup>
+                    <rich:editor value="#{bookAction.newReview.commentBody}" id="addcommentBody" width="450"
+                                 label="commentBody">
+                        <rich:validator/>
+                    </rich:editor>
+                    <rich:message for="addcommentBody"/>
+                </h:panelGrid>
+                <h:panelGroup layout="block" styleClass="div_tool_popup">
+                    <h:panelGroup>
+                        <a4j:commandLink value="Save review" action="#{bookAction.saveReview}"
+                                         render="message, reviews, reviewsPane, bookPane, noItems, hot"
+                                         execute="createPane"
+                                         oncomplete="if (#{facesContext.maximumSeverity.ordinal==0 or facesContext.maximumSeverity==null}) {#{rich:component('createPane')}.hide();}">
+                            <a4j:param value="#{param['id']}" name="id"/>
+                            <a4j:param value="#{param['rating']}" name="rating"/>
+                        </a4j:commandLink>
+                        <a4j:commandLink value="Cancel and close"
+                                         onclick="#{rich:component('createPane')}.hide(); return false;"/>
+                    </h:panelGroup>
+                </h:panelGroup>
+
+            </rich:popupPanel>
 
         </h:form>
 

@@ -1,0 +1,52 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:rich="http://richfaces.org/rich"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core" xmlns:a4j="http://richfaces.org/a4j">
+
+    <rich:panel header="Most Popular Books" bodyClass="body_books" headerClass="head_books">
+
+        <h:form>
+            <rich:dataTable value="#{bookAction.mostPopular}" var="mostPopular" id="hot" rows="20"
+                            rowClasses="odd-row, even-row"
+                            styleClass="stable" style="width:100%;">
+                <rich:column>
+                    <h:link styleClass="book_name" value="#{mostPopular.name}" outcome="/book.xhtml">
+                        <f:param name="id" value="#{mostPopular.id}"/>
+                    </h:link>
+                    <br/>
+
+                    <div class="div_rating_h">
+                        <a4j:repeat value="#{bookAction.ratingList}" var="rating">
+                            <h:panelGroup
+                                    rendered="#{(mostPopular.averageRating ge rating and mostPopular.averageRating lt rating+1)}">
+                                <input disabled="disabled" class="star required" type="radio"
+                                       name="ratingMostPopularBook#{mostPopular.id}"
+                                       value="#{rating}" checked="checked" title="rating"/>
+                            </h:panelGroup>
+                            <h:panelGroup
+                                    rendered="#{!(mostPopular.averageRating ge rating and mostPopular.averageRating lt rating+1)}">
+                                <input disabled="disabled" class="star required" type="radio"
+                                       name="ratingMostPopularBook#{mostPopular.id}"
+                                       value="#{rating}" title="rating"/>
+                            </h:panelGroup>
+                        </a4j:repeat>
+                    </div>
+                    <div style="clear: both;"></div>
+                    <h:outputText value="#{mostPopular.averageRating}">
+                        <f:convertNumber pattern="0.#"/>
+                    </h:outputText>
+
+                    <h:outputText
+                            value=" (#{mostPopular.countReviews} reviews)"
+                            styleClass="book_rating"/><br/>
+                    <h:outputText value="#{mostPopular.createDate}">
+                        <f:convertDateTime pattern="yyyy-MM-dd"/>
+                    </h:outputText><br/>
+                    <h:outputText value="#{mostPopular.publisher}" styleClass="book_publisher"/><br/>
+                </rich:column>
+            </rich:dataTable>
+        </h:form>
+
+    </rich:panel>
+</ui:composition>

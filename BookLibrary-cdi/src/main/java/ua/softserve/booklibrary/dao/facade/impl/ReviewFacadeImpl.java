@@ -24,4 +24,14 @@ public class ReviewFacadeImpl extends GenericFacadeImpl<Review> implements Revie
 	}
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(ReviewFacadeImpl.class);
+
+
+	@Override
+	public Integer countAllReviews() {
+		LOGGER.debug("Count all reviews");
+		Integer result = em.createNamedQuery("Review.countAllReviews", Number.class).getSingleResult().intValue();
+		LOGGER.debug("Result: {}", result);
+		return result;
+	}
+
 }

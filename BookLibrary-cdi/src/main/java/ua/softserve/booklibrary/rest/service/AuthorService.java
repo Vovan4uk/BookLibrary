@@ -58,6 +58,15 @@ public interface AuthorService {
 	Response countAuthorsWithoutRating();
 
 	/**
+	 * Count of all authors
+	 *
+	 * @return Integer - count of all authors
+	 */
+	@GET
+	@Path("count/allAuthors")
+	Response countAllAuthors();
+
+	/**
 	 * Find all authors
 	 *
 	 * @return List<Author> - list of authors
