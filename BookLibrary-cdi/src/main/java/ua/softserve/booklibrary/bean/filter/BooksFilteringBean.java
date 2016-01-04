@@ -18,13 +18,12 @@ import java.io.Serializable;
 public class BooksFilteringBean implements Serializable {
 	private static final long serialVersionUID = -3725901188975943276L;
 	private String authorFilter = "";
-	private Boolean result;
 
 	@EJB
 	private AuthorManager authorManager;
 
 	public boolean getFilterAuthorImpl(Object current) {
-		// todo: Is this field really need? - fixed
+		Boolean result = false;    // todo: Is this field really need? - fixed
 		Book currentBook = (Book) current;
 		if (StringUtils.isEmpty(authorFilter)) {
 			result = true;

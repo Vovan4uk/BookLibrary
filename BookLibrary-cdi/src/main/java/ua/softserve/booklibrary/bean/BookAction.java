@@ -48,16 +48,13 @@ public class BookAction implements Serializable {
 	private Review newReview = new Review();
 	private Book currentBook;
 	private Review currentReview;
-
 	private Long currentBookId;
 	private Long currentReviewId;
 	private String byRating;
 	private String title;
 	private String id;
 	private final List<Integer> ratingList = new ArrayList<>();
-
 	private final Map<Book, Boolean> checkMap = new HashMap<>();
-
 	private List<Author> authors;
 	private List<Long> selectedAuthorIds = new ArrayList<>();
 
@@ -69,7 +66,8 @@ public class BookAction implements Serializable {
 				initSelectedAuthorIds();
 			}
 		} catch (EJBException | LibraryException e) {
-			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Book with primary key " + getId() + " doesn't exist.", e.getMessage()));
+			FacesContext.getCurrentInstance()
+					.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Book with primary key " + getId() + " doesn't exist.", e.getMessage()));
 			currentBook = null;
 		}
 	}
@@ -78,13 +76,13 @@ public class BookAction implements Serializable {
 		currentBook = bookManager.findByPk(NumberUtils.toLong(getId()));
 	}
 
-
 	public void save() {
 		try {
 			newBook.setAuthors(getSelectedAuthors());
 			bookManager.save(newBook);
 		} catch (EJBException | LibraryException e) {
-			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Book can't be create. ISBN must be unique.", e.getMessage()));
+			FacesContext.getCurrentInstance()
+					.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Book can't be create. ISBN must be unique.", e.getMessage()));
 		}
 		newBook = new Book();
 		selectedAuthorIds.clear();
@@ -100,7 +98,8 @@ public class BookAction implements Serializable {
 			newReview.setBook(currentBook);
 			reviewManager.save(newReview);
 		} catch (EJBException | LibraryException e) {
-			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Review can't be create.", e.getMessage()));
+			FacesContext.getCurrentInstance()
+					.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Review can't be create.", e.getMessage()));
 		}
 		newReview = new Review();
 		initBook();
@@ -122,7 +121,8 @@ public class BookAction implements Serializable {
 			currentBook.setAuthors(getSelectedAuthors());
 			bookManager.update(currentBook);
 		} catch (EJBException | LibraryException e) {
-			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Book can't be update. ISBN must be unique.", e.getMessage()));
+			FacesContext.getCurrentInstance()
+					.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Book can't be update. ISBN must be unique.", e.getMessage()));
 		}
 		selectedAuthorIds.clear();
 		initBooks();
@@ -138,7 +138,8 @@ public class BookAction implements Serializable {
 			currentReview.setBook(currentBook);
 			reviewManager.update(currentReview);
 		} catch (EJBException | LibraryException e) {
-			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Review can't be update.", e.getMessage()));
+			FacesContext.getCurrentInstance()
+					.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Review can't be update.", e.getMessage()));
 		}
 		initBook();
 		hotReleases = null;
@@ -149,7 +150,8 @@ public class BookAction implements Serializable {
 		try {
 			bookManager.removeByPk(currentBookId);
 		} catch (EJBException | LibraryException e) {
-			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Book can't be delete.", e.getMessage()));
+			FacesContext.getCurrentInstance()
+					.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Book can't be delete.", e.getMessage()));
 		}
 		initBooks();
 	}
@@ -158,7 +160,8 @@ public class BookAction implements Serializable {
 		try {
 			bookManager.removeAll(getConfirmList());
 		} catch (EJBException | LibraryException e) {
-			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Books can't be delete.", e.getMessage()));
+			FacesContext.getCurrentInstance()
+					.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Books can't be delete.", e.getMessage()));
 		}
 		initBooks();
 	}
@@ -167,7 +170,8 @@ public class BookAction implements Serializable {
 		try {
 			reviewManager.removeByPk(currentReview.getId());
 		} catch (EJBException | LibraryException e) {
-			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Review can't be delete.", e.getMessage()));
+			FacesContext.getCurrentInstance()
+					.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Review can't be delete.", e.getMessage()));
 		}
 		initBook();
 		hotReleases = null;
@@ -177,7 +181,8 @@ public class BookAction implements Serializable {
 		try {
 			return bookClientService.countBooksByRating(minRating);
 		} catch (EJBException | LibraryException e) {
-			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Can't find books.", e.getMessage()));
+			FacesContext.getCurrentInstance()
+					.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Can't find books.", e.getMessage()));
 			return 0;
 		}
 	}
@@ -186,7 +191,8 @@ public class BookAction implements Serializable {
 		try {
 			return bookClientService.countBooksWithoutRating();
 		} catch (EJBException | LibraryException e) {
-			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Can't find books.", e.getMessage()));
+			FacesContext.getCurrentInstance()
+					.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Can't find books.", e.getMessage()));
 			return 0;
 		}
 	}
@@ -195,7 +201,8 @@ public class BookAction implements Serializable {
 		try {
 			return bookClientService.countAllBooks();
 		} catch (EJBException | LibraryException e) {
-			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Can't find books.", e.getMessage()));
+			FacesContext.getCurrentInstance()
+					.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Can't find books.", e.getMessage()));
 			return 0;
 		}
 	}
@@ -204,16 +211,15 @@ public class BookAction implements Serializable {
 		try {
 			return bookClientService.countAllReviews();
 		} catch (EJBException | LibraryException e) {
-			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Can't find reviews.", e.getMessage()));
+			FacesContext.getCurrentInstance()
+					.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Can't find reviews.", e.getMessage()));
 			return 0;
 		}
 	}
 
 	public String getTitle() {
-		Integer rating = NumberUtils.toInt(FacesContext.getCurrentInstance()
-				.getExternalContext()
-				.getRequestParameterMap()
-				.get("byrating"), -1);
+		Integer rating = NumberUtils.toInt(FacesContext.getCurrentInstance().getExternalContext()
+				.getRequestParameterMap().get("byrating"), -1);
 		if (rating >= 0 && rating <= 5) {
 			title = "by rating " + rating;
 		}
@@ -230,11 +236,13 @@ public class BookAction implements Serializable {
 		}
 		return ratingList;
 	}
+
 	public String getId() {
 		if (id == null) {
-			id = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap().get("id");
+			id = FacesContext.getCurrentInstance().getExternalContext()
+					.getRequestParameterMap().get("id");
 		}
-		return FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap().get("id");
+		return id;
 	}
 
 	public void setId(String id) {
@@ -243,7 +251,8 @@ public class BookAction implements Serializable {
 
 	public String getByRating() {
 		if (byRating == null) {
-			byRating = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap().get("byrating");
+			byRating = FacesContext.getCurrentInstance().getExternalContext()
+					.getRequestParameterMap().get("byrating");
 		}
 		return byRating;
 	}
@@ -263,7 +272,8 @@ public class BookAction implements Serializable {
 				books = bookManager.findByRating(getByRating());
 			}
 		} catch (EJBException | LibraryException e) {
-			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Can't find books.", e.getMessage()));
+			FacesContext.getCurrentInstance()
+					.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Can't find books.", e.getMessage()));
 			authors = new ArrayList<>();
 		}
 		initCheckMap();
@@ -296,7 +306,8 @@ public class BookAction implements Serializable {
 				authors = authorManager.findAll();
 			}
 		} catch (EJBException | LibraryException e) {
-			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Can't find authors.", e.getMessage()));
+			FacesContext.getCurrentInstance()
+					.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Can't find authors.", e.getMessage()));
 			authors = new ArrayList<>();
 		}
 		return authors;
@@ -368,7 +379,8 @@ public class BookAction implements Serializable {
 				hotReleases = bookClientService.findMostPopular();
 			}
 		} catch (EJBException | LibraryException e) {
-			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Can't find Most Popular Books.", e.getMessage()));
+			FacesContext.getCurrentInstance()
+					.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Can't find Most Popular Books.", e.getMessage()));
 			hotReleases = new ArrayList<>();
 		}
 		return hotReleases;
@@ -378,7 +390,8 @@ public class BookAction implements Serializable {
 		try {
 			return bookManager.findLatestBooksByAuthorId(id, count);
 		} catch (EJBException | LibraryException e) {
-			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Can't find Latest book.", e.getMessage()));
+			FacesContext.getCurrentInstance()
+					.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Can't find Latest book.", e.getMessage()));
 			return new ArrayList<>();
 		}
 	}
@@ -387,7 +400,8 @@ public class BookAction implements Serializable {
 		try {
 			return bookManager.findBestBooksByAuthorId(id, count);
 		} catch (EJBException | LibraryException e) {
-			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Can't find Best book.", e.getMessage()));
+			FacesContext.getCurrentInstance()
+					.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Can't find Best book.", e.getMessage()));
 			return new ArrayList<>();
 		}
 	}
@@ -407,6 +421,7 @@ public class BookAction implements Serializable {
 		selectedAuthorIds.clear();
 		FacesContext fc = FacesContext.getCurrentInstance();
 		UIComponent comp = fc.getViewRoot().findComponent("form2:createGrid");
+
 		((EditableValueHolder) comp.findComponent("form2:addName")).resetValue();
 		((EditableValueHolder) comp.findComponent("form2:addPublisher")).resetValue();
 		((EditableValueHolder) comp.findComponent("form2:addPublishedDate")).resetValue();
@@ -417,6 +432,7 @@ public class BookAction implements Serializable {
 	public void resetAddReview() {
 		FacesContext fc = FacesContext.getCurrentInstance();
 		UIComponent comp = fc.getViewRoot().findComponent("form2:createGrid");
+
 		((EditableValueHolder) comp.findComponent("form2:addcommenterName")).resetValue();
 		((EditableValueHolder) comp.findComponent("form2:addcommentBody")).resetValue();
 	}
@@ -424,6 +440,7 @@ public class BookAction implements Serializable {
 	public void resetReview() {
 		FacesContext fc = FacesContext.getCurrentInstance();
 		UIComponent comp = fc.getViewRoot().findComponent("form2:editGrid");
+
 		((EditableValueHolder) comp.findComponent("form2:commenterName")).resetValue();
 		((EditableValueHolder) comp.findComponent("form2:commentBody")).resetValue();
 	}

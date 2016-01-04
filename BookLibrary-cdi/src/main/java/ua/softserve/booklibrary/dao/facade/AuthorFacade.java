@@ -56,5 +56,4 @@ public interface AuthorFacade extends GenericFacade<Author> {
 	 * @return boolean - is Author already exist
 	 */
 	boolean isAuthorExist(Author author);
-
 }

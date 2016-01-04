@@ -15,5 +15,4 @@ public interface ReviewFacade extends GenericFacade<Review> {
 	 * @return Integer - count of all entities
 	 */
 	Integer countAllReviews();
-
 }

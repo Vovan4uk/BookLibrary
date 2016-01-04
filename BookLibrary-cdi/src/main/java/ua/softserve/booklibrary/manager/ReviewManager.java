@@ -15,5 +15,4 @@ public interface ReviewManager extends GenericManager<Review> {
 	 * @return Integer - count of all entities
 	 */
 	Integer countAllReviews();
-
 }

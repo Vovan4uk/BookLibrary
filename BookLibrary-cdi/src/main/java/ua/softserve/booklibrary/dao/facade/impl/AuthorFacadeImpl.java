@@ -49,7 +49,8 @@ public class AuthorFacadeImpl extends GenericFacadeImpl<Author> implements Autho
 	@Override
 	public List<Author> findAuthorsWithoutRating() {
 		LOGGER.debug("Find authors without rating");
-		List<Author> resultList = em.createNamedQuery("Author.findAuthorsWithoutRating", Author.class).getResultList();
+		List<Author> resultList = em.createNamedQuery("Author.findAuthorsWithoutRating", Author.class)
+				.getResultList();
 		LOGGER.debug("Result list: {}", resultList);
 		return resultList;
 	}
@@ -64,7 +65,11 @@ public class AuthorFacadeImpl extends GenericFacadeImpl<Author> implements Autho
 		}
 		Integer maxRating = minRating + 1;
 		LOGGER.debug("Count authors by rating between ({} and {})", minRating, maxRating);
-		Integer result = em.createNamedQuery("Author.countAuthorsByRating", Number.class).setParameter("minRating", minRating.doubleValue()).setParameter("maxRating", maxRating.doubleValue()).getSingleResult().intValue();
+		Integer result = em.createNamedQuery("Author.countAuthorsByRating", Number.class)
+				.setParameter("minRating", minRating.doubleValue())
+				.setParameter("maxRating", maxRating.doubleValue())
+				.getSingleResult()
+				.intValue();
 		LOGGER.debug("Result: {}", result);
 		return result;
 	}
@@ -72,7 +77,9 @@ public class AuthorFacadeImpl extends GenericFacadeImpl<Author> implements Autho
 	@Override
 	public Integer countAuthorsWithoutRating() {
 		LOGGER.debug("Count authors without rating");
-		Integer result = em.createNamedQuery("Author.countAuthorsWithoutRating", Number.class).getSingleResult().intValue();
+		Integer result = em.createNamedQuery("Author.countAuthorsWithoutRating", Number.class)
+				.getSingleResult()
+				.intValue();
 		LOGGER.debug("Result: {}", result);
 		return result;
 	}
@@ -80,7 +87,9 @@ public class AuthorFacadeImpl extends GenericFacadeImpl<Author> implements Autho
 	@Override
 	public Integer countAllAuthors() {
 		LOGGER.debug("Count all authors");
-		Integer result = em.createNamedQuery("Author.countAllAuthors", Number.class).getSingleResult().intValue();
+		Integer result = em.createNamedQuery("Author.countAllAuthors", Number.class)
+				.getSingleResult()
+				.intValue();
 		LOGGER.debug("Result: {}", result);
 		return result;
 	}

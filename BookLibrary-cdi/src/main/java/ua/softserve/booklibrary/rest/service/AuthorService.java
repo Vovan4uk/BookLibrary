@@ -104,5 +104,4 @@ public interface AuthorService {
 	@DELETE
 	@Path("{id}")
 	Response removeAuthor(@PathParam("id") Long id);
-
 }

@@ -58,5 +58,4 @@ public interface BookService {
 	@GET
 	@Path("mostPopular")
 	Response getMostPopular();
-
 }

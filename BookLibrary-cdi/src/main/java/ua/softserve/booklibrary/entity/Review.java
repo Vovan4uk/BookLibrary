@@ -54,6 +54,7 @@ public class Review extends LibraryEntity {
 	@XmlTransient
 	private Book book;
 
+	@Override
 	public Long getId() {
 		return id;
 	}

@@ -72,17 +72,19 @@ public class Author extends LibraryEntity {
 	@Formula("(SELECT AVG(r.RATING) FROM Review r, BOOK_AUTHOR ba WHERE r.BOOK_ID = ba.BOOK_ID AND ba.AUTHOR_ID = ID)")
 	private Double averageRating;
 
-	/* Count Books uses on all pages.
-	Calculating count Books generates a large amount of code at all levels.
-	It was decided to add an extra field. */
+	/**
+	 * Count Books uses on all pages.
+	 * Calculating count Books generates a large amount of code at all levels.
+	 * It was decided to add an extra field.
+	 */
 	@Formula("(SELECT COUNT(ba.BOOK_ID) FROM BOOK_AUTHOR ba WHERE ba.AUTHOR_ID = ID)")
 	private Integer countBooks;
-
 
 	@ManyToMany(mappedBy = "authors", cascade = CascadeType.DETACH)
 	@OrderBy("name DESC")
 	private Set<Book> books = new TreeSet<>();
 
+	@Override
 	public Long getId() {
 		return id;
 	}

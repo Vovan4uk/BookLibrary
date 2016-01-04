@@ -56,5 +56,4 @@ public interface GenericManager<T extends LibraryEntity> {
 	 * @return List<T> - list of entities
 	 */
 	List<T> findAll();
-
 }

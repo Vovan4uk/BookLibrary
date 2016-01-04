@@ -32,9 +32,11 @@ public class BookFacadeImpl extends GenericFacadeImpl<Book> implements BookFacad
 	@Override
 	public List<Book> findMostPopular() {
 		LOGGER.debug("Find Most Popular Books");
-		List<Book> hotReleases = em.createNamedQuery("Book.findMostPopular", Book.class).setMaxResults(7).getResultList();
-		LOGGER.debug("Result: {}", hotReleases);
-		return hotReleases;
+		List<Book> mostPopular = em.createNamedQuery("Book.findMostPopular", Book.class)
+				.setMaxResults(7)
+				.getResultList();
+		LOGGER.debug("Result: {}", mostPopular);
+		return mostPopular;
 	}
 
 	@Override
@@ -46,7 +48,10 @@ public class BookFacadeImpl extends GenericFacadeImpl<Book> implements BookFacad
 		}
 		Integer maxRating = minRating + 1;
 		LOGGER.debug("Find books by rating between ({} and {})", minRating, maxRating);
-		List<Book> result = em.createNamedQuery("Book.findBooksByRating", Book.class).setParameter("minRating", minRating.doubleValue()).setParameter("maxRating", maxRating.doubleValue()).getResultList();
+		List<Book> result = em.createNamedQuery("Book.findBooksByRating", Book.class)
+				.setParameter("minRating", minRating.doubleValue())
+				.setParameter("maxRating", maxRating.doubleValue())
+				.getResultList();
 		LOGGER.debug("Result: {}", result);
 		return result;
 	}
@@ -54,7 +59,8 @@ public class BookFacadeImpl extends GenericFacadeImpl<Book> implements BookFacad
 	@Override
 	public List<Book> findBooksWithoutRating() {
 		LOGGER.debug("Find books without rating");
-		List<Book> result = em.createNamedQuery("Book.findBooksWithoutRating", Book.class).getResultList();
+		List<Book> result = em.createNamedQuery("Book.findBooksWithoutRating", Book.class)
+				.getResultList();
 		LOGGER.debug("Result: {}", result);
 		return result;
 	}
@@ -72,7 +78,8 @@ public class BookFacadeImpl extends GenericFacadeImpl<Book> implements BookFacad
 		Integer result = em.createNamedQuery("Book.countBooksByRating", Number.class)
 				.setParameter("minRating", minRating.doubleValue())
 				.setParameter("maxRating", maxRating.doubleValue())
-				.getSingleResult().intValue();
+				.getSingleResult()
+				.intValue();
 		LOGGER.debug("Result: {}", result);
 		return result;
 	}
@@ -80,7 +87,9 @@ public class BookFacadeImpl extends GenericFacadeImpl<Book> implements BookFacad
 	@Override
 	public Integer countBooksWithoutRating() {
 		LOGGER.debug("Count books without rating");
-		Integer result = em.createNamedQuery("Book.countBooksWithoutRating", Number.class).getSingleResult().intValue();
+		Integer result = em.createNamedQuery("Book.countBooksWithoutRating", Number.class)
+				.getSingleResult()
+				.intValue();
 		LOGGER.debug("Result: {}", result);
 		return result;
 	}
@@ -88,7 +97,9 @@ public class BookFacadeImpl extends GenericFacadeImpl<Book> implements BookFacad
 	@Override
 	public Integer countAllBooks() {
 		LOGGER.debug("Count all books");
-		Integer result = em.createNamedQuery("Book.countAllBooks", Number.class).getSingleResult().intValue();
+		Integer result = em.createNamedQuery("Book.countAllBooks", Number.class)
+				.getSingleResult()
+				.intValue();
 		LOGGER.debug("Result: {}", result);
 		return result;
 	}
@@ -96,7 +107,9 @@ public class BookFacadeImpl extends GenericFacadeImpl<Book> implements BookFacad
 	@Override
 	public List<Book> findLatestBooksByAuthorId(Long id, Integer count) {
 		LOGGER.debug("Find {} latest books  by author id {}", count, id);
-		List<Book> result = em.createNamedQuery("Book.findLatestBooksByAuthorId", Book.class).setParameter("id", id).setMaxResults(count).getResultList();
+		List<Book> result = em.createNamedQuery("Book.findLatestBooksByAuthorId", Book.class)
+				.setParameter("id", id).setMaxResults(count)
+				.getResultList();
 		LOGGER.debug("Result: {}", result);
 		return result;
 	}
@@ -104,7 +117,10 @@ public class BookFacadeImpl extends GenericFacadeImpl<Book> implements BookFacad
 	@Override
 	public List<Book> findBestBooksByAuthorId(Long id, Integer count) {
 		LOGGER.debug("Find {} best books  by author id {}", count, id);
-		List<Book> result = em.createNamedQuery("Book.findBestBooksByAuthorId", Book.class).setParameter("id", id).setMaxResults(count).getResultList();
+		List<Book> result = em.createNamedQuery("Book.findBestBooksByAuthorId", Book.class)
+				.setParameter("id", id)
+				.setMaxResults(count)
+				.getResultList();
 		LOGGER.debug("Result: {}", result);
 		return result;
 	}
@@ -112,7 +128,9 @@ public class BookFacadeImpl extends GenericFacadeImpl<Book> implements BookFacad
 	@Override
 	public List<Book> findBooksByAuthorId(Long id) {
 		LOGGER.debug("Find books  by author id {}", id);
-		List<Book> result = em.createNamedQuery("Book.findBooksByAuthorId", Book.class).setParameter("id", id).getResultList();
+		List<Book> result = em.createNamedQuery("Book.findBooksByAuthorId", Book.class)
+				.setParameter("id", id)
+				.getResultList();
 		LOGGER.debug("Result: {}", result);
 		return result;
 	}

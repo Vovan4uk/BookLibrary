@@ -25,7 +25,6 @@ public class ReviewFacadeImpl extends GenericFacadeImpl<Review> implements Revie
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(ReviewFacadeImpl.class);
 
-
 	@Override
 	public Integer countAllReviews() {
 		LOGGER.debug("Count all reviews");
@@ -33,5 +32,4 @@ public class ReviewFacadeImpl extends GenericFacadeImpl<Review> implements Revie
 		LOGGER.debug("Result: {}", result);
 		return result;
 	}
-
 }

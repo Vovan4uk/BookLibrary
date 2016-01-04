@@ -15,5 +15,4 @@ public interface BookClientService {
 	Integer countAllReviews();
 
 	List<Book> findMostPopular();
-
 }

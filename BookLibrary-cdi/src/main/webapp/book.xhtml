@@ -66,7 +66,7 @@
                 </h:panelGrid>
                 <rich:pickList id="authors" value="#{bookAction.selectedAuthorIds}"
                                sourceCaption="Available authors" targetCaption="Selected authors" listWidth="165px"
-                               listHeight="100px">
+                               listHeight="120px">
                     <f:selectItems value="#{bookAction.authors}" var="author" itemValue="#{author.id}"
                                    itemLabel="#{author.firstName} #{author.secondName}"/>
                 </rich:pickList>

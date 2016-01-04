@@ -5,7 +5,6 @@ import org.hibernate.annotations.Formula;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -78,9 +77,11 @@ public class Book extends LibraryEntity {
 	@Formula("(SELECT AVG(r.RATING) FROM REVIEW r WHERE r.BOOK_ID = ID)")
 	private Double averageRating;
 
-	/* Count Reviews uses on all pages.
-	Calculating count Reviews generates a large amount of code at all levels.
-	It was decided to add an extra field. */
+	/**
+	 * Count Reviews uses on all pages.
+	 * Calculating count Reviews generates a large amount of code at all levels.
+	 * It was decided to add an extra field.
+	 */
 	@Formula("(SELECT COUNT(r.RATING) FROM REVIEW r WHERE r.BOOK_ID = ID)")
 	private Integer countReviews;
 
@@ -92,6 +93,7 @@ public class Book extends LibraryEntity {
 	@OrderBy("firstName DESC")
 	private Set<Author> authors = new HashSet<>();
 
+	@Override
 	public Long getId() {
 		return id;
 	}
@@ -166,11 +168,11 @@ public class Book extends LibraryEntity {
 		this.countReviews = countReviews;
 	}
 
-	/*
-	 After '@Formula' has been calculated,
-	 and the last one returned 'null',
-	 set default averageRating to '0'.
-	 Then, we shouldn't validate this param by 'null' on UI.
+	/**
+	 * After '@Formula' has been calculated,
+	 * and the last one returned 'null',
+	 * set default averageRating to '0'.
+	 * Then, we shouldn't validate this param by 'null' on UI.
 	 */
 	@PostLoad
 	private void onLoad() {

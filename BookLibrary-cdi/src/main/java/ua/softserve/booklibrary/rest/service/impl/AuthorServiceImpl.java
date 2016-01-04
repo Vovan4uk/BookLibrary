@@ -1,6 +1,5 @@
 package ua.softserve.booklibrary.rest.service.impl;
 
-import org.apache.commons.lang3.math.NumberUtils;
 import ua.softserve.booklibrary.entity.Author;
 import ua.softserve.booklibrary.exception.LibraryException;
 import ua.softserve.booklibrary.manager.AuthorManager;

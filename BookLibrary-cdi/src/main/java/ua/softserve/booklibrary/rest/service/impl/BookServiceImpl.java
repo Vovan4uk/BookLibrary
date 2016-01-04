@@ -73,5 +73,4 @@ public class BookServiceImpl implements BookService {
 			return Response.status(422).entity(e.getMessage()).build();
 		}
 	}
-
 }

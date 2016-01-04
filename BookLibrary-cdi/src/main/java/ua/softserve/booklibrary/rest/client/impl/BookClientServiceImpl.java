@@ -80,5 +80,4 @@ public class BookClientServiceImpl implements BookClientService {
 		return response.readEntity((new GenericType<List<Book>>() {
 		}));
 	}
-
 }

@@ -35,12 +35,10 @@ public class AuthorAction implements Serializable {
 	private List<Author> authors;
 	private Author newAuthor = new Author();
 	private Author currentAuthor;
-
 	private Long currentAuthorId;
 	private String byRating;
 	private String title;
 	private String id;
-
 	private Map<Author, Boolean> checkMap = new HashMap<>();
 
 	public void loadData() {
@@ -50,7 +48,8 @@ public class AuthorAction implements Serializable {
 				currentAuthorId = currentAuthor.getId();
 			}
 		} catch (LibraryException e) {
-			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Author with primary key " + getId() + " doesn't exist.", e.getMessage()));
+			FacesContext.getCurrentInstance()
+					.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Author with primary key " + getId() + " doesn't exist.", e.getMessage()));
 			currentAuthor = null;
 		}
 	}
@@ -59,7 +58,8 @@ public class AuthorAction implements Serializable {
 		try {
 			authorClientService.saveAuthor(newAuthor);
 		} catch (LibraryException e) {
-			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Author can't be create. Author is already exist.", e.getMessage()));
+			FacesContext.getCurrentInstance()
+					.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Author can't be create. Author is already exist.", e.getMessage()));
 		}
 		newAuthor = new Author();
 		initAuthors();
@@ -69,7 +69,8 @@ public class AuthorAction implements Serializable {
 		try {
 			authorClientService.updateAuthor(currentAuthor);
 		} catch (LibraryException e) {
-			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Author can't be update. Author is already exist.", e.getMessage()));
+			FacesContext.getCurrentInstance()
+					.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Author can't be update. Author is already exist.", e.getMessage()));
 		}
 		initAuthors();
 	}
@@ -78,7 +79,8 @@ public class AuthorAction implements Serializable {
 		try {
 			authorClientService.removeAuthor(currentAuthorId);
 		} catch (LibraryException e) {
-			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Author can't be delete.", e.getMessage()));
+			FacesContext.getCurrentInstance()
+					.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Author can't be delete.", e.getMessage()));
 		}
 		initAuthors();
 	}
@@ -87,7 +89,8 @@ public class AuthorAction implements Serializable {
 		try {
 			authorManager.removeAll(getConfirmList());
 		} catch (EJBException | LibraryException e) {
-			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Authors can't be delete.", e.getMessage()));
+			FacesContext.getCurrentInstance()
+					.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Authors can't be delete.", e.getMessage()));
 		}
 		initAuthors();
 	}
@@ -96,7 +99,8 @@ public class AuthorAction implements Serializable {
 		try {
 			return authorClientService.countAuthorsByRating(minRating);
 		} catch (EJBException | LibraryException e) {
-			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Can't find authors.", e.getMessage()));
+			FacesContext.getCurrentInstance()
+					.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Can't find authors.", e.getMessage()));
 			return 0;
 		}
 	}
@@ -105,7 +109,8 @@ public class AuthorAction implements Serializable {
 		try {
 			return authorClientService.countAuthorsWithoutRating();
 		} catch (EJBException | LibraryException e) {
-			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Can't find authors.", e.getMessage()));
+			FacesContext.getCurrentInstance()
+					.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Can't find authors.", e.getMessage()));
 			return 0;
 		}
 	}
@@ -114,16 +119,15 @@ public class AuthorAction implements Serializable {
 		try {
 			return authorClientService.countAllAuthors();
 		} catch (EJBException | LibraryException e) {
-			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Can't find authors.", e.getMessage()));
+			FacesContext.getCurrentInstance()
+					.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Can't find authors.", e.getMessage()));
 			return 0;
 		}
 	}
 
 	public String getTitle() {
-		Integer rating = NumberUtils.toInt(FacesContext.getCurrentInstance()
-				.getExternalContext()
-				.getRequestParameterMap()
-				.get("byrating"), -1);
+		Integer rating = NumberUtils.toInt(FacesContext.getCurrentInstance().getExternalContext()
+				.getRequestParameterMap().get("byrating"), -1);
 		if (rating >= 0 && rating <= 5) {
 			title = "by rating " + rating;
 		}
@@ -132,14 +136,16 @@ public class AuthorAction implements Serializable {
 
 	public String getId() {
 		if (id == null) {
-			id = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap().get("id");
+			id = FacesContext.getCurrentInstance().getExternalContext()
+					.getRequestParameterMap().get("id");
 		}
 		return id;
 	}
 
 	public String getByRating() {
 		if (byRating == null) {
-			byRating = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap().get("byrating");
+			byRating = FacesContext.getCurrentInstance().getExternalContext()
+					.getRequestParameterMap().get("byrating");
 		}
 		return byRating;
 	}
@@ -163,7 +169,8 @@ public class AuthorAction implements Serializable {
 				authors = authorClientService.findAuthorsByRating(getByRating());
 			}
 		} catch (EJBException | LibraryException e) {
-			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Can't find authors.", e.getMessage()));
+			FacesContext.getCurrentInstance()
+					.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Can't find authors.", e.getMessage()));
 			authors = new ArrayList<>();
 		}
 		initCheckMap();
