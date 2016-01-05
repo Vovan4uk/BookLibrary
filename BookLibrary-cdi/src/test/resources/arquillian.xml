@@ -11,10 +11,8 @@
 		</configuration>
 	</container>
 
-	<!--
 		<extension qualifier="persistence-dbunit">
-			<property name="datatypeFactory">org.dbunit.ext.mysql.MySqlDataTypeFactory</property>
+			<property name="datatypeFactory">org.dbunit.ext.h2.H2DataTypeFactory</property>
 		</extension>
-	-->
 
 </arquillian>
