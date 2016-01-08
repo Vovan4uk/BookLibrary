@@ -207,10 +207,8 @@
                                                  onclick="#{rich:component('confirmBookPane')}.hide(); return false;"/>
                             </h:panelGroup>
                         </h:panelGroup>
-
                     </h:panelGroup>
                 </rich:popupPanel>
-
 
                 <rich:popupPanel id="confirmPane" autosized="true" header="Confirm delete"
                                  onmaskclick="#{rich:component('confirmPane')}.hide()" minHeight="100" minWidth="400">
@@ -239,8 +237,8 @@
                 </rich:popupPanel>
 
                 <rich:popupPanel header="Edit Book" autosized="true" id="editPane" domElementAttachment="parent"
-                                 width="600"
-                                 height="300" onmaskclick="#{rich:component('editPane')}.hide()">
+                                 minWidth="600"
+                                 minHeight="330" onmaskclick="#{rich:component('editPane')}.hide()">
                     <rich:messages globalOnly="true"/>
                     <h:panelGrid columns="3" id="editGrid">
                         <h:panelGroup>
@@ -294,7 +292,7 @@
 
                 <rich:popupPanel header="Add new Book" autosized="true" id="createPane" domElementAttachment="parent"
                                  minWidth="600"
-                                 minHeight="300" onmaskclick="#{rich:component('createPane')}.hide()">
+                                 minHeight="330" onmaskclick="#{rich:component('createPane')}.hide()">
                     <rich:messages globalOnly="true"/>
                     <h:panelGrid columns="3" id="createGrid">
                         <h:panelGroup>
